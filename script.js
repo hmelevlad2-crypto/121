@@ -485,6 +485,12 @@ function copyEmail(e) {
 // DOM Ready
 // ============================================
 document.addEventListener('DOMContentLoaded', async function() {
+    // Page views counter
+    try {
+        let views = parseInt(localStorage.getItem('mila_page_views') || '0');
+        localStorage.setItem('mila_page_views', (views + 1).toString());
+    } catch(e) {}
+
     initTheme();
     try { await openDB(); } catch(e) { console.warn('IndexedDB недоступен:', e); }
 

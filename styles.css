@@ -255,14 +255,14 @@ body {
 .logo {
     display: flex; align-items: center; gap: 12px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.35rem; font-weight: 800;
+    font-size: 1.7rem; font-weight: 800;
     color: var(--teal-600); text-decoration: none;
     letter-spacing: -0.03em; white-space: nowrap;
     background: var(--gradient-teal);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .logo-img {
-    width: 46px; height: 46px; border-radius: 50%;
+    width: 48px; height: 48px; border-radius: 50%;
     object-fit: cover; border: 2px solid var(--teal-200);
     box-shadow: var(--shadow-glow-sm);
     flex-shrink: 0;
@@ -285,8 +285,8 @@ body {
 /* Button "Связаться" in header */
 .btn-small {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 3px 10px; font-family: 'Montserrat', sans-serif;
-    font-size: 0.6rem; font-weight: 700; border-radius: var(--r-full);
+    padding: 2px 7px; font-family: 'Montserrat', sans-serif;
+    font-size: 0.52rem; font-weight: 700; border-radius: var(--r-full);
     text-decoration: none; cursor: pointer; transition: var(--t); border: none;
     background: var(--gradient-teal); color: var(--white);
     box-shadow: 0 2px 8px rgba(13,148,136,0.25);
@@ -1076,176 +1076,4 @@ body.dark-theme .gallery-more-btn {
     background: var(--gradient-teal);
     color: #ffffff;
     box-shadow: 0 8px 24px rgba(13,148,136,0.4);
-}
-
-
-/* ============================================
-   MORE WORKS PAGE — Masonry, рамки впритык
-   ============================================ */
-.moreworks-section {
-    padding: 140px 0 100px;
-    background: var(--white);
-    position: relative;
-    overflow: hidden;
-    min-height: 100vh;
-}
-.moreworks-blob {
-    position: absolute;
-    top: -120px;
-    right: -120px;
-    width: 450px;
-    height: 450px;
-    background: radial-gradient(circle, var(--teal-100) 0%, transparent 70%);
-    pointer-events: none;
-    opacity: 0.5;
-}
-
-/* Masonry через CSS columns */
-.moreworks-grid {
-    column-count: 3;
-    column-gap: 24px;
-    max-width: 1100px;
-    margin: 0 auto;
-}
-
-.moreworks-item {
-    break-inside: avoid;
-    margin-bottom: 24px;
-    display: inline-block;
-    width: 100%;
-    background: var(--white);
-    border-radius: var(--r-lg);
-    border: 1px solid var(--slate-100);
-    box-shadow: var(--shadow-sm);
-    overflow: hidden;
-    transition: var(--t-slow);
-}
-.moreworks-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg), var(--shadow-glow-sm);
-    border-color: var(--teal-200);
-}
-
-/* Фото — без обрезки, в оригинальном размере */
-.moreworks-item img {
-    width: 100%;
-    height: auto;
-    display: block;
-    border-radius: 0;
-}
-
-/* Подпись под фото */
-.moreworks-caption {
-    padding: 14px 18px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    background: var(--white);
-}
-.moreworks-num {
-    font-size: 0.7rem;
-    font-weight: 800;
-    color: var(--teal-500);
-    background: var(--teal-50);
-    padding: 4px 10px;
-    border-radius: var(--r-full);
-    letter-spacing: 0.05em;
-    flex-shrink: 0;
-}
-.moreworks-name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--slate-600);
-    line-height: 1.4;
-}
-
-/* Пустое состояние */
-.moreworks-empty {
-    display: none;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-    padding: 80px 20px;
-    color: var(--slate-400);
-    text-align: center;
-}
-.moreworks-empty.show {
-    display: flex;
-}
-.moreworks-empty p {
-    font-size: 1rem;
-    font-weight: 500;
-    color: var(--slate-500);
-}
-
-/* Active nav link */
-.nav a.active {
-    color: var(--teal-600);
-}
-.nav a.active::after {
-    width: 100%;
-}
-
-/* ============================================
-   DARK THEME — More Works
-   ============================================ */
-body.dark-theme .moreworks-section {
-    background: #3C3C3C;
-}
-body.dark-theme .moreworks-blob {
-    background: radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%);
-}
-body.dark-theme .moreworks-item {
-    background: #4a4a4a;
-    border-color: rgba(255,255,255,0.08);
-}
-body.dark-theme .moreworks-item:hover {
-    border-color: rgba(255,255,255,0.2);
-    box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 30px rgba(20,184,166,0.1);
-}
-body.dark-theme .moreworks-caption {
-    background: #4a4a4a;
-}
-body.dark-theme .moreworks-num {
-    background: rgba(20,184,166,0.15);
-    color: var(--teal-300);
-}
-body.dark-theme .moreworks-name {
-    color: rgba(255,255,255,0.7);
-}
-body.dark-theme .moreworks-empty {
-    color: rgba(255,255,255,0.4);
-}
-body.dark-theme .moreworks-empty p {
-    color: rgba(255,255,255,0.6);
-}
-
-/* ============================================
-   RESPONSIVE — More Works
-   ============================================ */
-@media (max-width: 1024px) {
-    .moreworks-grid {
-        column-count: 2;
-        column-gap: 20px;
-    }
-}
-@media (max-width: 768px) {
-    .moreworks-section {
-        padding: 120px 0 60px;
-    }
-    .moreworks-grid {
-        column-count: 2;
-        column-gap: 16px;
-    }
-    .moreworks-item {
-        margin-bottom: 16px;
-    }
-}
-@media (max-width: 480px) {
-    .moreworks-grid {
-        column-count: 1;
-    }
-    .moreworks-caption {
-        padding: 12px 14px;
-    }
 }

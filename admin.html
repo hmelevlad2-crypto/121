@@ -420,7 +420,7 @@
             <h1>Админ-панель</h1>
             <p>Людмила Краусе — управление контентом</p>
             <input type="password" class="login-input" id="loginPass" placeholder="Введите пароль">
-            <button class="login-btn" id="loginBtn">Войти</button>
+            <button type="button" class="login-btn" id="loginBtn">Войти</button>
             <div class="login-error" id="loginError">Неверный пароль</div>
         </div>
     </div>
@@ -431,11 +431,11 @@
                 <h2>⚙️ Админ-панель</h2>
                 <div class="admin-header-actions">
                     <a href="index.html">← На сайт</a>
-                    <button class="admin-theme-toggle" id="adminThemeToggle" aria-label="Переключить тему">
+                    <button type="button" class="admin-theme-toggle" id="adminThemeToggle" aria-label="Переключить тему">
                         <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
                         <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                     </button>
-                    <button id="logoutBtn">Выйти</button>
+                    <button type="button" id="logoutBtn">Выйти</button>
                 </div>
             </div>
         </div>
@@ -510,7 +510,7 @@
                 </h3>
                 <div class="admin-upload-row">
                     <input type="file" id="aboutInput" accept="image/*">
-                    <button class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить фото</button>
+                    <button type="button" class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить фото</button>
                 </div>
                 <p class="upload-hint">Выберите файл — откроется редактор обрезки (3:4)</p>
                 <div class="admin-preview" id="aboutPreview">
@@ -542,7 +542,7 @@
         <div class="cropper-panel">
             <div class="cropper-header">
                 <h3>✂️ Обрезка фото</h3>
-                <button class="cropper-close" id="cropperClose">×</button>
+                <button type="button" class="cropper-close" id="cropperClose">×</button>
             </div>
             <div class="cropper-body">
                 <div class="cropper-aspect" id="cropperAspect"></div>
@@ -558,8 +558,8 @@
                     <div class="cropper-preview-wrap" id="cropperPreviewWrap"></div>
                 </div>
                 <div class="cropper-actions">
-                    <button class="admin-btn admin-btn-secondary" id="cropperCancel">Отмена</button>
-                    <button class="admin-btn admin-btn-primary" id="cropperApply">✅ Обрезать и загрузить</button>
+                    <button type="button" class="admin-btn admin-btn-secondary" id="cropperCancel">Отмена</button>
+                    <button type="button" class="admin-btn admin-btn-primary" id="cropperApply">✅ Обрезать и загрузить</button>
                 </div>
             </div>
         </div>
@@ -657,15 +657,20 @@
             setTimeout(() => loginError.classList.remove('show'), 4000);
         }
 
-        function checkAuth() {
+        async function checkAuth() {
             try {
                 if (sessionStorage.getItem('admin_auth') === 'ok') {
                     loginWrap.style.display = 'none';
                     dashboard.classList.add('open');
-                    initDashboard();
+                    try {
+                        await initDashboard();
+                    } catch (e) {
+                        showLoginError('Ошибка загрузки данных: ' + e.message);
+                        console.error('Auth check dashboard error:', e);
+                    }
                 }
             } catch (e) {
-                showLoginError('Ошибка доступа: ' + e.message);
+                showLoginError('Ошибка доступа к сессии: ' + e.message);
                 console.error('Auth check error:', e);
             }
         }
@@ -688,11 +693,24 @@
                     return;
                 }
 
-                sessionStorage.setItem('admin_auth', 'ok');
+                try {
+                    sessionStorage.setItem('admin_auth', 'ok');
+                } catch (storageErr) {
+                    showLoginError('Браузер блокирует сохранение сессии. Отключите приватный режим или разрешите куки.');
+                    console.error('Storage error:', storageErr);
+                    return;
+                }
+
                 localStorage.setItem('mila_last_login', new Date().toISOString());
                 loginWrap.style.display = 'none';
                 dashboard.classList.add('open');
-                await initDashboard();
+
+                try {
+                    await initDashboard();
+                } catch (dashErr) {
+                    showLoginError('Ошибка загрузки панели: ' + dashErr.message);
+                    console.error('Dashboard init error:', dashErr);
+                }
             } catch (e) {
                 showLoginError('Системная ошибка: ' + e.message);
                 console.error('Login error:', e);
@@ -819,7 +837,9 @@
                 galleryGridAdmin.innerHTML = '<div class="admin-empty-msg">Нет загруженных работ</div>';
                 return;
             }
-            galleryGridAdmin.innerHTML = items.map((item, idx) => '<div class="admin-gallery-item"><img src="' + item.data + '" alt=""><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' · ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button onclick="deleteGalleryItem('' + item.id + '')">Удалить</button></div></div>').join('');
+            galleryGridAdmin.innerHTML = items.map((item, idx) => {
+                return '<div class="admin-gallery-item"><img src="' + item.data + '" alt=""><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' · ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button type="button" onclick="deleteGalleryItem(&quot;' + item.id + '&quot;)">Удалить</button></div></div>';
+            }).join('');
         }
 
         window.deleteGalleryItem = async function(id) {
@@ -891,31 +911,40 @@
         async function processCropQueue() {
             if (cropQueue.length === 0) {
                 isCropping = false;
-                await renderGalleryAdmin();
-                await updateStats();
-                await renderActivity();
+                try {
+                    await renderGalleryAdmin();
+                    await updateStats();
+                    await renderActivity();
+                } catch (e) {
+                    console.error('Post-crop render error:', e);
+                }
                 return;
             }
             isCropping = true;
             const task = cropQueue.shift();
-            const result = await openCropper(task.dataUrl, task.mode, task.wide);
-            if (result) {
-                if (task.mode === 'about') {
-                    await setAboutPhoto({ data: result, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
-                    localStorage.setItem('mila_last_about_update', new Date().toISOString());
-                    await renderAboutPreview();
-                } else {
-                    const items = await getGallery();
-                    items.push({
-                        id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                        data: result,
-                        wide: task.wide,
-                        alt_ru: 'Работа',
-                        alt_de: 'Werk'
-                    });
-                    await setGallery(items);
-                    localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
+            try {
+                const result = await openCropper(task.dataUrl, task.mode, task.wide);
+                if (result) {
+                    if (task.mode === 'about') {
+                        await setAboutPhoto({ data: result, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+                        localStorage.setItem('mila_last_about_update', new Date().toISOString());
+                        await renderAboutPreview();
+                    } else {
+                        const items = await getGallery();
+                        items.push({
+                            id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+                            data: result,
+                            wide: task.wide,
+                            alt_ru: 'Работа',
+                            alt_de: 'Werk'
+                        });
+                        await setGallery(items);
+                        localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
+                    }
                 }
+            } catch (e) {
+                console.error('Crop task error:', e);
+                alert('Ошибка обработки изображения: ' + e.message);
             }
             setTimeout(function() { processCropQueue(); }, 100);
         }
@@ -1161,6 +1190,12 @@
             if (e.target === cropperModal) closeCropper();
         });
 
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+        });
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e.reason);
+        });
         checkAuth();
     </script>
 </body>
