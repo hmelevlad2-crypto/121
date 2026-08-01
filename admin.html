@@ -33,7 +33,6 @@
             min-height: 100vh;
         }
 
-        /* Login */
         .login-wrap {
             display: flex; align-items: center; justify-content: center;
             min-height: 100vh; padding: 20px;
@@ -44,13 +43,8 @@
             box-shadow: var(--shadow-lg); text-align: center;
             border: 1px solid var(--slate-100);
         }
-        .login-card h1 {
-            font-size: 1.5rem; font-weight: 800; color: var(--slate-900);
-            margin-bottom: 8px; letter-spacing: -0.02em;
-        }
-        .login-card p {
-            font-size: 0.9rem; color: var(--slate-500); margin-bottom: 32px;
-        }
+        .login-card h1 { font-size: 1.5rem; font-weight: 800; color: var(--slate-900); margin-bottom: 8px; letter-spacing: -0.02em; }
+        .login-card p { font-size: 0.9rem; color: var(--slate-500); margin-bottom: 32px; }
         .login-input {
             width: 100%; padding: 14px 18px; font-family: 'Montserrat', sans-serif;
             font-size: 1rem; font-weight: 600; color: var(--slate-800);
@@ -73,7 +67,6 @@
         }
         .login-error.show { opacity: 1; }
 
-        /* Dashboard */
         .dashboard { display: none; }
         .dashboard.open { display: block; }
 
@@ -86,12 +79,8 @@
             max-width: 1100px; margin: 0 auto; padding: 0 28px;
             display: flex; align-items: center; justify-content: space-between;
         }
-        .admin-header-inner h2 {
-            font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em;
-        }
-        .admin-header-actions {
-            display: flex; gap: 12px; align-items: center;
-        }
+        .admin-header-inner h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; }
+        .admin-header-actions { display: flex; gap: 12px; align-items: center; }
         .admin-header-actions a, .admin-header-actions button {
             font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600;
             color: var(--white); text-decoration: none; padding: 8px 16px;
@@ -102,9 +91,7 @@
             background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4);
         }
 
-        .admin-container {
-            max-width: 1100px; margin: 0 auto; padding: 40px 28px;
-        }
+        .admin-container { max-width: 1100px; margin: 0 auto; padding: 40px 28px; }
 
         .admin-section-card {
             background: var(--white); border-radius: var(--r-xl);
@@ -141,10 +128,10 @@
             color: var(--white); box-shadow: 0 4px 16px rgba(249,112,102,0.25);
         }
         .admin-btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(249,112,102,0.35); }
-        .admin-btn-secondary {
-            background: var(--slate-100); color: var(--slate-700);
-        }
+        .admin-btn-secondary { background: var(--slate-100); color: var(--slate-700); }
         .admin-btn-secondary:hover { background: var(--slate-200); }
+        .admin-btn-outline { background: transparent; color: var(--teal-600); border: 2px solid var(--teal-200); }
+        .admin-btn-outline:hover { background: var(--teal-50); border-color: var(--teal-400); }
 
         .admin-check {
             display: flex; align-items: center; gap: 8px;
@@ -197,29 +184,75 @@
         }
 
         .admin-stats {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 16px; margin-bottom: 28px;
         }
         .admin-stat {
             background: var(--white); border-radius: var(--r-lg);
             padding: 24px; border: 1px solid var(--slate-100);
             box-shadow: var(--shadow-sm); text-align: center;
+            transition: var(--t);
         }
+        .admin-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
         .admin-stat-number {
-            font-size: 2rem; font-weight: 800;
+            font-size: 2.2rem; font-weight: 800;
             background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
             -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
             line-height: 1.2;
         }
-        .admin-stat-label { font-size: 0.8rem; color: var(--slate-500); font-weight: 600; margin-top: 4px; }
+        .admin-stat-label { font-size: 0.8rem; color: var(--slate-500); font-weight: 600; margin-top: 6px; }
+        .admin-stat-sublabel { font-size: 0.7rem; color: var(--slate-400); margin-top: 4px; }
 
-        .upload-hint {
-            font-size: 0.8rem; color: var(--slate-400); margin-top: -10px; margin-bottom: 16px;
+        .quick-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 16px; margin-bottom: 28px;
         }
+        .quick-card {
+            background: var(--white); border-radius: var(--r-lg);
+            border: 1px solid var(--slate-100); padding: 24px;
+            box-shadow: var(--shadow-sm); transition: var(--t);
+            text-decoration: none; color: inherit; display: flex;
+            align-items: center; gap: 16px; cursor: pointer;
+        }
+        .quick-card:hover {
+            transform: translateY(-4px); box-shadow: var(--shadow-md);
+            border-color: var(--teal-200);
+        }
+        .quick-icon {
+            width: 48px; height: 48px; border-radius: var(--r-md);
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0; font-size: 1.4rem;
+        }
+        .quick-icon-blue { background: var(--blue-bg); }
+        .quick-icon-purple { background: var(--purple-bg); }
+        .quick-icon-coral { background: var(--coral-bg); }
+        .quick-icon-gold { background: var(--gold-bg); }
+        .quick-text h4 { font-size: 0.95rem; font-weight: 700; color: var(--slate-900); margin-bottom: 2px; }
+        .quick-text p { font-size: 0.78rem; color: var(--slate-500); }
 
-        /* ============================================
-           CROPPER MODAL
-           ============================================ */
+        .activity-list { display: flex; flex-direction: column; gap: 12px; }
+        .activity-item {
+            display: flex; align-items: center; gap: 14px;
+            padding: 14px 18px; background: var(--slate-50);
+            border-radius: var(--r-md); border: 1px solid var(--slate-100);
+            transition: var(--t);
+        }
+        .activity-item:hover { background: var(--teal-50); border-color: var(--teal-100); }
+        .activity-dot {
+            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
+        }
+        .activity-dot.green { background: var(--teal-500); box-shadow: 0 0 8px rgba(20,184,166,0.4); }
+        .activity-dot.blue { background: var(--blue); box-shadow: 0 0 8px rgba(96,165,250,0.4); }
+        .activity-dot.gold { background: var(--gold); box-shadow: 0 0 8px rgba(245,158,11,0.4); }
+        .activity-dot.coral { background: var(--coral); box-shadow: 0 0 8px rgba(249,112,102,0.4); }
+        .activity-text { flex: 1; }
+        .activity-text strong { font-size: 0.85rem; color: var(--slate-800); }
+        .activity-text span { font-size: 0.78rem; color: var(--slate-500); display: block; margin-top: 2px; }
+        .activity-time { font-size: 0.75rem; color: var(--slate-400); font-weight: 600; white-space: nowrap; }
+
+        .upload-hint { font-size: 0.8rem; color: var(--slate-400); margin-top: -10px; margin-bottom: 16px; }
+
+        /* CROPPER */
         .cropper-modal {
             position: fixed; inset: 0; z-index: 3000;
             background: rgba(15,23,42,0.75);
@@ -244,9 +277,7 @@
             display: flex; align-items: center; justify-content: space-between;
             padding: 20px 28px; border-bottom: 1px solid var(--slate-100);
         }
-        .cropper-header h3 {
-            font-size: 1.1rem; font-weight: 700; color: var(--slate-900);
-        }
+        .cropper-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--slate-900); }
         .cropper-close {
             width: 36px; height: 36px; border-radius: 50%; border: none;
             background: var(--slate-100); color: var(--slate-600);
@@ -259,10 +290,7 @@
             padding: 24px 28px; overflow-y: auto;
             display: flex; flex-direction: column; gap: 20px;
         }
-
-        .cropper-aspect {
-            display: flex; gap: 10px; flex-wrap: wrap;
-        }
+        .cropper-aspect { display: flex; gap: 10px; flex-wrap: wrap; }
         .cropper-aspect-btn {
             padding: 8px 16px; border-radius: var(--r-full); border: 2px solid var(--slate-200);
             background: var(--white); font-family: 'Montserrat', sans-serif;
@@ -273,7 +301,6 @@
         .cropper-aspect-btn.active {
             border-color: var(--teal-500); background: var(--teal-50); color: var(--teal-700);
         }
-
         .cropper-canvas-wrap {
             position: relative;
             width: 100%; max-width: 600px; margin: 0 auto;
@@ -282,22 +309,12 @@
             background: var(--slate-900);
             cursor: crosshair;
             touch-action: none;
+            user-select: none;
         }
-        .cropper-canvas-wrap canvas {
-            display: block; width: 100%; height: auto;
-        }
-
-        .cropper-zoom {
-            display: flex; align-items: center; gap: 14px;
-        }
-        .cropper-zoom label {
-            font-size: 0.85rem; font-weight: 700; color: var(--slate-600);
-            white-space: nowrap;
-        }
-        .cropper-zoom input[type="range"] {
-            flex: 1; accent-color: var(--teal-500);
-        }
-
+        .cropper-canvas-wrap canvas { display: block; width: 100%; height: auto; }
+        .cropper-zoom { display: flex; align-items: center; gap: 14px; }
+        .cropper-zoom label { font-size: 0.85rem; font-weight: 700; color: var(--slate-600); white-space: nowrap; }
+        .cropper-zoom input[type="range"] { flex: 1; accent-color: var(--teal-500); }
         .cropper-preview-block {
             background: var(--slate-50); border-radius: var(--r-lg);
             padding: 20px; border: 1px solid var(--slate-100);
@@ -307,151 +324,66 @@
             text-transform: uppercase; letter-spacing: 0.06em;
             margin-bottom: 14px;
         }
-        .cropper-preview-wrap {
-            display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start;
-        }
-        .cropper-preview-item {
-            text-align: center;
-        }
-        .cropper-preview-item span {
-            display: block; font-size: 0.7rem; font-weight: 600;
-            color: var(--slate-400); margin-top: 8px;
-        }
+        .cropper-preview-wrap { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
+        .cropper-preview-item { text-align: center; }
+        .cropper-preview-item span { display: block; font-size: 0.7rem; font-weight: 600; color: var(--slate-400); margin-top: 8px; }
         .cropper-preview-box {
             border-radius: var(--r-md); overflow: hidden;
             border: 2px solid var(--slate-200); background: var(--white);
             box-shadow: var(--shadow-sm);
         }
-        .cropper-preview-box img {
-            width: 100%; height: 100%; object-fit: cover; display: block;
-        }
-        .cropper-preview-normal {
-            width: 120px; height: 120px;
-        }
-        .cropper-preview-wide {
-            width: 200px; height: 100px;
-        }
-        .cropper-preview-about {
-            width: 140px; height: 186px;
-        }
+        .cropper-preview-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .cropper-preview-normal { width: 120px; height: 120px; }
+        .cropper-preview-wide { width: 200px; height: 100px; }
+        .cropper-preview-about { width: 140px; height: 186px; }
+        .cropper-actions { display: flex; gap: 12px; justify-content: flex-end; padding-top: 8px; }
 
-        .cropper-actions {
-            display: flex; gap: 12px; justify-content: flex-end;
-            padding-top: 8px;
-        }
-
-        /* ============================================
-           DARK THEME — Admin Panel
-           ============================================ */
-        body.dark-theme {
-            background: #3C3C3C;
-            color: #f0f0f0;
-        }
-        body.dark-theme .login-card {
-            background: #4a4a4a;
-            border-color: rgba(255,255,255,0.08);
-        }
+        /* DARK THEME */
+        body.dark-theme { background: #3C3C3C; color: #f0f0f0; }
+        body.dark-theme .login-card { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
         body.dark-theme .login-card h1 { color: #ffffff; }
         body.dark-theme .login-card p { color: rgba(255,255,255,0.5); }
-        body.dark-theme .login-input {
-            background: #3C3C3C;
-            border-color: rgba(255,255,255,0.15);
-            color: #f0f0f0;
-        }
-        body.dark-theme .login-input:focus {
-            border-color: var(--teal-400);
-            background: #4a4a4a;
-        }
+        body.dark-theme .login-input { background: #3C3C3C; border-color: rgba(255,255,255,0.15); color: #f0f0f0; }
+        body.dark-theme .login-input:focus { border-color: var(--teal-400); background: #4a4a4a; }
         body.dark-theme .login-error { color: #ff8a80; }
-
-        body.dark-theme .admin-section-card {
-            background: #4a4a4a;
-            border-color: rgba(255,255,255,0.08);
-        }
+        body.dark-theme .admin-section-card { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
         body.dark-theme .admin-section-card h3 { color: #ffffff; }
         body.dark-theme .upload-hint { color: rgba(255,255,255,0.4); }
-        body.dark-theme .admin-preview {
-            border-color: rgba(255,255,255,0.1);
-        }
-        body.dark-theme .admin-preview-empty {
-            color: rgba(255,255,255,0.3);
-        }
-        body.dark-theme .admin-gallery-item {
-            background: #3C3C3C;
-            border-color: rgba(255,255,255,0.08);
-        }
-        body.dark-theme .admin-gallery-item:hover {
-            border-color: var(--teal-400);
-        }
-        body.dark-theme .admin-empty-msg {
-            color: rgba(255,255,255,0.4);
-        }
-        body.dark-theme .admin-stat {
-            background: #4a4a4a;
-            border-color: rgba(255,255,255,0.08);
-        }
-        body.dark-theme .admin-stat-label {
-            color: rgba(255,255,255,0.5);
-        }
-        body.dark-theme .admin-check {
-            color: rgba(255,255,255,0.7);
-        }
-        body.dark-theme .admin-btn-secondary {
-            background: #525252;
-            color: #f0f0f0;
-        }
-        body.dark-theme .admin-btn-secondary:hover {
-            background: #5a5a5a;
-        }
-
-        body.dark-theme .cropper-panel {
-            background: #4a4a4a;
-            border: 1px solid rgba(255,255,255,0.08);
-        }
-        body.dark-theme .cropper-header {
-            border-bottom-color: rgba(255,255,255,0.08);
-        }
+        body.dark-theme .admin-preview { border-color: rgba(255,255,255,0.1); }
+        body.dark-theme .admin-preview-empty { color: rgba(255,255,255,0.3); }
+        body.dark-theme .admin-gallery-item { background: #3C3C3C; border-color: rgba(255,255,255,0.08); }
+        body.dark-theme .admin-gallery-item:hover { border-color: var(--teal-400); }
+        body.dark-theme .admin-empty-msg { color: rgba(255,255,255,0.4); }
+        body.dark-theme .admin-stat { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
+        body.dark-theme .admin-stat-label, body.dark-theme .admin-stat-sublabel { color: rgba(255,255,255,0.5); }
+        body.dark-theme .admin-check { color: rgba(255,255,255,0.7); }
+        body.dark-theme .admin-btn-secondary { background: #525252; color: #f0f0f0; }
+        body.dark-theme .admin-btn-secondary:hover { background: #5a5a5a; }
+        body.dark-theme .admin-btn-outline { color: var(--teal-300); border-color: rgba(255,255,255,0.2); }
+        body.dark-theme .admin-btn-outline:hover { background: rgba(20,184,166,0.15); border-color: var(--teal-400); }
+        body.dark-theme .quick-card { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
+        body.dark-theme .quick-card:hover { border-color: rgba(255,255,255,0.2); }
+        body.dark-theme .quick-text h4 { color: #ffffff; }
+        body.dark-theme .quick-text p { color: rgba(255,255,255,0.5); }
+        body.dark-theme .activity-item { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
+        body.dark-theme .activity-item:hover { background: rgba(20,184,166,0.1); border-color: rgba(20,184,166,0.2); }
+        body.dark-theme .activity-text strong { color: #f0f0f0; }
+        body.dark-theme .activity-text span { color: rgba(255,255,255,0.5); }
+        body.dark-theme .activity-time { color: rgba(255,255,255,0.4); }
+        body.dark-theme .cropper-panel { background: #4a4a4a; border: 1px solid rgba(255,255,255,0.08); }
+        body.dark-theme .cropper-header { border-bottom-color: rgba(255,255,255,0.08); }
         body.dark-theme .cropper-header h3 { color: #ffffff; }
-        body.dark-theme .cropper-close {
-            background: #525252;
-            color: rgba(255,255,255,0.7);
-        }
-        body.dark-theme .cropper-aspect-btn {
-            background: #3C3C3C;
-            border-color: rgba(255,255,255,0.15);
-            color: rgba(255,255,255,0.7);
-        }
-        body.dark-theme .cropper-aspect-btn:hover {
-            border-color: var(--teal-400);
-            color: #fff;
-        }
-        body.dark-theme .cropper-aspect-btn.active {
-            background: rgba(20,184,166,0.2);
-            border-color: var(--teal-400);
-            color: #fff;
-        }
-        body.dark-theme .cropper-canvas-wrap {
-            border-color: rgba(255,255,255,0.15);
-        }
-        body.dark-theme .cropper-zoom label {
-            color: rgba(255,255,255,0.7);
-        }
-        body.dark-theme .cropper-preview-block {
-            background: #3C3C3C;
-            border-color: rgba(255,255,255,0.08);
-        }
-        body.dark-theme .cropper-preview-block p {
-            color: rgba(255,255,255,0.5);
-        }
-        body.dark-theme .cropper-preview-box {
-            background: #4a4a4a;
-            border-color: rgba(255,255,255,0.1);
-        }
-        body.dark-theme .cropper-preview-item span {
-            color: rgba(255,255,255,0.4);
-        }
+        body.dark-theme .cropper-close { background: #525252; color: rgba(255,255,255,0.7); }
+        body.dark-theme .cropper-aspect-btn { background: #3C3C3C; border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
+        body.dark-theme .cropper-aspect-btn:hover { border-color: var(--teal-400); color: #fff; }
+        body.dark-theme .cropper-aspect-btn.active { background: rgba(20,184,166,0.2); border-color: var(--teal-400); color: #fff; }
+        body.dark-theme .cropper-canvas-wrap { border-color: rgba(255,255,255,0.15); }
+        body.dark-theme .cropper-zoom label { color: rgba(255,255,255,0.7); }
+        body.dark-theme .cropper-preview-block { background: #3C3C3C; border-color: rgba(255,255,255,0.08); }
+        body.dark-theme .cropper-preview-block p { color: rgba(255,255,255,0.5); }
+        body.dark-theme .cropper-preview-box { background: #4a4a4a; border-color: rgba(255,255,255,0.1); }
+        body.dark-theme .cropper-preview-item span { color: rgba(255,255,255,0.4); }
 
-        /* Theme toggle */
         .admin-theme-toggle {
             display: flex; align-items: center; justify-content: center;
             width: 36px; height: 36px; border-radius: 50%;
@@ -459,12 +391,8 @@
             color: #fff; cursor: pointer; transition: var(--t);
             position: relative; overflow: hidden;
         }
-        .admin-theme-toggle:hover {
-            background: rgba(255,255,255,0.2); transform: rotate(15deg);
-        }
-        .admin-theme-toggle .sun-icon, .admin-theme-toggle .moon-icon {
-            position: absolute; transition: var(--t);
-        }
+        .admin-theme-toggle:hover { background: rgba(255,255,255,0.2); transform: rotate(15deg); }
+        .admin-theme-toggle .sun-icon, .admin-theme-toggle .moon-icon { position: absolute; transition: var(--t); }
         .admin-theme-toggle .sun-icon { opacity: 1; transform: scale(1); }
         .admin-theme-toggle .moon-icon { opacity: 0; transform: scale(0.5); }
         body.dark-theme .admin-theme-toggle .sun-icon { opacity: 0; transform: scale(0.5); }
@@ -477,6 +405,8 @@
             .admin-section-card { padding: 24px; }
             .admin-upload-row { flex-direction: column; align-items: stretch; }
             .admin-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .admin-stats { grid-template-columns: repeat(2, 1fr); }
+            .quick-grid { grid-template-columns: 1fr; }
             .cropper-panel { max-height: 95vh; }
             .cropper-body { padding: 16px; }
             .cropper-preview-wrap { justify-content: center; }
@@ -485,7 +415,6 @@
 </head>
 <body>
 
-    <!-- LOGIN -->
     <div class="login-wrap" id="loginWrap">
         <div class="login-card">
             <h1>Админ-панель</h1>
@@ -496,7 +425,6 @@
         </div>
     </div>
 
-    <!-- DASHBOARD -->
     <div class="dashboard" id="dashboard">
         <div class="admin-header-bar">
             <div class="admin-header-inner">
@@ -513,19 +441,68 @@
         </div>
 
         <div class="admin-container">
-            <!-- Stats -->
             <div class="admin-stats">
                 <div class="admin-stat">
                     <div class="admin-stat-number" id="statGallery">0</div>
                     <div class="admin-stat-label">Работ в галерее</div>
+                    <div class="admin-stat-sublabel" id="statGallerySub">—</div>
                 </div>
                 <div class="admin-stat">
                     <div class="admin-stat-number" id="statAbout">—</div>
                     <div class="admin-stat-label">Фото художника</div>
+                    <div class="admin-stat-sublabel" id="statAboutSub">—</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-number" id="statViews">0</div>
+                    <div class="admin-stat-label">Просмотров сайта</div>
+                    <div class="admin-stat-sublabel">Всего посещений</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-number" id="statLastLogin">—</div>
+                    <div class="admin-stat-label">Последний вход</div>
+                    <div class="admin-stat-sublabel" id="statLastLoginSub">—</div>
                 </div>
             </div>
 
-            <!-- About Photo -->
+            <div class="admin-section-card">
+                <h3>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+                    Быстрые действия
+                </h3>
+                <div class="quick-grid">
+                    <a href="index.html" class="quick-card">
+                        <div class="quick-icon quick-icon-blue">🌐</div>
+                        <div class="quick-text"><h4>На сайт</h4><p>Перейти на главную страницу</p></div>
+                    </a>
+                    <a href="moreworks.html" class="quick-card">
+                        <div class="quick-icon quick-icon-purple">🖼️</div>
+                        <div class="quick-text"><h4>Все работы</h4><p>Посмотреть полную галерею</p></div>
+                    </a>
+                    <button class="quick-card" id="btnExport" style="border:none;width:100%;">
+                        <div class="quick-icon quick-icon-gold">💾</div>
+                        <div class="quick-text"><h4>Экспорт данных</h4><p>Скачать бэкап JSON</p></div>
+                    </button>
+                    <button class="quick-card" id="btnClearCache" style="border:none;width:100%;">
+                        <div class="quick-icon quick-icon-coral">🗑️</div>
+                        <div class="quick-text"><h4>Очистить кэш</h4><p>Сбросить все данные</p></div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="admin-section-card">
+                <h3>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    Активность
+                </h3>
+                <div class="activity-list" id="activityList">
+                    <div class="activity-item">
+                        <div class="activity-dot green"></div>
+                        <div class="activity-text"><strong>Сайт работает</strong><span>Все системы онлайн</span></div>
+                        <div class="activity-time">Сейчас</div>
+                    </div>
+                </div>
+            </div>
+
             <div class="admin-section-card">
                 <h3>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
@@ -535,13 +512,12 @@
                     <input type="file" id="aboutInput" accept="image/*">
                     <button class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить фото</button>
                 </div>
-                <p class="upload-hint">Выберите файл → откроется редактор обрезки (3:4)</p>
+                <p class="upload-hint">Выберите файл — откроется редактор обрезки (3:4)</p>
                 <div class="admin-preview" id="aboutPreview">
                     <div class="admin-preview-empty">Фото не загружено</div>
                 </div>
             </div>
 
-            <!-- Gallery -->
             <div class="admin-section-card">
                 <h3>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
@@ -554,7 +530,7 @@
                         <span>Широкое (2 колонки)</span>
                     </label>
                 </div>
-                <p class="upload-hint">Выберите файл → откроется редактор обрезки. Можно выбрать несколько.</p>
+                <p class="upload-hint">Выберите файл — откроется редактор обрезки. Можно несколько.</p>
                 <div class="admin-gallery-grid" id="galleryGridAdmin">
                     <div class="admin-empty-msg">Нет загруженных работ</div>
                 </div>
@@ -562,7 +538,6 @@
         </div>
     </div>
 
-    <!-- CROPPER MODAL -->
     <div class="cropper-modal" id="cropperModal">
         <div class="cropper-panel">
             <div class="cropper-header">
@@ -591,12 +566,12 @@
     </div>
 
     <script>
+
         const PASSWORD = '123123';
         const DB_NAME = 'MilaKrauseDB';
         const DB_VERSION = 1;
         let db = null;
 
-        // IndexedDB
         function openDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -655,9 +630,7 @@
             });
         }
 
-        // ============================================
-        // THEME
-        // ============================================
+        // Theme
         function initAdminTheme() {
             const saved = localStorage.getItem('theme');
             if (saved === 'dark') document.body.classList.add('dark-theme');
@@ -670,9 +643,7 @@
         initAdminTheme();
         document.getElementById('adminThemeToggle').addEventListener('click', toggleAdminTheme);
 
-        // ============================================
-        // AUTH
-        // ============================================
+        // Auth
         const loginWrap = document.getElementById('loginWrap');
         const dashboard = document.getElementById('dashboard');
         const loginPass = document.getElementById('loginPass');
@@ -687,10 +658,10 @@
                 initDashboard();
             }
         }
-
         loginBtn.addEventListener('click', () => {
             if (loginPass.value === PASSWORD) {
                 sessionStorage.setItem('admin_auth', 'ok');
+                localStorage.setItem('mila_last_login', new Date().toISOString());
                 loginWrap.style.display = 'none';
                 dashboard.classList.add('open');
                 initDashboard();
@@ -708,24 +679,67 @@
             location.reload();
         });
 
-        // ============================================
-        // DASHBOARD
-        // ============================================
+        // Dashboard
         async function initDashboard() {
             await openDB();
             await renderAboutPreview();
             await renderGalleryAdmin();
             await updateStats();
+            await renderActivity();
+        }
+
+        function formatDate(iso) {
+            if (!iso) return '—';
+            const d = new Date(iso);
+            const now = new Date();
+            const diff = Math.floor((now - d) / 1000);
+            if (diff < 60) return 'только что';
+            if (diff < 3600) return Math.floor(diff / 60) + ' мин. назад';
+            if (diff < 86400) return Math.floor(diff / 3600) + ' ч. назад';
+            return d.toLocaleDateString('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
         }
 
         async function updateStats() {
             const items = await getGallery();
             document.getElementById('statGallery').textContent = items.length;
+            document.getElementById('statGallerySub').textContent = items.length === 0 ? 'Пусто' : (items.length + ' шт.');
+
             const about = await getAboutPhoto();
-            document.getElementById('statAbout').textContent = (about && about.data) ? '✓' : '—';
+            const hasAbout = about && about.data;
+            document.getElementById('statAbout').textContent = hasAbout ? '✓' : '—';
+            document.getElementById('statAboutSub').textContent = hasAbout ? 'Загружено' : 'Нет фото';
+
+            const views = parseInt(localStorage.getItem('mila_page_views') || '0');
+            document.getElementById('statViews').textContent = views.toLocaleString('ru-RU');
+
+            const lastLogin = localStorage.getItem('mila_last_login');
+            document.getElementById('statLastLogin').textContent = formatDate(lastLogin);
+            document.getElementById('statLastLoginSub').textContent = lastLogin ? new Date(lastLogin).toLocaleDateString('ru-RU') : '—';
         }
 
-        // About photo
+        async function renderActivity() {
+            const list = document.getElementById('activityList');
+            const items = [];
+            const lastLogin = localStorage.getItem('mila_last_login');
+            if (lastLogin) {
+                items.push({ dot: 'blue', title: 'Вход в админ-панель', desc: 'Авторизация администратора', time: formatDate(lastLogin) });
+            }
+            const lastGallery = localStorage.getItem('mila_last_gallery_update');
+            if (lastGallery) {
+                items.push({ dot: 'gold', title: 'Обновление галереи', desc: 'Добавлены или удалены работы', time: formatDate(lastGallery) });
+            }
+            const lastAbout = localStorage.getItem('mila_last_about_update');
+            if (lastAbout) {
+                items.push({ dot: 'green', title: 'Обновление фото', desc: 'Изменено фото в разделе «Обо мне»', time: formatDate(lastAbout) });
+            }
+            if (items.length === 0) {
+                list.innerHTML = '<div class="activity-item"><div class="activity-dot green"></div><div class="activity-text"><strong>Сайт работает</strong><span>Пока нет записей об активности</span></div><div class="activity-time">Сейчас</div></div>';
+                return;
+            }
+            list.innerHTML = items.map(it => '<div class="activity-item"><div class="activity-dot ' + it.dot + '"></div><div class="activity-text"><strong>' + it.title + '</strong><span>' + it.desc + '</span></div><div class="activity-time">' + it.time + '</div></div>').join('');
+        }
+
+        // About
         const aboutInput = document.getElementById('aboutInput');
         const aboutDeleteBtn = document.getElementById('aboutDeleteBtn');
         const aboutPreview = document.getElementById('aboutPreview');
@@ -734,23 +748,21 @@
             const file = aboutInput.files[0];
             if (!file) return;
             const dataUrl = await fileToBase64(file);
-            openCropper(dataUrl, 'about');
+            enqueueCrop(dataUrl, 'about');
             aboutInput.value = '';
         });
-
         aboutDeleteBtn.addEventListener('click', async () => {
             if (!confirm('Удалить фото художника?')) return;
             await deleteAboutPhoto();
             await renderAboutPreview();
             await updateStats();
         });
-
         async function renderAboutPreview() {
             const photo = await getAboutPhoto();
             if (photo && photo.data) {
-                aboutPreview.innerHTML = `<img src="${photo.data}" alt="Фото художника">`;
+                aboutPreview.innerHTML = '<img src="' + photo.data + '" alt="Фото художника">';
             } else {
-                aboutPreview.innerHTML = `<div class="admin-preview-empty">Фото не загружено</div>`;
+                aboutPreview.innerHTML = '<div class="admin-preview-empty">Фото не загружено</div>';
             }
         }
 
@@ -762,33 +774,21 @@
         galleryInput.addEventListener('change', async () => {
             const files = Array.from(galleryInput.files);
             if (files.length === 0) return;
-
-            // Обрабатываем по очереди через cropper
             for (const file of files) {
                 const dataUrl = await fileToBase64(file);
-                await openCropperAsync(dataUrl, 'gallery', galleryWide.checked);
+                enqueueCrop(dataUrl, 'gallery', galleryWide.checked);
             }
             galleryInput.value = '';
             galleryWide.checked = false;
-            await renderGalleryAdmin();
-            await updateStats();
         });
 
         async function renderGalleryAdmin() {
             const items = await getGallery();
             if (items.length === 0) {
-                galleryGridAdmin.innerHTML = `<div class="admin-empty-msg">Нет загруженных работ</div>`;
+                galleryGridAdmin.innerHTML = '<div class="admin-empty-msg">Нет загруженных работ</div>';
                 return;
             }
-            galleryGridAdmin.innerHTML = items.map((item, idx) => `
-                <div class="admin-gallery-item">
-                    <img src="${item.data}" alt="">
-                    <div class="admin-gallery-overlay">
-                        <span>#${idx + 1} · ${item.wide ? 'Широкое' : 'Обычное'}</span>
-                        <button onclick="deleteGalleryItem('${item.id}')">Удалить</button>
-                    </div>
-                </div>
-            `).join('');
+            galleryGridAdmin.innerHTML = items.map((item, idx) => '<div class="admin-gallery-item"><img src="' + item.data + '" alt=""><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' · ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button onclick="deleteGalleryItem('' + item.id + '')">Удалить</button></div></div>').join('');
         }
 
         window.deleteGalleryItem = async function(id) {
@@ -796,9 +796,31 @@
             let items = await getGallery();
             items = items.filter(i => i.id !== id);
             await setGallery(items);
+            localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
             await renderGalleryAdmin();
             await updateStats();
+            await renderActivity();
         };
+
+        // Export / Clear
+        document.getElementById('btnExport').addEventListener('click', async () => {
+            const gallery = await getGallery();
+            const about = await getAboutPhoto();
+            const data = { gallery, about, exportedAt: new Date().toISOString() };
+            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'mila-krause-backup-' + new Date().toISOString().slice(0,10) + '.json';
+            a.click();
+            URL.revokeObjectURL(url);
+        });
+        document.getElementById('btnClearCache').addEventListener('click', () => {
+            if (!confirm('ВНИМАНИЕ: Это удалит ВСЕ фото, настройки и статистику. Продолжить?')) return;
+            localStorage.clear();
+            indexedDB.deleteDatabase(DB_NAME);
+            location.reload();
+        });
 
         // ============================================
         // CROPPER
@@ -813,13 +835,15 @@
         const cropperCancel = document.getElementById('cropperCancel');
         const cropperClose = document.getElementById('cropperClose');
 
+        let cropQueue = [];
+        let isCropping = false;
         let cropImage = null;
         let cropScale = 1;
         let cropX = 0, cropY = 0;
         let cropW = 0, cropH = 0;
-        let cropMode = 'gallery'; // 'about' | 'gallery'
+        let cropMode = 'gallery';
         let cropWide = false;
-        let cropAspect = 1; // width/height
+        let cropAspect = 1;
         let cropResolve = null;
 
         const ASPECT_PRESETS = {
@@ -828,33 +852,69 @@
             wide: { label: '2:1 Широкое', ratio: 2 },
         };
 
-        function openCropper(dataUrl, mode, wide = false) {
-            return new Promise((resolve) => {
+        function enqueueCrop(dataUrl, mode, wide) {
+            cropQueue.push({ dataUrl: dataUrl, mode: mode, wide: wide });
+            if (!isCropping) processCropQueue();
+        }
+
+        async function processCropQueue() {
+            if (cropQueue.length === 0) {
+                isCropping = false;
+                await renderGalleryAdmin();
+                await updateStats();
+                await renderActivity();
+                return;
+            }
+            isCropping = true;
+            const task = cropQueue.shift();
+            const result = await openCropper(task.dataUrl, task.mode, task.wide);
+            if (result) {
+                if (task.mode === 'about') {
+                    await setAboutPhoto({ data: result, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+                    localStorage.setItem('mila_last_about_update', new Date().toISOString());
+                    await renderAboutPreview();
+                } else {
+                    const items = await getGallery();
+                    items.push({
+                        id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+                        data: result,
+                        wide: task.wide,
+                        alt_ru: 'Работа',
+                        alt_de: 'Werk'
+                    });
+                    await setGallery(items);
+                    localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
+                }
+            }
+            setTimeout(function() { processCropQueue(); }, 100);
+        }
+
+        function openCropper(dataUrl, mode, wide) {
+            return new Promise(function(resolve) {
                 cropResolve = resolve;
                 cropMode = mode;
                 cropWide = wide;
                 cropScale = 1;
-                cropZoom.value = '1';
+                cropperZoom.value = '1';
 
-                // Определяем aspect ratio
                 if (mode === 'about') {
                     cropAspect = ASPECT_PRESETS.about.ratio;
                 } else {
                     cropAspect = wide ? ASPECT_PRESETS.wide.ratio : ASPECT_PRESETS.gallery.ratio;
                 }
 
-                // Создаём кнопки aspect ratio
                 cropperAspect.innerHTML = '';
-                const presets = mode === 'about'
+                var presets = mode === 'about'
                     ? [ASPECT_PRESETS.about]
                     : [ASPECT_PRESETS.gallery, ASPECT_PRESETS.wide];
 
-                presets.forEach((p, i) => {
-                    const btn = document.createElement('button');
-                    btn.className = 'cropper-aspect-btn' + (i === (mode === 'about' ? 0 : (wide ? 1 : 0)) ? ' active' : '');
+                presets.forEach(function(p, i) {
+                    var btn = document.createElement('button');
+                    var isActive = i === (mode === 'about' ? 0 : (wide ? 1 : 0));
+                    btn.className = 'cropper-aspect-btn' + (isActive ? ' active' : '');
                     btn.textContent = p.label;
-                    btn.addEventListener('click', () => {
-                        document.querySelectorAll('.cropper-aspect-btn').forEach(b => b.classList.remove('active'));
+                    btn.addEventListener('click', function() {
+                        document.querySelectorAll('.cropper-aspect-btn').forEach(function(b) { b.classList.remove('active'); });
                         btn.classList.add('active');
                         cropAspect = p.ratio;
                         initCropSelection();
@@ -865,51 +925,41 @@
                 });
 
                 cropImage = new Image();
-                cropImage.onload = () => {
+                cropImage.onload = function() {
                     initCropperCanvas();
                     initCropSelection();
                     drawCropper();
                     updatePreview();
                     cropperModal.classList.add('open');
                 };
+                cropImage.onerror = function() {
+                    alert('Ошибка загрузки изображения');
+                    resolve(null);
+                };
                 cropImage.src = dataUrl;
             });
         }
 
-        async function openCropperAsync(dataUrl, mode, wide = false) {
-            return new Promise((resolve) => {
-                const result = openCropper(dataUrl, mode, wide);
-                // Перехватываем resolve через cropResolve
-                const originalResolve = cropResolve;
-                cropResolve = (croppedData) => {
-                    if (originalResolve) originalResolve(croppedData);
-                    resolve(croppedData);
-                };
-            });
-        }
-
         function initCropperCanvas() {
-            const wrap = document.getElementById('cropperCanvasWrap');
-            const maxW = Math.min(wrap.clientWidth || 600, 600);
-            const scale = maxW / cropImage.naturalWidth;
-            cropperCanvas.width = maxW;
-            cropperCanvas.height = cropImage.naturalHeight * scale;
+            var maxW = 700, maxH = 550;
+            var w = cropImage.naturalWidth;
+            var h = cropImage.naturalHeight;
+            var scale = Math.min(maxW / w, maxH / h, 1);
+            cropperCanvas.width = Math.round(w * scale);
+            cropperCanvas.height = Math.round(h * scale);
         }
 
         function initCropSelection() {
-            const cw = cropperCanvas.width;
-            const ch = cropperCanvas.height;
-
-            // Максимальный размер выделения
-            let w, h;
+            var cw = cropperCanvas.width;
+            var ch = cropperCanvas.height;
+            var w, h;
             if (cw / ch > cropAspect) {
-                h = ch * 0.7;
+                h = Math.min(ch * 0.7, ch - 20);
                 w = h * cropAspect;
             } else {
-                w = cw * 0.7;
+                w = Math.min(cw * 0.7, cw - 20);
                 h = w / cropAspect;
             }
-
             cropW = w;
             cropH = h;
             cropX = (cw - w) / 2;
@@ -917,208 +967,153 @@
         }
 
         function drawCropper() {
-            const cw = cropperCanvas.width;
-            const ch = cropperCanvas.height;
-
-            // Очищаем
+            var cw = cropperCanvas.width;
+            var ch = cropperCanvas.height;
             cropperCtx.clearRect(0, 0, cw, ch);
 
-            // Рисуем изображение с масштабом
-            const imgW = cw * cropScale;
-            const imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
-            const offsetX = (cw - imgW) / 2;
-            const offsetY = (ch - imgH) / 2;
+            var imgW = cw * cropScale;
+            var imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
+            var offsetX = (cw - imgW) / 2;
+            var offsetY = (ch - imgH) / 2;
 
             cropperCtx.drawImage(cropImage, offsetX, offsetY, imgW, imgH);
 
-            // Рисуем затемнение
             cropperCtx.fillStyle = 'rgba(0,0,0,0.55)';
             cropperCtx.fillRect(0, 0, cw, ch);
-
-            // Вырезаем область
             cropperCtx.clearRect(cropX, cropY, cropW, cropH);
 
-            // Рамка выделения
             cropperCtx.strokeStyle = '#14b8a6';
             cropperCtx.lineWidth = 2;
             cropperCtx.strokeRect(cropX, cropY, cropW, cropH);
 
-            // Уголки
-            const corner = 12;
+            var corner = 12;
             cropperCtx.strokeStyle = '#fff';
             cropperCtx.lineWidth = 3;
-            // TL
             cropperCtx.beginPath(); cropperCtx.moveTo(cropX, cropY + corner); cropperCtx.lineTo(cropX, cropY); cropperCtx.lineTo(cropX + corner, cropY); cropperCtx.stroke();
-            // TR
             cropperCtx.beginPath(); cropperCtx.moveTo(cropX + cropW - corner, cropY); cropperCtx.lineTo(cropX + cropW, cropY); cropperCtx.lineTo(cropX + cropW, cropY + corner); cropperCtx.stroke();
-            // BL
             cropperCtx.beginPath(); cropperCtx.moveTo(cropX, cropY + cropH - corner); cropperCtx.lineTo(cropX, cropY + cropH); cropperCtx.lineTo(cropX + corner, cropY + cropH); cropperCtx.stroke();
-            // BR
             cropperCtx.beginPath(); cropperCtx.moveTo(cropX + cropW - corner, cropY + cropH); cropperCtx.lineTo(cropX + cropW, cropY + cropH); cropperCtx.lineTo(cropX + cropW, cropY + cropH - corner); cropperCtx.stroke();
         }
 
         function getCroppedData() {
-            const cw = cropperCanvas.width;
-            const ch = cropperCanvas.height;
-            const imgW = cw * cropScale;
-            const imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
-            const offsetX = (cw - imgW) / 2;
-            const offsetY = (ch - imgH) / 2;
+            var cw = cropperCanvas.width;
+            var ch = cropperCanvas.height;
+            var imgW = cw * cropScale;
+            var imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
+            var offsetX = (cw - imgW) / 2;
+            var offsetY = (ch - imgH) / 2;
 
-            // Координаты обрезки относительно оригинала
-            const scaleX = cropImage.naturalWidth / imgW;
-            const scaleY = cropImage.naturalHeight / imgH;
+            var scaleX = cropImage.naturalWidth / imgW;
+            var scaleY = cropImage.naturalHeight / imgH;
 
-            const sx = (cropX - offsetX) * scaleX;
-            const sy = (cropY - offsetY) * scaleY;
-            const sw = cropW * scaleX;
-            const sh = cropH * scaleY;
+            var sx = Math.max(0, (cropX - offsetX) * scaleX);
+            var sy = Math.max(0, (cropY - offsetY) * scaleY);
+            var sw = Math.min(cropW * scaleX, cropImage.naturalWidth - sx);
+            var sh = Math.min(cropH * scaleY, cropImage.naturalHeight - sy);
 
-            // Создаём canvas для результата
-            const out = document.createElement('canvas');
-            out.width = sw;
-            out.height = sh;
-            const ctx = out.getContext('2d');
-            ctx.drawImage(cropImage, sx, sy, sw, sh, 0, 0, sw, sh);
+            var out = document.createElement('canvas');
+            out.width = Math.round(sw);
+            out.height = Math.round(sh);
+            var ctx = out.getContext('2d');
+            ctx.drawImage(cropImage, sx, sy, sw, sh, 0, 0, out.width, out.height);
             return out.toDataURL('image/jpeg', 0.92);
         }
 
         function updatePreview() {
-            const data = getCroppedData();
-            cropperPreviewWrap.innerHTML = '';
-
-            if (cropMode === 'about') {
-                cropperPreviewWrap.innerHTML = `
-                    <div class="cropper-preview-item">
-                        <div class="cropper-preview-box cropper-preview-about">
-                            <img src="${data}" alt="preview">
-                        </div>
-                        <span>Раздел «Обо мне»</span>
-                    </div>
-                `;
-            } else {
-                cropperPreviewWrap.innerHTML = `
-                    <div class="cropper-preview-item">
-                        <div class="cropper-preview-box cropper-preview-normal">
-                            <img src="${data}" alt="preview">
-                        </div>
-                        <span>Обычная ячейка</span>
-                    </div>
-                    <div class="cropper-preview-item">
-                        <div class="cropper-preview-box cropper-preview-wide">
-                            <img src="${data}" alt="preview">
-                        </div>
-                        <span>Широкая ячейка</span>
-                    </div>
-                `;
-            }
+            try {
+                var data = getCroppedData();
+                cropperPreviewWrap.innerHTML = '';
+                if (cropMode === 'about') {
+                    cropperPreviewWrap.innerHTML = '<div class="cropper-preview-item"><div class="cropper-preview-box cropper-preview-about"><img src="' + data + '" alt="preview"></div><span>Раздел «Обо мне»</span></div>';
+                } else {
+                    cropperPreviewWrap.innerHTML = '<div class="cropper-preview-item"><div class="cropper-preview-box cropper-preview-normal"><img src="' + data + '" alt="preview"></div><span>Обычная ячейка</span></div><div class="cropper-preview-item"><div class="cropper-preview-box cropper-preview-wide"><img src="' + data + '" alt="preview"></div><span>Широкая ячейка</span></div>';
+                }
+            } catch(e) { console.warn('Preview error', e); }
         }
 
-        // Zoom
-        cropperZoom.addEventListener('input', () => {
+        cropperZoom.addEventListener('input', function() {
             cropScale = parseFloat(cropperZoom.value);
             drawCropper();
-            updatePreview();
         });
+        cropperZoom.addEventListener('change', updatePreview);
 
-        // Drag selection
-        let isDragging = false;
-        let dragStartX = 0, dragStartY = 0;
-        let dragStartCropX = 0, dragStartCropY = 0;
+        var isDragging = false;
+        var dragStartX = 0, dragStartY = 0;
+        var dragStartCropX = 0, dragStartCropY = 0;
 
-        cropperCanvas.addEventListener('mousedown', (e) => {
-            const rect = cropperCanvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (cropperCanvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (cropperCanvas.height / rect.height);
+        function getPointerPos(e) {
+            var rect = cropperCanvas.getBoundingClientRect();
+            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+            return {
+                x: (clientX - rect.left) * (cropperCanvas.width / rect.width),
+                y: (clientY - rect.top) * (cropperCanvas.height / rect.height)
+            };
+        }
 
-            if (x >= cropX && x <= cropX + cropW && y >= cropY && y <= cropY + cropH) {
+        cropperCanvas.addEventListener('mousedown', function(e) {
+            var pos = getPointerPos(e);
+            if (pos.x >= cropX && pos.x <= cropX + cropW && pos.y >= cropY && pos.y <= cropY + cropH) {
                 isDragging = true;
-                dragStartX = x;
-                dragStartY = y;
+                dragStartX = pos.x;
+                dragStartY = pos.y;
                 dragStartCropX = cropX;
                 dragStartCropY = cropY;
                 cropperCanvas.style.cursor = 'grabbing';
             }
         });
 
-        window.addEventListener('mousemove', (e) => {
+        function onMove(e) {
             if (!isDragging) return;
-            const rect = cropperCanvas.getBoundingClientRect();
-            const x = (e.clientX - rect.left) * (cropperCanvas.width / rect.width);
-            const y = (e.clientY - rect.top) * (cropperCanvas.height / rect.height);
-
-            let nx = dragStartCropX + (x - dragStartX);
-            let ny = dragStartCropY + (y - dragStartY);
-
-            // Ограничения
+            e.preventDefault();
+            var pos = getPointerPos(e);
+            var nx = dragStartCropX + (pos.x - dragStartX);
+            var ny = dragStartCropY + (pos.y - dragStartY);
             nx = Math.max(0, Math.min(nx, cropperCanvas.width - cropW));
             ny = Math.max(0, Math.min(ny, cropperCanvas.height - cropH));
-
             cropX = nx;
             cropY = ny;
             drawCropper();
-            updatePreview();
-        });
+        }
 
-        window.addEventListener('mouseup', () => {
+        function onUp() {
+            if (!isDragging) return;
             isDragging = false;
             cropperCanvas.style.cursor = 'crosshair';
-        });
+            updatePreview();
+        }
 
-        // Touch support
-        cropperCanvas.addEventListener('touchstart', (e) => {
-            const touch = e.touches[0];
-            const rect = cropperCanvas.getBoundingClientRect();
-            const x = (touch.clientX - rect.left) * (cropperCanvas.width / rect.width);
-            const y = (touch.clientY - rect.top) * (cropperCanvas.height / rect.height);
-            if (x >= cropX && x <= cropX + cropW && y >= cropY && y <= cropY + cropH) {
+        window.addEventListener('mousemove', onMove);
+        window.addEventListener('mouseup', onUp);
+
+        cropperCanvas.addEventListener('touchstart', function(e) {
+            var pos = getPointerPos(e);
+            if (pos.x >= cropX && pos.x <= cropX + cropW && pos.y >= cropY && pos.y <= cropY + cropH) {
                 isDragging = true;
-                dragStartX = x;
-                dragStartY = y;
+                dragStartX = pos.x;
+                dragStartY = pos.y;
                 dragStartCropX = cropX;
                 dragStartCropY = cropY;
             }
         }, { passive: false });
 
-        window.addEventListener('touchmove', (e) => {
+        window.addEventListener('touchmove', function(e) {
             if (!isDragging) return;
             e.preventDefault();
-            const touch = e.touches[0];
-            const rect = cropperCanvas.getBoundingClientRect();
-            const x = (touch.clientX - rect.left) * (cropperCanvas.width / rect.width);
-            const y = (touch.clientY - rect.top) * (cropperCanvas.height / rect.height);
-            let nx = dragStartCropX + (x - dragStartX);
-            let ny = dragStartCropY + (y - dragStartY);
+            var pos = getPointerPos(e);
+            var nx = dragStartCropX + (pos.x - dragStartX);
+            var ny = dragStartCropY + (pos.y - dragStartY);
             nx = Math.max(0, Math.min(nx, cropperCanvas.width - cropW));
             ny = Math.max(0, Math.min(ny, cropperCanvas.height - cropH));
-            cropX = nx; cropY = ny;
+            cropX = nx;
+            cropY = ny;
             drawCropper();
-            updatePreview();
         }, { passive: false });
+        window.addEventListener('touchend', onUp);
 
-        window.addEventListener('touchend', () => { isDragging = false; });
-
-        // Apply / Cancel
-        cropperApply.addEventListener('click', async () => {
-            const croppedData = getCroppedData();
+        cropperApply.addEventListener('click', function() {
+            var croppedData = getCroppedData();
             cropperModal.classList.remove('open');
-
-            if (cropMode === 'about') {
-                await setAboutPhoto({ data: croppedData, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
-                await renderAboutPreview();
-                await updateStats();
-            } else {
-                const items = await getGallery();
-                items.push({
-                    id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                    data: croppedData,
-                    wide: cropWide,
-                    alt_ru: 'Работа',
-                    alt_de: 'Werk'
-                });
-                await setGallery(items);
-            }
-
             if (cropResolve) cropResolve(croppedData);
             cropResolve = null;
         });
@@ -1131,11 +1126,10 @@
 
         cropperCancel.addEventListener('click', closeCropper);
         cropperClose.addEventListener('click', closeCropper);
-        cropperModal.addEventListener('click', (e) => {
+        cropperModal.addEventListener('click', function(e) {
             if (e.target === cropperModal) closeCropper();
         });
 
-        // Init
         checkAuth();
     </script>
 </body>
