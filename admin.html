@@ -217,13 +217,127 @@
             font-size: 0.8rem; color: var(--slate-400); margin-top: -10px; margin-bottom: 16px;
         }
 
-        @media (max-width: 640px) {
-            .login-card { padding: 32px 24px; }
-            .admin-header-inner { flex-direction: column; gap: 12px; text-align: center; }
-            .admin-container { padding: 24px 16px; }
-            .admin-section-card { padding: 24px; }
-            .admin-upload-row { flex-direction: column; align-items: stretch; }
-            .admin-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        /* ============================================
+           CROPPER MODAL
+           ============================================ */
+        .cropper-modal {
+            position: fixed; inset: 0; z-index: 3000;
+            background: rgba(15,23,42,0.75);
+            backdrop-filter: blur(12px);
+            display: none; align-items: center; justify-content: center;
+            padding: 20px;
+        }
+        .cropper-modal.open { display: flex; }
+        .cropper-panel {
+            background: var(--white); border-radius: var(--r-xl);
+            width: 100%; max-width: 720px;
+            max-height: 92vh; overflow: hidden;
+            display: flex; flex-direction: column;
+            box-shadow: var(--shadow-lg);
+            animation: cropperIn 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        @keyframes cropperIn {
+            from { opacity: 0; transform: translateY(20px) scale(0.96); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .cropper-header {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 20px 28px; border-bottom: 1px solid var(--slate-100);
+        }
+        .cropper-header h3 {
+            font-size: 1.1rem; font-weight: 700; color: var(--slate-900);
+        }
+        .cropper-close {
+            width: 36px; height: 36px; border-radius: 50%; border: none;
+            background: var(--slate-100); color: var(--slate-600);
+            font-size: 1.4rem; cursor: pointer; transition: var(--t);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .cropper-close:hover { background: var(--coral); color: #fff; }
+
+        .cropper-body {
+            padding: 24px 28px; overflow-y: auto;
+            display: flex; flex-direction: column; gap: 20px;
+        }
+
+        .cropper-aspect {
+            display: flex; gap: 10px; flex-wrap: wrap;
+        }
+        .cropper-aspect-btn {
+            padding: 8px 16px; border-radius: var(--r-full); border: 2px solid var(--slate-200);
+            background: var(--white); font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 700; color: var(--slate-600);
+            cursor: pointer; transition: var(--t);
+        }
+        .cropper-aspect-btn:hover { border-color: var(--teal-300); color: var(--teal-600); }
+        .cropper-aspect-btn.active {
+            border-color: var(--teal-500); background: var(--teal-50); color: var(--teal-700);
+        }
+
+        .cropper-canvas-wrap {
+            position: relative;
+            width: 100%; max-width: 600px; margin: 0 auto;
+            border-radius: var(--r-md); overflow: hidden;
+            border: 2px solid var(--slate-200);
+            background: var(--slate-900);
+            cursor: crosshair;
+            touch-action: none;
+        }
+        .cropper-canvas-wrap canvas {
+            display: block; width: 100%; height: auto;
+        }
+
+        .cropper-zoom {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .cropper-zoom label {
+            font-size: 0.85rem; font-weight: 700; color: var(--slate-600);
+            white-space: nowrap;
+        }
+        .cropper-zoom input[type="range"] {
+            flex: 1; accent-color: var(--teal-500);
+        }
+
+        .cropper-preview-block {
+            background: var(--slate-50); border-radius: var(--r-lg);
+            padding: 20px; border: 1px solid var(--slate-100);
+        }
+        .cropper-preview-block p {
+            font-size: 0.8rem; font-weight: 700; color: var(--slate-500);
+            text-transform: uppercase; letter-spacing: 0.06em;
+            margin-bottom: 14px;
+        }
+        .cropper-preview-wrap {
+            display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start;
+        }
+        .cropper-preview-item {
+            text-align: center;
+        }
+        .cropper-preview-item span {
+            display: block; font-size: 0.7rem; font-weight: 600;
+            color: var(--slate-400); margin-top: 8px;
+        }
+        .cropper-preview-box {
+            border-radius: var(--r-md); overflow: hidden;
+            border: 2px solid var(--slate-200); background: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+        .cropper-preview-box img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+        }
+        .cropper-preview-normal {
+            width: 120px; height: 120px;
+        }
+        .cropper-preview-wide {
+            width: 200px; height: 100px;
+        }
+        .cropper-preview-about {
+            width: 140px; height: 186px;
+        }
+
+        .cropper-actions {
+            display: flex; gap: 12px; justify-content: flex-end;
+            padding-top: 8px;
         }
 
         /* ============================================
@@ -290,35 +404,83 @@
             background: #5a5a5a;
         }
 
-        /* Theme toggle in admin */
-        .admin-theme-toggle {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.1);
-            border: 1px solid rgba(255,255,255,0.2);
+        body.dark-theme .cropper-panel {
+            background: #4a4a4a;
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        body.dark-theme .cropper-header {
+            border-bottom-color: rgba(255,255,255,0.08);
+        }
+        body.dark-theme .cropper-header h3 { color: #ffffff; }
+        body.dark-theme .cropper-close {
+            background: #525252;
+            color: rgba(255,255,255,0.7);
+        }
+        body.dark-theme .cropper-aspect-btn {
+            background: #3C3C3C;
+            border-color: rgba(255,255,255,0.15);
+            color: rgba(255,255,255,0.7);
+        }
+        body.dark-theme .cropper-aspect-btn:hover {
+            border-color: var(--teal-400);
             color: #fff;
-            cursor: pointer;
-            transition: var(--t);
-            position: relative;
-            overflow: hidden;
+        }
+        body.dark-theme .cropper-aspect-btn.active {
+            background: rgba(20,184,166,0.2);
+            border-color: var(--teal-400);
+            color: #fff;
+        }
+        body.dark-theme .cropper-canvas-wrap {
+            border-color: rgba(255,255,255,0.15);
+        }
+        body.dark-theme .cropper-zoom label {
+            color: rgba(255,255,255,0.7);
+        }
+        body.dark-theme .cropper-preview-block {
+            background: #3C3C3C;
+            border-color: rgba(255,255,255,0.08);
+        }
+        body.dark-theme .cropper-preview-block p {
+            color: rgba(255,255,255,0.5);
+        }
+        body.dark-theme .cropper-preview-box {
+            background: #4a4a4a;
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-theme .cropper-preview-item span {
+            color: rgba(255,255,255,0.4);
+        }
+
+        /* Theme toggle */
+        .admin-theme-toggle {
+            display: flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
+            color: #fff; cursor: pointer; transition: var(--t);
+            position: relative; overflow: hidden;
         }
         .admin-theme-toggle:hover {
-            background: rgba(255,255,255,0.2);
-            transform: rotate(15deg);
+            background: rgba(255,255,255,0.2); transform: rotate(15deg);
         }
-        .admin-theme-toggle .sun-icon,
-        .admin-theme-toggle .moon-icon {
-            position: absolute;
-            transition: var(--t);
+        .admin-theme-toggle .sun-icon, .admin-theme-toggle .moon-icon {
+            position: absolute; transition: var(--t);
         }
         .admin-theme-toggle .sun-icon { opacity: 1; transform: scale(1); }
         .admin-theme-toggle .moon-icon { opacity: 0; transform: scale(0.5); }
         body.dark-theme .admin-theme-toggle .sun-icon { opacity: 0; transform: scale(0.5); }
         body.dark-theme .admin-theme-toggle .moon-icon { opacity: 1; transform: scale(1); }
+
+        @media (max-width: 640px) {
+            .login-card { padding: 32px 24px; }
+            .admin-header-inner { flex-direction: column; gap: 12px; text-align: center; }
+            .admin-container { padding: 24px 16px; }
+            .admin-section-card { padding: 24px; }
+            .admin-upload-row { flex-direction: column; align-items: stretch; }
+            .admin-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+            .cropper-panel { max-height: 95vh; }
+            .cropper-body { padding: 16px; }
+            .cropper-preview-wrap { justify-content: center; }
+        }
     </style>
 </head>
 <body>
@@ -373,7 +535,7 @@
                     <input type="file" id="aboutInput" accept="image/*">
                     <button class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить фото</button>
                 </div>
-                <p class="upload-hint">Выберите файл — фото загрузится автоматически</p>
+                <p class="upload-hint">Выберите файл → откроется редактор обрезки (3:4)</p>
                 <div class="admin-preview" id="aboutPreview">
                     <div class="admin-preview-empty">Фото не загружено</div>
                 </div>
@@ -392,9 +554,37 @@
                         <span>Широкое (2 колонки)</span>
                     </label>
                 </div>
-                <p class="upload-hint">Можно выбрать сразу несколько файлов — все загрузятся автоматически</p>
+                <p class="upload-hint">Выберите файл → откроется редактор обрезки. Можно выбрать несколько.</p>
                 <div class="admin-gallery-grid" id="galleryGridAdmin">
                     <div class="admin-empty-msg">Нет загруженных работ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CROPPER MODAL -->
+    <div class="cropper-modal" id="cropperModal">
+        <div class="cropper-panel">
+            <div class="cropper-header">
+                <h3>✂️ Обрезка фото</h3>
+                <button class="cropper-close" id="cropperClose">×</button>
+            </div>
+            <div class="cropper-body">
+                <div class="cropper-aspect" id="cropperAspect"></div>
+                <div class="cropper-canvas-wrap" id="cropperCanvasWrap">
+                    <canvas id="cropperCanvas"></canvas>
+                </div>
+                <div class="cropper-zoom">
+                    <label>🔍 Масштаб</label>
+                    <input type="range" id="cropperZoom" min="0.5" max="3" step="0.01" value="1">
+                </div>
+                <div class="cropper-preview-block">
+                    <p>👁 Предпросмотр на сайте</p>
+                    <div class="cropper-preview-wrap" id="cropperPreviewWrap"></div>
+                </div>
+                <div class="cropper-actions">
+                    <button class="admin-btn admin-btn-secondary" id="cropperCancel">Отмена</button>
+                    <button class="admin-btn admin-btn-primary" id="cropperApply">✅ Обрезать и загрузить</button>
                 </div>
             </div>
         </div>
@@ -465,7 +655,9 @@
             });
         }
 
-        // Theme sync
+        // ============================================
+        // THEME
+        // ============================================
         function initAdminTheme() {
             const saved = localStorage.getItem('theme');
             if (saved === 'dark') document.body.classList.add('dark-theme');
@@ -476,10 +668,11 @@
             localStorage.setItem('theme', isDark ? 'dark' : 'light');
         }
         initAdminTheme();
-
         document.getElementById('adminThemeToggle').addEventListener('click', toggleAdminTheme);
 
-        // Auth
+        // ============================================
+        // AUTH
+        // ============================================
         const loginWrap = document.getElementById('loginWrap');
         const dashboard = document.getElementById('dashboard');
         const loginPass = document.getElementById('loginPass');
@@ -507,17 +700,17 @@
                 loginPass.focus();
             }
         });
-
         loginPass.addEventListener('keydown', (e) => {
             if (e.key === 'Enter') loginBtn.click();
         });
-
         logoutBtn.addEventListener('click', () => {
             sessionStorage.removeItem('admin_auth');
             location.reload();
         });
 
-        // Dashboard
+        // ============================================
+        // DASHBOARD
+        // ============================================
         async function initDashboard() {
             await openDB();
             await renderAboutPreview();
@@ -532,7 +725,7 @@
             document.getElementById('statAbout').textContent = (about && about.data) ? '✓' : '—';
         }
 
-        // About photo — автозагрузка
+        // About photo
         const aboutInput = document.getElementById('aboutInput');
         const aboutDeleteBtn = document.getElementById('aboutDeleteBtn');
         const aboutPreview = document.getElementById('aboutPreview');
@@ -540,11 +733,9 @@
         aboutInput.addEventListener('change', async () => {
             const file = aboutInput.files[0];
             if (!file) return;
-            const data = await fileToBase64(file);
-            await setAboutPhoto({ data, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+            const dataUrl = await fileToBase64(file);
+            openCropper(dataUrl, 'about');
             aboutInput.value = '';
-            await renderAboutPreview();
-            await updateStats();
         });
 
         aboutDeleteBtn.addEventListener('click', async () => {
@@ -563,7 +754,7 @@
             }
         }
 
-        // Gallery — автозагрузка нескольких файлов
+        // Gallery
         const galleryInput = document.getElementById('galleryInput');
         const galleryWide = document.getElementById('galleryWide');
         const galleryGridAdmin = document.getElementById('galleryGridAdmin');
@@ -572,21 +763,11 @@
             const files = Array.from(galleryInput.files);
             if (files.length === 0) return;
 
-            const wide = galleryWide.checked;
-            const items = await getGallery();
-
+            // Обрабатываем по очереди через cropper
             for (const file of files) {
-                const data = await fileToBase64(file);
-                items.push({
-                    id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                    data,
-                    wide,
-                    alt_ru: 'Работа',
-                    alt_de: 'Werk'
-                });
+                const dataUrl = await fileToBase64(file);
+                await openCropperAsync(dataUrl, 'gallery', galleryWide.checked);
             }
-
-            await setGallery(items);
             galleryInput.value = '';
             galleryWide.checked = false;
             await renderGalleryAdmin();
@@ -618,6 +799,341 @@
             await renderGalleryAdmin();
             await updateStats();
         };
+
+        // ============================================
+        // CROPPER
+        // ============================================
+        const cropperModal = document.getElementById('cropperModal');
+        const cropperCanvas = document.getElementById('cropperCanvas');
+        const cropperCtx = cropperCanvas.getContext('2d');
+        const cropperZoom = document.getElementById('cropperZoom');
+        const cropperAspect = document.getElementById('cropperAspect');
+        const cropperPreviewWrap = document.getElementById('cropperPreviewWrap');
+        const cropperApply = document.getElementById('cropperApply');
+        const cropperCancel = document.getElementById('cropperCancel');
+        const cropperClose = document.getElementById('cropperClose');
+
+        let cropImage = null;
+        let cropScale = 1;
+        let cropX = 0, cropY = 0;
+        let cropW = 0, cropH = 0;
+        let cropMode = 'gallery'; // 'about' | 'gallery'
+        let cropWide = false;
+        let cropAspect = 1; // width/height
+        let cropResolve = null;
+
+        const ASPECT_PRESETS = {
+            about: { label: '3:4 Портрет', ratio: 3/4 },
+            gallery: { label: '1:1 Обычное', ratio: 1 },
+            wide: { label: '2:1 Широкое', ratio: 2 },
+        };
+
+        function openCropper(dataUrl, mode, wide = false) {
+            return new Promise((resolve) => {
+                cropResolve = resolve;
+                cropMode = mode;
+                cropWide = wide;
+                cropScale = 1;
+                cropZoom.value = '1';
+
+                // Определяем aspect ratio
+                if (mode === 'about') {
+                    cropAspect = ASPECT_PRESETS.about.ratio;
+                } else {
+                    cropAspect = wide ? ASPECT_PRESETS.wide.ratio : ASPECT_PRESETS.gallery.ratio;
+                }
+
+                // Создаём кнопки aspect ratio
+                cropperAspect.innerHTML = '';
+                const presets = mode === 'about'
+                    ? [ASPECT_PRESETS.about]
+                    : [ASPECT_PRESETS.gallery, ASPECT_PRESETS.wide];
+
+                presets.forEach((p, i) => {
+                    const btn = document.createElement('button');
+                    btn.className = 'cropper-aspect-btn' + (i === (mode === 'about' ? 0 : (wide ? 1 : 0)) ? ' active' : '');
+                    btn.textContent = p.label;
+                    btn.addEventListener('click', () => {
+                        document.querySelectorAll('.cropper-aspect-btn').forEach(b => b.classList.remove('active'));
+                        btn.classList.add('active');
+                        cropAspect = p.ratio;
+                        initCropSelection();
+                        drawCropper();
+                        updatePreview();
+                    });
+                    cropperAspect.appendChild(btn);
+                });
+
+                cropImage = new Image();
+                cropImage.onload = () => {
+                    initCropperCanvas();
+                    initCropSelection();
+                    drawCropper();
+                    updatePreview();
+                    cropperModal.classList.add('open');
+                };
+                cropImage.src = dataUrl;
+            });
+        }
+
+        async function openCropperAsync(dataUrl, mode, wide = false) {
+            return new Promise((resolve) => {
+                const result = openCropper(dataUrl, mode, wide);
+                // Перехватываем resolve через cropResolve
+                const originalResolve = cropResolve;
+                cropResolve = (croppedData) => {
+                    if (originalResolve) originalResolve(croppedData);
+                    resolve(croppedData);
+                };
+            });
+        }
+
+        function initCropperCanvas() {
+            const wrap = document.getElementById('cropperCanvasWrap');
+            const maxW = Math.min(wrap.clientWidth || 600, 600);
+            const scale = maxW / cropImage.naturalWidth;
+            cropperCanvas.width = maxW;
+            cropperCanvas.height = cropImage.naturalHeight * scale;
+        }
+
+        function initCropSelection() {
+            const cw = cropperCanvas.width;
+            const ch = cropperCanvas.height;
+
+            // Максимальный размер выделения
+            let w, h;
+            if (cw / ch > cropAspect) {
+                h = ch * 0.7;
+                w = h * cropAspect;
+            } else {
+                w = cw * 0.7;
+                h = w / cropAspect;
+            }
+
+            cropW = w;
+            cropH = h;
+            cropX = (cw - w) / 2;
+            cropY = (ch - h) / 2;
+        }
+
+        function drawCropper() {
+            const cw = cropperCanvas.width;
+            const ch = cropperCanvas.height;
+
+            // Очищаем
+            cropperCtx.clearRect(0, 0, cw, ch);
+
+            // Рисуем изображение с масштабом
+            const imgW = cw * cropScale;
+            const imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
+            const offsetX = (cw - imgW) / 2;
+            const offsetY = (ch - imgH) / 2;
+
+            cropperCtx.drawImage(cropImage, offsetX, offsetY, imgW, imgH);
+
+            // Рисуем затемнение
+            cropperCtx.fillStyle = 'rgba(0,0,0,0.55)';
+            cropperCtx.fillRect(0, 0, cw, ch);
+
+            // Вырезаем область
+            cropperCtx.clearRect(cropX, cropY, cropW, cropH);
+
+            // Рамка выделения
+            cropperCtx.strokeStyle = '#14b8a6';
+            cropperCtx.lineWidth = 2;
+            cropperCtx.strokeRect(cropX, cropY, cropW, cropH);
+
+            // Уголки
+            const corner = 12;
+            cropperCtx.strokeStyle = '#fff';
+            cropperCtx.lineWidth = 3;
+            // TL
+            cropperCtx.beginPath(); cropperCtx.moveTo(cropX, cropY + corner); cropperCtx.lineTo(cropX, cropY); cropperCtx.lineTo(cropX + corner, cropY); cropperCtx.stroke();
+            // TR
+            cropperCtx.beginPath(); cropperCtx.moveTo(cropX + cropW - corner, cropY); cropperCtx.lineTo(cropX + cropW, cropY); cropperCtx.lineTo(cropX + cropW, cropY + corner); cropperCtx.stroke();
+            // BL
+            cropperCtx.beginPath(); cropperCtx.moveTo(cropX, cropY + cropH - corner); cropperCtx.lineTo(cropX, cropY + cropH); cropperCtx.lineTo(cropX + corner, cropY + cropH); cropperCtx.stroke();
+            // BR
+            cropperCtx.beginPath(); cropperCtx.moveTo(cropX + cropW - corner, cropY + cropH); cropperCtx.lineTo(cropX + cropW, cropY + cropH); cropperCtx.lineTo(cropX + cropW, cropY + cropH - corner); cropperCtx.stroke();
+        }
+
+        function getCroppedData() {
+            const cw = cropperCanvas.width;
+            const ch = cropperCanvas.height;
+            const imgW = cw * cropScale;
+            const imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
+            const offsetX = (cw - imgW) / 2;
+            const offsetY = (ch - imgH) / 2;
+
+            // Координаты обрезки относительно оригинала
+            const scaleX = cropImage.naturalWidth / imgW;
+            const scaleY = cropImage.naturalHeight / imgH;
+
+            const sx = (cropX - offsetX) * scaleX;
+            const sy = (cropY - offsetY) * scaleY;
+            const sw = cropW * scaleX;
+            const sh = cropH * scaleY;
+
+            // Создаём canvas для результата
+            const out = document.createElement('canvas');
+            out.width = sw;
+            out.height = sh;
+            const ctx = out.getContext('2d');
+            ctx.drawImage(cropImage, sx, sy, sw, sh, 0, 0, sw, sh);
+            return out.toDataURL('image/jpeg', 0.92);
+        }
+
+        function updatePreview() {
+            const data = getCroppedData();
+            cropperPreviewWrap.innerHTML = '';
+
+            if (cropMode === 'about') {
+                cropperPreviewWrap.innerHTML = `
+                    <div class="cropper-preview-item">
+                        <div class="cropper-preview-box cropper-preview-about">
+                            <img src="${data}" alt="preview">
+                        </div>
+                        <span>Раздел «Обо мне»</span>
+                    </div>
+                `;
+            } else {
+                cropperPreviewWrap.innerHTML = `
+                    <div class="cropper-preview-item">
+                        <div class="cropper-preview-box cropper-preview-normal">
+                            <img src="${data}" alt="preview">
+                        </div>
+                        <span>Обычная ячейка</span>
+                    </div>
+                    <div class="cropper-preview-item">
+                        <div class="cropper-preview-box cropper-preview-wide">
+                            <img src="${data}" alt="preview">
+                        </div>
+                        <span>Широкая ячейка</span>
+                    </div>
+                `;
+            }
+        }
+
+        // Zoom
+        cropperZoom.addEventListener('input', () => {
+            cropScale = parseFloat(cropperZoom.value);
+            drawCropper();
+            updatePreview();
+        });
+
+        // Drag selection
+        let isDragging = false;
+        let dragStartX = 0, dragStartY = 0;
+        let dragStartCropX = 0, dragStartCropY = 0;
+
+        cropperCanvas.addEventListener('mousedown', (e) => {
+            const rect = cropperCanvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (cropperCanvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (cropperCanvas.height / rect.height);
+
+            if (x >= cropX && x <= cropX + cropW && y >= cropY && y <= cropY + cropH) {
+                isDragging = true;
+                dragStartX = x;
+                dragStartY = y;
+                dragStartCropX = cropX;
+                dragStartCropY = cropY;
+                cropperCanvas.style.cursor = 'grabbing';
+            }
+        });
+
+        window.addEventListener('mousemove', (e) => {
+            if (!isDragging) return;
+            const rect = cropperCanvas.getBoundingClientRect();
+            const x = (e.clientX - rect.left) * (cropperCanvas.width / rect.width);
+            const y = (e.clientY - rect.top) * (cropperCanvas.height / rect.height);
+
+            let nx = dragStartCropX + (x - dragStartX);
+            let ny = dragStartCropY + (y - dragStartY);
+
+            // Ограничения
+            nx = Math.max(0, Math.min(nx, cropperCanvas.width - cropW));
+            ny = Math.max(0, Math.min(ny, cropperCanvas.height - cropH));
+
+            cropX = nx;
+            cropY = ny;
+            drawCropper();
+            updatePreview();
+        });
+
+        window.addEventListener('mouseup', () => {
+            isDragging = false;
+            cropperCanvas.style.cursor = 'crosshair';
+        });
+
+        // Touch support
+        cropperCanvas.addEventListener('touchstart', (e) => {
+            const touch = e.touches[0];
+            const rect = cropperCanvas.getBoundingClientRect();
+            const x = (touch.clientX - rect.left) * (cropperCanvas.width / rect.width);
+            const y = (touch.clientY - rect.top) * (cropperCanvas.height / rect.height);
+            if (x >= cropX && x <= cropX + cropW && y >= cropY && y <= cropY + cropH) {
+                isDragging = true;
+                dragStartX = x;
+                dragStartY = y;
+                dragStartCropX = cropX;
+                dragStartCropY = cropY;
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchmove', (e) => {
+            if (!isDragging) return;
+            e.preventDefault();
+            const touch = e.touches[0];
+            const rect = cropperCanvas.getBoundingClientRect();
+            const x = (touch.clientX - rect.left) * (cropperCanvas.width / rect.width);
+            const y = (touch.clientY - rect.top) * (cropperCanvas.height / rect.height);
+            let nx = dragStartCropX + (x - dragStartX);
+            let ny = dragStartCropY + (y - dragStartY);
+            nx = Math.max(0, Math.min(nx, cropperCanvas.width - cropW));
+            ny = Math.max(0, Math.min(ny, cropperCanvas.height - cropH));
+            cropX = nx; cropY = ny;
+            drawCropper();
+            updatePreview();
+        }, { passive: false });
+
+        window.addEventListener('touchend', () => { isDragging = false; });
+
+        // Apply / Cancel
+        cropperApply.addEventListener('click', async () => {
+            const croppedData = getCroppedData();
+            cropperModal.classList.remove('open');
+
+            if (cropMode === 'about') {
+                await setAboutPhoto({ data: croppedData, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+                await renderAboutPreview();
+                await updateStats();
+            } else {
+                const items = await getGallery();
+                items.push({
+                    id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+                    data: croppedData,
+                    wide: cropWide,
+                    alt_ru: 'Работа',
+                    alt_de: 'Werk'
+                });
+                await setGallery(items);
+            }
+
+            if (cropResolve) cropResolve(croppedData);
+            cropResolve = null;
+        });
+
+        function closeCropper() {
+            cropperModal.classList.remove('open');
+            if (cropResolve) cropResolve(null);
+            cropResolve = null;
+        }
+
+        cropperCancel.addEventListener('click', closeCropper);
+        cropperClose.addEventListener('click', closeCropper);
+        cropperModal.addEventListener('click', (e) => {
+            if (e.target === cropperModal) closeCropper();
+        });
 
         // Init
         checkAuth();
