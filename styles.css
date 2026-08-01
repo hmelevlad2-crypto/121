@@ -1079,7 +1079,7 @@ body.dark-theme .gallery-more-btn {
 
 
 /* ============================================
-   MORE WORKS PAGE
+   MORE WORKS PAGE — Masonry, рамки впритык
    ============================================ */
 .moreworks-section {
     padding: 140px 0 100px;
@@ -1099,61 +1099,47 @@ body.dark-theme .gallery-more-btn {
     opacity: 0.5;
 }
 
+/* Masonry через CSS columns */
 .moreworks-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-    gap: 28px;
+    column-count: 3;
+    column-gap: 24px;
     max-width: 1100px;
     margin: 0 auto;
 }
 
 .moreworks-item {
+    break-inside: avoid;
+    margin-bottom: 24px;
+    display: inline-block;
+    width: 100%;
     background: var(--white);
     border-radius: var(--r-lg);
-    overflow: hidden;
     border: 1px solid var(--slate-100);
     box-shadow: var(--shadow-sm);
+    overflow: hidden;
     transition: var(--t-slow);
-    display: flex;
-    flex-direction: column;
 }
 .moreworks-item:hover {
-    transform: translateY(-6px);
+    transform: translateY(-4px);
     box-shadow: var(--shadow-lg), var(--shadow-glow-sm);
     border-color: var(--teal-200);
 }
 
-.moreworks-img-wrap {
-    position: relative;
-    width: 100%;
-    overflow: hidden;
-    background: linear-gradient(135deg, var(--slate-100), var(--slate-50));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-.moreworks-img-wrap img {
+/* Фото — без обрезки, в оригинальном размере */
+.moreworks-item img {
     width: 100%;
     height: auto;
     display: block;
-    transition: var(--t-slow);
-}
-.moreworks-item:hover .moreworks-img-wrap img {
-    transform: scale(1.03);
+    border-radius: 0;
 }
 
-.moreworks-placeholder {
-    padding: 60px 20px;
-    color: var(--slate-400);
-    opacity: 0.5;
-}
-
+/* Подпись под фото */
 .moreworks-caption {
-    padding: 16px 20px;
+    padding: 14px 18px;
     display: flex;
     align-items: center;
     gap: 10px;
-    border-top: 1px solid var(--slate-100);
+    background: var(--white);
 }
 .moreworks-num {
     font-size: 0.7rem;
@@ -1163,21 +1149,27 @@ body.dark-theme .gallery-more-btn {
     padding: 4px 10px;
     border-radius: var(--r-full);
     letter-spacing: 0.05em;
+    flex-shrink: 0;
 }
 .moreworks-name {
     font-size: 0.85rem;
     font-weight: 600;
     color: var(--slate-600);
+    line-height: 1.4;
 }
 
+/* Пустое состояние */
 .moreworks-empty {
-    display: flex;
+    display: none;
     flex-direction: column;
     align-items: center;
     gap: 20px;
     padding: 80px 20px;
     color: var(--slate-400);
     text-align: center;
+}
+.moreworks-empty.show {
+    display: flex;
 }
 .moreworks-empty p {
     font-size: 1rem;
@@ -1203,21 +1195,15 @@ body.dark-theme .moreworks-blob {
     background: radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%);
 }
 body.dark-theme .moreworks-item {
-    background: linear-gradient(180deg, #4a4a4a 0%, #3C3C3C 100%);
+    background: #4a4a4a;
     border-color: rgba(255,255,255,0.08);
 }
 body.dark-theme .moreworks-item:hover {
     border-color: rgba(255,255,255,0.2);
     box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 30px rgba(20,184,166,0.1);
 }
-body.dark-theme .moreworks-img-wrap {
-    background: linear-gradient(135deg, #4a4a4a, #3C3C3C);
-}
-body.dark-theme .moreworks-placeholder {
-    color: rgba(255,255,255,0.3);
-}
 body.dark-theme .moreworks-caption {
-    border-top-color: rgba(255,255,255,0.08);
+    background: #4a4a4a;
 }
 body.dark-theme .moreworks-num {
     background: rgba(20,184,166,0.15);
@@ -1236,21 +1222,29 @@ body.dark-theme .moreworks-empty p {
 /* ============================================
    RESPONSIVE — More Works
    ============================================ */
+@media (max-width: 1024px) {
+    .moreworks-grid {
+        column-count: 2;
+        column-gap: 20px;
+    }
+}
 @media (max-width: 768px) {
     .moreworks-section {
         padding: 120px 0 60px;
     }
     .moreworks-grid {
-        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-        gap: 20px;
+        column-count: 2;
+        column-gap: 16px;
+    }
+    .moreworks-item {
+        margin-bottom: 16px;
     }
 }
 @media (max-width: 480px) {
     .moreworks-grid {
-        grid-template-columns: 1fr;
-        gap: 16px;
+        column-count: 1;
     }
     .moreworks-caption {
-        padding: 12px 16px;
+        padding: 12px 14px;
     }
 }

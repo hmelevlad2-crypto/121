@@ -360,10 +360,10 @@ async function renderMoreWorks() {
     }
 
     if (items.length === 0) {
-        if (empty) empty.style.display = 'flex';
+        if (empty) empty.classList.add('show');
         return;
     }
-    if (empty) empty.style.display = 'none';
+    if (empty) empty.classList.remove('show');
 
     items.forEach((item, idx) => {
         const div = document.createElement('div');
@@ -371,9 +371,7 @@ async function renderMoreWorks() {
         const alt = currentLang === 'ru' ? (item.alt_ru || ('Работа ' + (idx + 1))) : (item.alt_de || ('Werk ' + (idx + 1)));
         if (item.data) {
             div.innerHTML = `
-                <div class="moreworks-img-wrap">
-                    <img src="${item.data}" alt="${alt}" loading="lazy">
-                </div>
+                <img src="${item.data}" alt="${alt}" loading="lazy">
                 <div class="moreworks-caption">
                     <span class="moreworks-num">#${idx + 1}</span>
                     <span class="moreworks-name">${alt}</span>
@@ -381,8 +379,8 @@ async function renderMoreWorks() {
             `;
         } else {
             div.innerHTML = `
-                <div class="moreworks-img-wrap moreworks-placeholder">
-                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                <div class="moreworks-placeholder" style="padding:40px;text-align:center;color:var(--slate-400);">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" style="opacity:0.5;"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
                 </div>
                 <div class="moreworks-caption">
                     <span class="moreworks-num">#${idx + 1}</span>

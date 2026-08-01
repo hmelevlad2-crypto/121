@@ -225,6 +225,100 @@
             .admin-upload-row { flex-direction: column; align-items: stretch; }
             .admin-gallery-grid { grid-template-columns: repeat(2, 1fr); }
         }
+
+        /* ============================================
+           DARK THEME — Admin Panel
+           ============================================ */
+        body.dark-theme {
+            background: #3C3C3C;
+            color: #f0f0f0;
+        }
+        body.dark-theme .login-card {
+            background: #4a4a4a;
+            border-color: rgba(255,255,255,0.08);
+        }
+        body.dark-theme .login-card h1 { color: #ffffff; }
+        body.dark-theme .login-card p { color: rgba(255,255,255,0.5); }
+        body.dark-theme .login-input {
+            background: #3C3C3C;
+            border-color: rgba(255,255,255,0.15);
+            color: #f0f0f0;
+        }
+        body.dark-theme .login-input:focus {
+            border-color: var(--teal-400);
+            background: #4a4a4a;
+        }
+        body.dark-theme .login-error { color: #ff8a80; }
+
+        body.dark-theme .admin-section-card {
+            background: #4a4a4a;
+            border-color: rgba(255,255,255,0.08);
+        }
+        body.dark-theme .admin-section-card h3 { color: #ffffff; }
+        body.dark-theme .upload-hint { color: rgba(255,255,255,0.4); }
+        body.dark-theme .admin-preview {
+            border-color: rgba(255,255,255,0.1);
+        }
+        body.dark-theme .admin-preview-empty {
+            color: rgba(255,255,255,0.3);
+        }
+        body.dark-theme .admin-gallery-item {
+            background: #3C3C3C;
+            border-color: rgba(255,255,255,0.08);
+        }
+        body.dark-theme .admin-gallery-item:hover {
+            border-color: var(--teal-400);
+        }
+        body.dark-theme .admin-empty-msg {
+            color: rgba(255,255,255,0.4);
+        }
+        body.dark-theme .admin-stat {
+            background: #4a4a4a;
+            border-color: rgba(255,255,255,0.08);
+        }
+        body.dark-theme .admin-stat-label {
+            color: rgba(255,255,255,0.5);
+        }
+        body.dark-theme .admin-check {
+            color: rgba(255,255,255,0.7);
+        }
+        body.dark-theme .admin-btn-secondary {
+            background: #525252;
+            color: #f0f0f0;
+        }
+        body.dark-theme .admin-btn-secondary:hover {
+            background: #5a5a5a;
+        }
+
+        /* Theme toggle in admin */
+        .admin-theme-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: #fff;
+            cursor: pointer;
+            transition: var(--t);
+            position: relative;
+            overflow: hidden;
+        }
+        .admin-theme-toggle:hover {
+            background: rgba(255,255,255,0.2);
+            transform: rotate(15deg);
+        }
+        .admin-theme-toggle .sun-icon,
+        .admin-theme-toggle .moon-icon {
+            position: absolute;
+            transition: var(--t);
+        }
+        .admin-theme-toggle .sun-icon { opacity: 1; transform: scale(1); }
+        .admin-theme-toggle .moon-icon { opacity: 0; transform: scale(0.5); }
+        body.dark-theme .admin-theme-toggle .sun-icon { opacity: 0; transform: scale(0.5); }
+        body.dark-theme .admin-theme-toggle .moon-icon { opacity: 1; transform: scale(1); }
     </style>
 </head>
 <body>
@@ -247,6 +341,10 @@
                 <h2>⚙️ Админ-панель</h2>
                 <div class="admin-header-actions">
                     <a href="index.html">← На сайт</a>
+                    <button class="admin-theme-toggle" id="adminThemeToggle" aria-label="Переключить тему">
+                        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    </button>
                     <button id="logoutBtn">Выйти</button>
                 </div>
             </div>
@@ -366,6 +464,20 @@
                 reader.readAsDataURL(file);
             });
         }
+
+        // Theme sync
+        function initAdminTheme() {
+            const saved = localStorage.getItem('theme');
+            if (saved === 'dark') document.body.classList.add('dark-theme');
+        }
+        function toggleAdminTheme() {
+            document.body.classList.toggle('dark-theme');
+            const isDark = document.body.classList.contains('dark-theme');
+            localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        }
+        initAdminTheme();
+
+        document.getElementById('adminThemeToggle').addEventListener('click', toggleAdminTheme);
 
         // Auth
         const loginWrap = document.getElementById('loginWrap');
