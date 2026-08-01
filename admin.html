@@ -505,6 +505,27 @@
 
             <div class="admin-section-card">
                 <h3>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                    Облачное хранилище (Cloudinary)
+                </h3>
+                <p class="upload-hint">Чтобы фото были видны всем посетителям с любого устройства, загружайте их в облако. <a href="https://cloudinary.com" target="_blank" style="color:var(--teal-600);">cloudinary.com</a> — бесплатный тариф.</p>
+                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
+                    <input type="text" class="login-input" id="cloudName" style="text-align:left; margin-bottom:0; font-weight:500; letter-spacing:0;" placeholder="Cloud Name (например, myname)">
+                    <input type="text" class="login-input" id="uploadPreset" style="text-align:left; margin-bottom:0; font-weight:500; letter-spacing:0;" placeholder="Upload Preset (например, mila_preset)">
+                </div>
+                <label class="admin-check" style="margin-bottom:16px;">
+                    <input type="checkbox" id="useCloudinary">
+                    <span>Использовать Cloudinary для новых загрузок</span>
+                </label>
+                <div class="admin-upload-row">
+                    <button type="button" class="admin-btn admin-btn-primary" id="btnSaveCloudinary">💾 Сохранить настройки</button>
+                    <button type="button" class="admin-btn admin-btn-outline" id="btnTestCloudinary">🧪 Проверить связь</button>
+                </div>
+                <div id="cloudinaryStatus" style="margin-top:12px; font-size:0.85rem; font-weight:600;"></div>
+            </div>
+
+            <div class="admin-section-card">
+                <h3>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Фото художника (раздел «Обо мне»)
                 </h3>
@@ -630,7 +651,51 @@
             });
         }
 
-        // Theme
+        // ============================================
+// CLOUDINARY
+// ============================================
+async function uploadToCloudinary(dataUrl) {
+    const cloudName = localStorage.getItem('mila_cloud_name');
+    const uploadPreset = localStorage.getItem('mila_upload_preset');
+    if (!cloudName || !uploadPreset) throw new Error('Cloudinary не настроен: заполните Cloud Name и Upload Preset');
+
+    const formData = new FormData();
+    // dataUrl -> blob
+    const resFetch = await fetch(dataUrl);
+    const blob = await resFetch.blob();
+    formData.append('file', blob, 'photo.jpg');
+    formData.append('upload_preset', uploadPreset);
+
+    const res = await fetch('https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload', {
+        method: 'POST',
+        body: formData
+    });
+    if (!res.ok) {
+        const errText = await res.text();
+        throw new Error('Cloudinary ошибка ' + res.status + ': ' + errText);
+    }
+    const data = await res.json();
+    if (!data.secure_url) throw new Error('Cloudinary не вернул ссылку');
+    return data.secure_url;
+}
+
+function loadCloudinarySettings() {
+    const cloudName = localStorage.getItem('mila_cloud_name') || '';
+    const uploadPreset = localStorage.getItem('mila_upload_preset') || '';
+    const useCloud = localStorage.getItem('mila_use_cloudinary') === 'true';
+    document.getElementById('cloudName').value = cloudName;
+    document.getElementById('uploadPreset').value = uploadPreset;
+    document.getElementById('useCloudinary').checked = useCloud;
+}
+
+function showCloudStatus(msg, isError) {
+    const el = document.getElementById('cloudinaryStatus');
+    el.textContent = msg;
+    el.style.color = isError ? 'var(--coral)' : 'var(--teal-600)';
+    setTimeout(() => { el.textContent = ''; }, 5000);
+}
+
+// Theme
         function initAdminTheme() {
             const saved = localStorage.getItem('theme');
             if (saved === 'dark') document.body.classList.add('dark-theme');
@@ -731,6 +796,7 @@
         // Dashboard
         async function initDashboard() {
             await openDB();
+            loadCloudinarySettings();
             await renderAboutPreview();
             await renderGalleryAdmin();
             await updateStats();
@@ -925,15 +991,31 @@
             try {
                 const result = await openCropper(task.dataUrl, task.mode, task.wide);
                 if (result) {
+                    let photoData = result;
+                    let photoType = 'base64';
+
+                    // Если включен Cloudinary — загружаем в облако
+                    if (localStorage.getItem('mila_use_cloudinary') === 'true') {
+                        try {
+                            photoData = await uploadToCloudinary(result);
+                            photoType = 'url';
+                            showCloudStatus('✅ Фото загружено в облако', false);
+                        } catch (cloudErr) {
+                            console.warn('Cloudinary upload failed, saving locally:', cloudErr);
+                            showCloudStatus('⚠️ Облако недоступно, сохранено локально: ' + cloudErr.message, true);
+                        }
+                    }
+
                     if (task.mode === 'about') {
-                        await setAboutPhoto({ data: result, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+                        await setAboutPhoto({ data: photoData, type: photoType, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
                         localStorage.setItem('mila_last_about_update', new Date().toISOString());
                         await renderAboutPreview();
                     } else {
                         const items = await getGallery();
                         items.push({
                             id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                            data: result,
+                            data: photoData,
+                            type: photoType,
                             wide: task.wide,
                             alt_ru: 'Работа',
                             alt_de: 'Werk'
@@ -1188,6 +1270,37 @@
         cropperClose.addEventListener('click', closeCropper);
         cropperModal.addEventListener('click', function(e) {
             if (e.target === cropperModal) closeCropper();
+        });
+
+        // Cloudinary handlers
+        document.getElementById('btnSaveCloudinary').addEventListener('click', function() {
+            const cn = document.getElementById('cloudName').value.trim();
+            const up = document.getElementById('uploadPreset').value.trim();
+            const use = document.getElementById('useCloudinary').checked;
+            localStorage.setItem('mila_cloud_name', cn);
+            localStorage.setItem('mila_upload_preset', up);
+            localStorage.setItem('mila_use_cloudinary', use ? 'true' : 'false');
+            showCloudStatus('✅ Настройки сохранены', false);
+        });
+
+        document.getElementById('btnTestCloudinary').addEventListener('click', async function() {
+            const cn = document.getElementById('cloudName').value.trim();
+            const up = document.getElementById('uploadPreset').value.trim();
+            if (!cn || !up) {
+                showCloudStatus('❌ Заполните Cloud Name и Upload Preset', true);
+                return;
+            }
+            showCloudStatus('⏳ Проверка связи...', false);
+            try {
+                // Создаём 1x1 пиксель для теста
+                const canvas = document.createElement('canvas');
+                canvas.width = 1; canvas.height = 1;
+                const testUrl = canvas.toDataURL('image/png');
+                await uploadToCloudinary(testUrl);
+                showCloudStatus('✅ Связь с Cloudinary работает!', false);
+            } catch (e) {
+                showCloudStatus('❌ Ошибка: ' + e.message, true);
+            }
         });
 
         window.addEventListener('error', function(e) {
