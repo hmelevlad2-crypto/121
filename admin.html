@@ -1,0 +1,514 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Админ-панель — Людмила Краусе</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --teal-50: #f0fdfa; --teal-100: #ccfbf1; --teal-200: #99f6e4;
+            --teal-300: #5eead4; --teal-400: #2dd4bf; --teal-500: #14b8a6;
+            --teal-600: #0d9488; --teal-700: #0f766e; --teal-800: #115e59; --teal-900: #134e4a;
+            --coral: #f97066; --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1; --slate-400: #94a3b8; --slate-500: #64748b;
+            --slate-600: #475569; --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
+            --white: #ffffff;
+            --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px; --r-full: 9999px;
+            --t: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow-sm: 0 2px 8px rgba(15,23,42,0.06);
+            --shadow-md: 0 4px 20px rgba(15,23,42,0.08);
+            --shadow-lg: 0 12px 40px rgba(15,23,42,0.12);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--slate-50);
+            color: var(--slate-800);
+            line-height: 1.65;
+            -webkit-font-smoothing: antialiased;
+            min-height: 100vh;
+        }
+
+        /* Login */
+        .login-wrap {
+            display: flex; align-items: center; justify-content: center;
+            min-height: 100vh; padding: 20px;
+        }
+        .login-card {
+            background: var(--white); border-radius: var(--r-xl);
+            padding: 48px 40px; width: 100%; max-width: 420px;
+            box-shadow: var(--shadow-lg); text-align: center;
+            border: 1px solid var(--slate-100);
+        }
+        .login-card h1 {
+            font-size: 1.5rem; font-weight: 800; color: var(--slate-900);
+            margin-bottom: 8px; letter-spacing: -0.02em;
+        }
+        .login-card p {
+            font-size: 0.9rem; color: var(--slate-500); margin-bottom: 32px;
+        }
+        .login-input {
+            width: 100%; padding: 14px 18px; font-family: 'Montserrat', sans-serif;
+            font-size: 1rem; font-weight: 600; color: var(--slate-800);
+            background: var(--slate-50); border: 2px solid var(--slate-200);
+            border-radius: var(--r-md); outline: none; transition: var(--t);
+            margin-bottom: 16px; text-align: center; letter-spacing: 0.05em;
+        }
+        .login-input:focus { border-color: var(--teal-400); background: var(--white); }
+        .login-btn {
+            width: 100%; padding: 14px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.95rem; font-weight: 700; color: var(--white);
+            background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+            border: none; border-radius: var(--r-full); cursor: pointer;
+            transition: var(--t); box-shadow: 0 4px 16px rgba(13,148,136,0.3);
+        }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,148,136,0.4); }
+        .login-error {
+            color: var(--coral); font-size: 0.85rem; font-weight: 600;
+            margin-top: 12px; opacity: 0; transition: var(--t);
+        }
+        .login-error.show { opacity: 1; }
+
+        /* Dashboard */
+        .dashboard { display: none; }
+        .dashboard.open { display: block; }
+
+        .admin-header-bar {
+            background: linear-gradient(135deg, var(--teal-700), var(--teal-800));
+            color: var(--white); padding: 20px 0;
+            box-shadow: 0 4px 20px rgba(13,148,136,0.25);
+        }
+        .admin-header-inner {
+            max-width: 1100px; margin: 0 auto; padding: 0 28px;
+            display: flex; align-items: center; justify-content: space-between;
+        }
+        .admin-header-inner h2 {
+            font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em;
+        }
+        .admin-header-actions {
+            display: flex; gap: 12px; align-items: center;
+        }
+        .admin-header-actions a, .admin-header-actions button {
+            font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600;
+            color: var(--white); text-decoration: none; padding: 8px 16px;
+            border-radius: var(--r-full); border: 1px solid rgba(255,255,255,0.25);
+            background: rgba(255,255,255,0.1); cursor: pointer; transition: var(--t);
+        }
+        .admin-header-actions a:hover, .admin-header-actions button:hover {
+            background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4);
+        }
+
+        .admin-container {
+            max-width: 1100px; margin: 0 auto; padding: 40px 28px;
+        }
+
+        .admin-section-card {
+            background: var(--white); border-radius: var(--r-xl);
+            border: 1px solid var(--slate-100); padding: 32px;
+            margin-bottom: 28px; box-shadow: var(--shadow-sm);
+        }
+        .admin-section-card h3 {
+            font-size: 1.1rem; font-weight: 700; color: var(--slate-900);
+            margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+        }
+        .admin-section-card h3 svg { color: var(--teal-500); }
+
+        .admin-upload-row {
+            display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+            margin-bottom: 20px;
+        }
+        .admin-upload-row input[type="file"] {
+            font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
+            color: var(--slate-600); flex: 1 1 200px;
+        }
+        .admin-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            padding: 10px 22px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.85rem; font-weight: 700; border: none;
+            border-radius: var(--r-full); cursor: pointer; transition: var(--t);
+        }
+        .admin-btn-primary {
+            background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+            color: var(--white); box-shadow: 0 4px 16px rgba(13,148,136,0.25);
+        }
+        .admin-btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,148,136,0.35); }
+        .admin-btn-danger {
+            background: linear-gradient(135deg, var(--coral), #e85d50);
+            color: var(--white); box-shadow: 0 4px 16px rgba(249,112,102,0.25);
+        }
+        .admin-btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(249,112,102,0.35); }
+        .admin-btn-secondary {
+            background: var(--slate-100); color: var(--slate-700);
+        }
+        .admin-btn-secondary:hover { background: var(--slate-200); }
+
+        .admin-check {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.85rem; font-weight: 600; color: var(--slate-600);
+            cursor: pointer; user-select: none;
+        }
+        .admin-check input { width: 18px; height: 18px; accent-color: var(--teal-600); cursor: pointer; }
+
+        .admin-preview {
+            max-width: 280px; border-radius: var(--r-lg); overflow: hidden;
+            border: 2px solid var(--slate-100); box-shadow: var(--shadow-sm);
+        }
+        .admin-preview img { width: 100%; height: auto; display: block; }
+        .admin-preview-empty {
+            padding: 40px; text-align: center; color: var(--slate-400);
+            font-size: 0.85rem; font-weight: 600;
+        }
+
+        .admin-gallery-grid {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+            gap: 16px;
+        }
+        .admin-gallery-item {
+            position: relative; border-radius: var(--r-md); overflow: hidden;
+            background: var(--slate-100); aspect-ratio: 1; border: 2px solid var(--slate-100);
+            transition: var(--t);
+        }
+        .admin-gallery-item:hover { border-color: var(--teal-300); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .admin-gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .admin-gallery-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.45);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 8px; opacity: 0; transition: var(--t); backdrop-filter: blur(2px);
+        }
+        .admin-gallery-item:hover .admin-gallery-overlay { opacity: 1; }
+        .admin-gallery-overlay span {
+            font-size: 0.7rem; font-weight: 700; color: #fff;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            background: rgba(0,0,0,0.4); padding: 3px 10px; border-radius: var(--r-full);
+        }
+        .admin-gallery-overlay button {
+            padding: 6px 14px; font-size: 0.75rem; font-weight: 700;
+            border: none; border-radius: var(--r-sm); cursor: pointer;
+            background: var(--coral); color: #fff; transition: var(--t);
+        }
+        .admin-gallery-overlay button:hover { background: #e85d50; transform: scale(1.05); }
+        .admin-empty-msg {
+            grid-column: 1 / -1; text-align: center; padding: 40px;
+            color: var(--slate-400); font-size: 0.9rem; font-weight: 500;
+        }
+
+        .admin-stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px; margin-bottom: 28px;
+        }
+        .admin-stat {
+            background: var(--white); border-radius: var(--r-lg);
+            padding: 24px; border: 1px solid var(--slate-100);
+            box-shadow: var(--shadow-sm); text-align: center;
+        }
+        .admin-stat-number {
+            font-size: 2rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            line-height: 1.2;
+        }
+        .admin-stat-label { font-size: 0.8rem; color: var(--slate-500); font-weight: 600; margin-top: 4px; }
+
+        .upload-hint {
+            font-size: 0.8rem; color: var(--slate-400); margin-top: -10px; margin-bottom: 16px;
+        }
+
+        @media (max-width: 640px) {
+            .login-card { padding: 32px 24px; }
+            .admin-header-inner { flex-direction: column; gap: 12px; text-align: center; }
+            .admin-container { padding: 24px 16px; }
+            .admin-section-card { padding: 24px; }
+            .admin-upload-row { flex-direction: column; align-items: stretch; }
+            .admin-gallery-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div class="login-wrap" id="loginWrap">
+        <div class="login-card">
+            <h1>Админ-панель</h1>
+            <p>Людмила Краусе — управление контентом</p>
+            <input type="password" class="login-input" id="loginPass" placeholder="Введите пароль">
+            <button class="login-btn" id="loginBtn">Войти</button>
+            <div class="login-error" id="loginError">Неверный пароль</div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div class="dashboard" id="dashboard">
+        <div class="admin-header-bar">
+            <div class="admin-header-inner">
+                <h2>⚙️ Админ-панель</h2>
+                <div class="admin-header-actions">
+                    <a href="index.html">← На сайт</a>
+                    <button id="logoutBtn">Выйти</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-container">
+            <!-- Stats -->
+            <div class="admin-stats">
+                <div class="admin-stat">
+                    <div class="admin-stat-number" id="statGallery">0</div>
+                    <div class="admin-stat-label">Работ в галерее</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-number" id="statAbout">—</div>
+                    <div class="admin-stat-label">Фото художника</div>
+                </div>
+            </div>
+
+            <!-- About Photo -->
+            <div class="admin-section-card">
+                <h3>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                    Фото художника (раздел «Обо мне»)
+                </h3>
+                <div class="admin-upload-row">
+                    <input type="file" id="aboutInput" accept="image/*">
+                    <button class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить фото</button>
+                </div>
+                <p class="upload-hint">Выберите файл — фото загрузится автоматически</p>
+                <div class="admin-preview" id="aboutPreview">
+                    <div class="admin-preview-empty">Фото не загружено</div>
+                </div>
+            </div>
+
+            <!-- Gallery -->
+            <div class="admin-section-card">
+                <h3>
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                    Галерея работ
+                </h3>
+                <div class="admin-upload-row">
+                    <input type="file" id="galleryInput" accept="image/*" multiple>
+                    <label class="admin-check">
+                        <input type="checkbox" id="galleryWide">
+                        <span>Широкое (2 колонки)</span>
+                    </label>
+                </div>
+                <p class="upload-hint">Можно выбрать сразу несколько файлов — все загрузятся автоматически</p>
+                <div class="admin-gallery-grid" id="galleryGridAdmin">
+                    <div class="admin-empty-msg">Нет загруженных работ</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const PASSWORD = '123123';
+        const DB_NAME = 'MilaKrauseDB';
+        const DB_VERSION = 1;
+        let db = null;
+
+        // IndexedDB
+        function openDB() {
+            return new Promise((resolve, reject) => {
+                const request = indexedDB.open(DB_NAME, DB_VERSION);
+                request.onerror = () => reject(request.error);
+                request.onsuccess = () => { db = request.result; resolve(db); };
+                request.onupgradeneeded = (e) => {
+                    const database = e.target.result;
+                    if (!database.objectStoreNames.contains('photos')) {
+                        database.createObjectStore('photos');
+                    }
+                };
+            });
+        }
+        function dbGet(key) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('photos', 'readonly');
+                const store = tx.objectStore('photos');
+                const req = store.get(key);
+                req.onsuccess = () => resolve(req.result);
+                req.onerror = () => reject(req.error);
+            });
+        }
+        function dbSet(key, value) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('photos', 'readwrite');
+                const store = tx.objectStore('photos');
+                const req = store.put(value, key);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+        function dbDelete(key) {
+            return new Promise((resolve, reject) => {
+                const tx = db.transaction('photos', 'readwrite');
+                const store = tx.objectStore('photos');
+                const req = store.delete(key);
+                req.onsuccess = () => resolve();
+                req.onerror = () => reject(req.error);
+            });
+        }
+        async function getGallery() {
+            const data = await dbGet('gallery');
+            return Array.isArray(data) ? data : [];
+        }
+        async function setGallery(items) { await dbSet('gallery', items); }
+        async function getAboutPhoto() { return await dbGet('about_photo') || null; }
+        async function setAboutPhoto(data) { await dbSet('about_photo', data); }
+        async function deleteAboutPhoto() { await dbDelete('about_photo'); }
+
+        function fileToBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // Auth
+        const loginWrap = document.getElementById('loginWrap');
+        const dashboard = document.getElementById('dashboard');
+        const loginPass = document.getElementById('loginPass');
+        const loginBtn = document.getElementById('loginBtn');
+        const loginError = document.getElementById('loginError');
+        const logoutBtn = document.getElementById('logoutBtn');
+
+        function checkAuth() {
+            if (sessionStorage.getItem('admin_auth') === 'ok') {
+                loginWrap.style.display = 'none';
+                dashboard.classList.add('open');
+                initDashboard();
+            }
+        }
+
+        loginBtn.addEventListener('click', () => {
+            if (loginPass.value === PASSWORD) {
+                sessionStorage.setItem('admin_auth', 'ok');
+                loginWrap.style.display = 'none';
+                dashboard.classList.add('open');
+                initDashboard();
+            } else {
+                loginError.classList.add('show');
+                loginPass.value = '';
+                loginPass.focus();
+            }
+        });
+
+        loginPass.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') loginBtn.click();
+        });
+
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('admin_auth');
+            location.reload();
+        });
+
+        // Dashboard
+        async function initDashboard() {
+            await openDB();
+            await renderAboutPreview();
+            await renderGalleryAdmin();
+            await updateStats();
+        }
+
+        async function updateStats() {
+            const items = await getGallery();
+            document.getElementById('statGallery').textContent = items.length;
+            const about = await getAboutPhoto();
+            document.getElementById('statAbout').textContent = (about && about.data) ? '✓' : '—';
+        }
+
+        // About photo — автозагрузка
+        const aboutInput = document.getElementById('aboutInput');
+        const aboutDeleteBtn = document.getElementById('aboutDeleteBtn');
+        const aboutPreview = document.getElementById('aboutPreview');
+
+        aboutInput.addEventListener('change', async () => {
+            const file = aboutInput.files[0];
+            if (!file) return;
+            const data = await fileToBase64(file);
+            await setAboutPhoto({ data, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+            aboutInput.value = '';
+            await renderAboutPreview();
+            await updateStats();
+        });
+
+        aboutDeleteBtn.addEventListener('click', async () => {
+            if (!confirm('Удалить фото художника?')) return;
+            await deleteAboutPhoto();
+            await renderAboutPreview();
+            await updateStats();
+        });
+
+        async function renderAboutPreview() {
+            const photo = await getAboutPhoto();
+            if (photo && photo.data) {
+                aboutPreview.innerHTML = `<img src="${photo.data}" alt="Фото художника">`;
+            } else {
+                aboutPreview.innerHTML = `<div class="admin-preview-empty">Фото не загружено</div>`;
+            }
+        }
+
+        // Gallery — автозагрузка нескольких файлов
+        const galleryInput = document.getElementById('galleryInput');
+        const galleryWide = document.getElementById('galleryWide');
+        const galleryGridAdmin = document.getElementById('galleryGridAdmin');
+
+        galleryInput.addEventListener('change', async () => {
+            const files = Array.from(galleryInput.files);
+            if (files.length === 0) return;
+
+            const wide = galleryWide.checked;
+            const items = await getGallery();
+
+            for (const file of files) {
+                const data = await fileToBase64(file);
+                items.push({
+                    id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+                    data,
+                    wide,
+                    alt_ru: 'Работа',
+                    alt_de: 'Werk'
+                });
+            }
+
+            await setGallery(items);
+            galleryInput.value = '';
+            galleryWide.checked = false;
+            await renderGalleryAdmin();
+            await updateStats();
+        });
+
+        async function renderGalleryAdmin() {
+            const items = await getGallery();
+            if (items.length === 0) {
+                galleryGridAdmin.innerHTML = `<div class="admin-empty-msg">Нет загруженных работ</div>`;
+                return;
+            }
+            galleryGridAdmin.innerHTML = items.map((item, idx) => `
+                <div class="admin-gallery-item">
+                    <img src="${item.data}" alt="">
+                    <div class="admin-gallery-overlay">
+                        <span>#${idx + 1} · ${item.wide ? 'Широкое' : 'Обычное'}</span>
+                        <button onclick="deleteGalleryItem('${item.id}')">Удалить</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        window.deleteGalleryItem = async function(id) {
+            if (!confirm('Удалить эту работу из галереи?')) return;
+            let items = await getGallery();
+            items = items.filter(i => i.id !== id);
+            await setGallery(items);
+            await renderGalleryAdmin();
+            await updateStats();
+        };
+
+        // Init
+        checkAuth();
+    </script>
+</body>
+</html>
