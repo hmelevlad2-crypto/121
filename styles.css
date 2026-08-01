@@ -1076,3 +1076,181 @@ body.dark-theme .gallery-more-btn {
     color: #ffffff;
     box-shadow: 0 8px 24px rgba(13,148,136,0.4);
 }
+
+
+/* ============================================
+   MORE WORKS PAGE
+   ============================================ */
+.moreworks-section {
+    padding: 140px 0 100px;
+    background: var(--white);
+    position: relative;
+    overflow: hidden;
+    min-height: 100vh;
+}
+.moreworks-blob {
+    position: absolute;
+    top: -120px;
+    right: -120px;
+    width: 450px;
+    height: 450px;
+    background: radial-gradient(circle, var(--teal-100) 0%, transparent 70%);
+    pointer-events: none;
+    opacity: 0.5;
+}
+
+.moreworks-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 28px;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+
+.moreworks-item {
+    background: var(--white);
+    border-radius: var(--r-lg);
+    overflow: hidden;
+    border: 1px solid var(--slate-100);
+    box-shadow: var(--shadow-sm);
+    transition: var(--t-slow);
+    display: flex;
+    flex-direction: column;
+}
+.moreworks-item:hover {
+    transform: translateY(-6px);
+    box-shadow: var(--shadow-lg), var(--shadow-glow-sm);
+    border-color: var(--teal-200);
+}
+
+.moreworks-img-wrap {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: linear-gradient(135deg, var(--slate-100), var(--slate-50));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.moreworks-img-wrap img {
+    width: 100%;
+    height: auto;
+    display: block;
+    transition: var(--t-slow);
+}
+.moreworks-item:hover .moreworks-img-wrap img {
+    transform: scale(1.03);
+}
+
+.moreworks-placeholder {
+    padding: 60px 20px;
+    color: var(--slate-400);
+    opacity: 0.5;
+}
+
+.moreworks-caption {
+    padding: 16px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-top: 1px solid var(--slate-100);
+}
+.moreworks-num {
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: var(--teal-500);
+    background: var(--teal-50);
+    padding: 4px 10px;
+    border-radius: var(--r-full);
+    letter-spacing: 0.05em;
+}
+.moreworks-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--slate-600);
+}
+
+.moreworks-empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 80px 20px;
+    color: var(--slate-400);
+    text-align: center;
+}
+.moreworks-empty p {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--slate-500);
+}
+
+/* Active nav link */
+.nav a.active {
+    color: var(--teal-600);
+}
+.nav a.active::after {
+    width: 100%;
+}
+
+/* ============================================
+   DARK THEME — More Works
+   ============================================ */
+body.dark-theme .moreworks-section {
+    background: #3C3C3C;
+}
+body.dark-theme .moreworks-blob {
+    background: radial-gradient(circle, rgba(20,184,166,0.12) 0%, transparent 70%);
+}
+body.dark-theme .moreworks-item {
+    background: linear-gradient(180deg, #4a4a4a 0%, #3C3C3C 100%);
+    border-color: rgba(255,255,255,0.08);
+}
+body.dark-theme .moreworks-item:hover {
+    border-color: rgba(255,255,255,0.2);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.3), 0 0 30px rgba(20,184,166,0.1);
+}
+body.dark-theme .moreworks-img-wrap {
+    background: linear-gradient(135deg, #4a4a4a, #3C3C3C);
+}
+body.dark-theme .moreworks-placeholder {
+    color: rgba(255,255,255,0.3);
+}
+body.dark-theme .moreworks-caption {
+    border-top-color: rgba(255,255,255,0.08);
+}
+body.dark-theme .moreworks-num {
+    background: rgba(20,184,166,0.15);
+    color: var(--teal-300);
+}
+body.dark-theme .moreworks-name {
+    color: rgba(255,255,255,0.7);
+}
+body.dark-theme .moreworks-empty {
+    color: rgba(255,255,255,0.4);
+}
+body.dark-theme .moreworks-empty p {
+    color: rgba(255,255,255,0.6);
+}
+
+/* ============================================
+   RESPONSIVE — More Works
+   ============================================ */
+@media (max-width: 768px) {
+    .moreworks-section {
+        padding: 120px 0 60px;
+    }
+    .moreworks-grid {
+        grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+        gap: 20px;
+    }
+}
+@media (max-width: 480px) {
+    .moreworks-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+    .moreworks-caption {
+        padding: 12px 16px;
+    }
+}

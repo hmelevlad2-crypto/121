@@ -78,7 +78,12 @@ const translations = {
         admin_wide: 'Широкое (2 колонки)',
         admin_empty: 'Нет загруженных фото',
         admin_close: 'Закрыть',
-        gallery_more: 'Больше работ'
+        gallery_more: 'Больше работ',
+        moreworks_title: 'Все работы — Людмила Краусе',
+        moreworks_heading: 'Все работы',
+        moreworks_subtitle: 'Полная коллекция работ и ученических проектов',
+        moreworks_empty: 'Пока нет загруженных работ',
+        moreworks_admin: 'Загрузить работы'
     },
     de: {
         logo: 'Mila Krause',
@@ -153,17 +158,22 @@ const translations = {
         admin_wide: 'Breit (2 Spalten)',
         admin_empty: 'Keine Fotos hochgeladen',
         admin_close: 'Schließen',
-        gallery_more: 'Mehr Werke'
+        gallery_more: 'Mehr Werke',
+        moreworks_title: 'Alle Werke — Ljudmila Krause',
+        moreworks_heading: 'Alle Werke',
+        moreworks_subtitle: 'Die komplette Sammlung von Werken und Schülerprojekten',
+        moreworks_empty: 'Noch keine Werke hochgeladen',
+        moreworks_admin: 'Werke hochladen'
     }
 };
 
 let currentLang = 'ru';
 let db = null;
 
-// Замените на URL своей полной галереи (Instagram, Behance и т.д.)
-const GALLERY_MORE_URL = 'https://www.instagram.com/mila.krause/';
+const GALLERY_MORE_URL = 'moreworks.html';
 const DB_NAME = 'MilaKrauseDB';
 const DB_VERSION = 1;
+const IS_MOREWORKS = location.pathname.includes('moreworks');
 
 // ============================================
 // IndexedDB
@@ -246,7 +256,7 @@ function fileToBase64(file) {
 }
 
 // ============================================
-// Render
+// Render — главная страница
 // ============================================
 async function renderGallery() {
     const grid = document.getElementById('galleryGrid');
@@ -262,7 +272,6 @@ async function renderGallery() {
     const t = translations[currentLang];
 
     if (items.length === 0) {
-        // Показываем placeholder'ы по умолчанию
         const defaults = [
             { id: 'p1', wide: true },
             { id: 'p2', wide: false },
@@ -286,7 +295,6 @@ async function renderGallery() {
         return;
     }
 
-    // Показываем максимум 6 работ
     const visibleItems = items.slice(0, 6);
     visibleItems.forEach((item) => {
         const div = document.createElement('div');
@@ -305,12 +313,10 @@ async function renderGallery() {
         grid.appendChild(div);
     });
 
-    // Если работ больше 6 — показываем кнопку
     if (items.length > 6 && moreWrap) {
         const btn = document.createElement('a');
         btn.className = 'btn btn-primary gallery-more-btn';
         btn.href = GALLERY_MORE_URL;
-        btn.target = '_blank';
         btn.textContent = t.gallery_more || 'Больше работ';
         moreWrap.appendChild(btn);
     }
@@ -340,6 +346,55 @@ async function renderAboutPhoto() {
 }
 
 // ============================================
+// Render — страница всех работ
+// ============================================
+async function renderMoreWorks() {
+    const grid = document.getElementById('moreworksGrid');
+    const empty = document.getElementById('moreworksEmpty');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    let items = [];
+    if (db) {
+        try { items = await getGallery(); } catch(e) { console.warn('MoreWorks load error:', e); }
+    }
+
+    if (items.length === 0) {
+        if (empty) empty.style.display = 'flex';
+        return;
+    }
+    if (empty) empty.style.display = 'none';
+
+    items.forEach((item, idx) => {
+        const div = document.createElement('div');
+        div.className = 'moreworks-item';
+        const alt = currentLang === 'ru' ? (item.alt_ru || ('Работа ' + (idx + 1))) : (item.alt_de || ('Werk ' + (idx + 1)));
+        if (item.data) {
+            div.innerHTML = `
+                <div class="moreworks-img-wrap">
+                    <img src="${item.data}" alt="${alt}" loading="lazy">
+                </div>
+                <div class="moreworks-caption">
+                    <span class="moreworks-num">#${idx + 1}</span>
+                    <span class="moreworks-name">${alt}</span>
+                </div>
+            `;
+        } else {
+            div.innerHTML = `
+                <div class="moreworks-img-wrap moreworks-placeholder">
+                    <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
+                </div>
+                <div class="moreworks-caption">
+                    <span class="moreworks-num">#${idx + 1}</span>
+                    <span class="moreworks-name">${alt}</span>
+                </div>
+            `;
+        }
+        grid.appendChild(div);
+    });
+}
+
+// ============================================
 // Translations
 // ============================================
 function setLanguage(lang, animate = true) {
@@ -352,14 +407,22 @@ function setLanguage(lang, animate = true) {
 
         setTimeout(() => {
             applyTranslations(t, lang);
-            renderGallery();
-            renderAboutPhoto();
+            if (IS_MOREWORKS) {
+                renderMoreWorks();
+            } else {
+                renderGallery();
+                renderAboutPhoto();
+            }
             document.body.style.opacity = '1';
         }, 200);
     } else {
         applyTranslations(t, lang);
-        renderGallery();
-        renderAboutPhoto();
+        if (IS_MOREWORKS) {
+            renderMoreWorks();
+        } else {
+            renderGallery();
+            renderAboutPhoto();
+        }
     }
 }
 
@@ -426,8 +489,13 @@ function copyEmail(e) {
 document.addEventListener('DOMContentLoaded', async function() {
     initTheme();
     try { await openDB(); } catch(e) { console.warn('IndexedDB недоступен:', e); }
-    await renderGallery();
-    await renderAboutPhoto();
+
+    if (IS_MOREWORKS) {
+        await renderMoreWorks();
+    } else {
+        await renderGallery();
+        await renderAboutPhoto();
+    }
 
     const savedLang = localStorage.getItem('lang');
     if (savedLang && savedLang !== currentLang) {
@@ -511,25 +579,26 @@ document.addEventListener('DOMContentLoaded', async function() {
         });
     }
 
-    // Smooth scroll
-    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-        anchor.addEventListener('click', function(e) {
-            e.preventDefault();
-            const target = document.querySelector(this.getAttribute('href'));
-            if (target) {
-                const offset = 80;
-                const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
-                window.scrollTo({ top: targetPosition, behavior: 'smooth' });
-            }
+    // Smooth scroll (только на главной)
+    if (!IS_MOREWORKS) {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    const offset = 80;
+                    const targetPosition = target.getBoundingClientRect().top + window.pageYOffset - offset;
+                    window.scrollTo({ top: targetPosition, behavior: 'smooth' });
+                }
+            });
         });
-    });
 
-    // Hero scroll indicator
-    const heroScroll = document.querySelector('.hero-scroll');
-    if (heroScroll) {
-        heroScroll.addEventListener('click', () => {
-            const services = document.getElementById('services');
-            if (services) services.scrollIntoView({ behavior: 'smooth' });
-        });
+        const heroScroll = document.querySelector('.hero-scroll');
+        if (heroScroll) {
+            heroScroll.addEventListener('click', () => {
+                const services = document.getElementById('services');
+                if (services) services.scrollIntoView({ behavior: 'smooth' });
+            });
+        }
     }
 });
