@@ -255,14 +255,14 @@ body {
 .logo {
     display: flex; align-items: center; gap: 12px;
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.05rem; font-weight: 700;
+    font-size: 1.35rem; font-weight: 800;
     color: var(--teal-600); text-decoration: none;
-    letter-spacing: -0.02em; white-space: nowrap;
+    letter-spacing: -0.03em; white-space: nowrap;
     background: var(--gradient-teal);
     -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .logo-img {
-    width: 40px; height: 40px; border-radius: 50%;
+    width: 46px; height: 46px; border-radius: 50%;
     object-fit: cover; border: 2px solid var(--teal-200);
     box-shadow: var(--shadow-glow-sm);
     flex-shrink: 0;
@@ -285,15 +285,16 @@ body {
 /* Button "Связаться" in header */
 .btn-small {
     display: inline-flex; align-items: center; justify-content: center;
-    padding: 5px 12px; font-family: 'Montserrat', sans-serif;
-    font-size: 0.68rem; font-weight: 700; border-radius: var(--r-full);
+    padding: 3px 10px; font-family: 'Montserrat', sans-serif;
+    font-size: 0.6rem; font-weight: 700; border-radius: var(--r-full);
     text-decoration: none; cursor: pointer; transition: var(--t); border: none;
     background: var(--gradient-teal); color: var(--white);
-    box-shadow: 0 3px 10px rgba(13,148,136,0.25);
+    box-shadow: 0 2px 8px rgba(13,148,136,0.25);
     white-space: nowrap;
     margin-left: 8px;
+    letter-spacing: 0.02em;
 }
-.btn-small:hover { transform: translateY(-2px); box-shadow: 0 5px 16px rgba(13,148,136,0.35); }
+.btn-small:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(13,148,136,0.35); }
 
 /* Theme toggle */
 .theme-toggle {

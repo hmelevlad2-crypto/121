@@ -651,31 +651,62 @@
         const loginError = document.getElementById('loginError');
         const logoutBtn = document.getElementById('logoutBtn');
 
+        function showLoginError(msg) {
+            loginError.textContent = msg;
+            loginError.classList.add('show');
+            setTimeout(() => loginError.classList.remove('show'), 4000);
+        }
+
         function checkAuth() {
-            if (sessionStorage.getItem('admin_auth') === 'ok') {
-                loginWrap.style.display = 'none';
-                dashboard.classList.add('open');
-                initDashboard();
+            try {
+                if (sessionStorage.getItem('admin_auth') === 'ok') {
+                    loginWrap.style.display = 'none';
+                    dashboard.classList.add('open');
+                    initDashboard();
+                }
+            } catch (e) {
+                showLoginError('Ошибка доступа: ' + e.message);
+                console.error('Auth check error:', e);
             }
         }
-        loginBtn.addEventListener('click', () => {
-            if (loginPass.value === PASSWORD) {
+
+        async function doLogin() {
+            try {
+                loginError.classList.remove('show');
+                const val = loginPass.value.trim();
+
+                if (!val) {
+                    showLoginError('Введите пароль');
+                    loginPass.focus();
+                    return;
+                }
+
+                if (val !== PASSWORD) {
+                    showLoginError('Неверный пароль');
+                    loginPass.value = '';
+                    loginPass.focus();
+                    return;
+                }
+
                 sessionStorage.setItem('admin_auth', 'ok');
                 localStorage.setItem('mila_last_login', new Date().toISOString());
                 loginWrap.style.display = 'none';
                 dashboard.classList.add('open');
-                initDashboard();
-            } else {
-                loginError.classList.add('show');
-                loginPass.value = '';
-                loginPass.focus();
+                await initDashboard();
+            } catch (e) {
+                showLoginError('Системная ошибка: ' + e.message);
+                console.error('Login error:', e);
             }
-        });
+        }
+
+        loginBtn.addEventListener('click', doLogin);
         loginPass.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') loginBtn.click();
+            if (e.key === 'Enter') doLogin();
         });
         logoutBtn.addEventListener('click', () => {
-            sessionStorage.removeItem('admin_auth');
+            try {
+                sessionStorage.removeItem('admin_auth');
+            } catch(e) {}
             location.reload();
         });
 
