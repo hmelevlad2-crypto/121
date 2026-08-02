@@ -56,9 +56,9 @@ const translations = {
         gallery_title: 'Галерея',
         gallery_subtitle: 'Фрагменты работ и ученических проектов в разных техниках',
         // Категории галереи
-        gallery_tab_personal: '🎨 Личная',
-        gallery_tab_students: '👨‍🎓 Ученики',
-        gallery_tab_neuro: '✏️ Нейрографика',
+        gallery_tab_personal: 'Личная',
+        gallery_tab_students: 'Ученики',
+        gallery_tab_neuro: 'Нейрографика',
         work_1: 'Работа 1',
         work_2: 'Работа 2',
         work_3: 'Работа 3',
@@ -130,9 +130,9 @@ const translations = {
         gallery_label: 'Portfolio',
         gallery_title: 'Galerie',
         gallery_subtitle: 'Ausschnitte aus Werken und Schülerprojekten in verschiedenen Techniken',
-        gallery_tab_personal: '🎨 Persönlich',
-        gallery_tab_students: '👨‍🎓 Schüler',
-        gallery_tab_neuro: '✏️ Neurographik',
+        gallery_tab_personal: 'Persönlich',
+        gallery_tab_students: 'Schüler',
+        gallery_tab_neuro: 'Neurographik',
         work_1: 'Werk 1',
         work_2: 'Werk 2',
         work_3: 'Werk 3',
@@ -273,8 +273,17 @@ async function renderGallery() {
             tab.addEventListener('click', async function() {
                 tabsWrap.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
-                currentGalleryCategory = this.dataset.category;
-                await renderGalleryItems();
+                const grid = document.getElementById('galleryGrid');
+                if (grid) {
+                    grid.classList.add('switching');
+                    await new Promise(r => setTimeout(r, 250));
+                    currentGalleryCategory = this.dataset.category;
+                    await renderGalleryItems();
+                    grid.classList.remove('switching');
+                } else {
+                    currentGalleryCategory = this.dataset.category;
+                    await renderGalleryItems();
+                }
             });
         });
     }
@@ -404,8 +413,17 @@ async function renderMoreWorks() {
             tab.addEventListener('click', async function() {
                 tabsWrap.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
                 this.classList.add('active');
-                currentGalleryCategory = this.dataset.category;
-                await renderMoreWorksItems();
+                const grid = document.getElementById('moreworksGrid');
+                if (grid) {
+                    grid.classList.add('switching');
+                    await new Promise(r => setTimeout(r, 250));
+                    currentGalleryCategory = this.dataset.category;
+                    await renderMoreWorksItems();
+                    grid.classList.remove('switching');
+                } else {
+                    currentGalleryCategory = this.dataset.category;
+                    await renderMoreWorksItems();
+                }
             });
         });
     }
