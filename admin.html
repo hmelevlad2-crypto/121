@@ -106,7 +106,7 @@
 
         .admin-upload-row {
             display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         .admin-upload-row input[type="file"] {
             font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
@@ -250,7 +250,14 @@
         .activity-text span { font-size: 0.78rem; color: var(--slate-500); display: block; margin-top: 2px; }
         .activity-time { font-size: 0.75rem; color: var(--slate-400); font-weight: 600; white-space: nowrap; }
 
-        .upload-hint { font-size: 0.8rem; color: var(--slate-400); margin-top: -10px; margin-bottom: 16px; }
+        .upload-hint { font-size: 0.8rem; color: var(--slate-400); margin-top: -6px; margin-bottom: 16px; }
+        .url-row {
+            display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center;
+        }
+        .url-row input {
+            flex: 1; min-width: 200px; margin-bottom: 0 !important;
+            text-align: left !important; letter-spacing: 0 !important; font-weight: 500 !important;
+        }
 
         /* CROPPER */
         .cropper-modal {
@@ -410,6 +417,8 @@
             .cropper-panel { max-height: 95vh; }
             .cropper-body { padding: 16px; }
             .cropper-preview-wrap { justify-content: center; }
+            .url-row { flex-direction: column; align-items: stretch; }
+            .url-row input { width: 100%; }
         }
     </style>
 </head>
@@ -505,27 +514,6 @@
 
             <div class="admin-section-card">
                 <h3>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
-                    Облачное хранилище (Cloudinary)
-                </h3>
-                <p class="upload-hint">Чтобы фото были видны всем посетителям с любого устройства, загружайте их в облако. <a href="https://cloudinary.com" target="_blank" style="color:var(--teal-600);">cloudinary.com</a> — бесплатный тариф.</p>
-                <div style="display:flex; flex-direction:column; gap:12px; margin-bottom:16px;">
-                    <input type="text" class="login-input" id="cloudName" style="text-align:left; margin-bottom:0; font-weight:500; letter-spacing:0;" placeholder="Cloud Name (например, myname)">
-                    <input type="text" class="login-input" id="uploadPreset" style="text-align:left; margin-bottom:0; font-weight:500; letter-spacing:0;" placeholder="Upload Preset (например, mila_preset)">
-                </div>
-                <label class="admin-check" style="margin-bottom:16px;">
-                    <input type="checkbox" id="useCloudinary">
-                    <span>Использовать Cloudinary для новых загрузок</span>
-                </label>
-                <div class="admin-upload-row">
-                    <button type="button" class="admin-btn admin-btn-primary" id="btnSaveCloudinary">💾 Сохранить настройки</button>
-                    <button type="button" class="admin-btn admin-btn-outline" id="btnTestCloudinary">🧪 Проверить связь</button>
-                </div>
-                <div id="cloudinaryStatus" style="margin-top:12px; font-size:0.85rem; font-weight:600;"></div>
-            </div>
-
-            <div class="admin-section-card">
-                <h3>
                     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
                     Фото художника (раздел «Обо мне»)
                 </h3>
@@ -534,6 +522,10 @@
                     <button type="button" class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить фото</button>
                 </div>
                 <p class="upload-hint">Выберите файл — откроется редактор обрезки (3:4)</p>
+                <div class="url-row">
+                    <input type="text" class="login-input" id="aboutUrl" placeholder="Или вставьте ссылку на фото (imgur и т.д.)">
+                    <button type="button" class="admin-btn admin-btn-primary" id="aboutUrlBtn">Добавить по ссылке</button>
+                </div>
                 <div class="admin-preview" id="aboutPreview">
                     <div class="admin-preview-empty">Фото не загружено</div>
                 </div>
@@ -552,6 +544,10 @@
                     </label>
                 </div>
                 <p class="upload-hint">Выберите файл — откроется редактор обрезки. Можно несколько.</p>
+                <div class="url-row">
+                    <input type="text" class="login-input" id="galleryUrl" placeholder="Или вставьте ссылку на фото (imgur и т.д.)">
+                    <button type="button" class="admin-btn admin-btn-primary" id="galleryUrlBtn">Добавить по ссылке</button>
+                </div>
                 <div class="admin-gallery-grid" id="galleryGridAdmin">
                     <div class="admin-empty-msg">Нет загруженных работ</div>
                 </div>
@@ -587,7 +583,6 @@
     </div>
 
     <script>
-
         const PASSWORD = '123123';
         const DB_NAME = 'MilaKrauseDB';
         const DB_VERSION = 1;
@@ -651,51 +646,7 @@
             });
         }
 
-        // ============================================
-// CLOUDINARY
-// ============================================
-async function uploadToCloudinary(dataUrl) {
-    const cloudName = localStorage.getItem('mila_cloud_name');
-    const uploadPreset = localStorage.getItem('mila_upload_preset');
-    if (!cloudName || !uploadPreset) throw new Error('Cloudinary не настроен: заполните Cloud Name и Upload Preset');
-
-    const formData = new FormData();
-    // dataUrl -> blob
-    const resFetch = await fetch(dataUrl);
-    const blob = await resFetch.blob();
-    formData.append('file', blob, 'photo.jpg');
-    formData.append('upload_preset', uploadPreset);
-
-    const res = await fetch('https://api.cloudinary.com/v1_1/' + cloudName + '/image/upload', {
-        method: 'POST',
-        body: formData
-    });
-    if (!res.ok) {
-        const errText = await res.text();
-        throw new Error('Cloudinary ошибка ' + res.status + ': ' + errText);
-    }
-    const data = await res.json();
-    if (!data.secure_url) throw new Error('Cloudinary не вернул ссылку');
-    return data.secure_url;
-}
-
-function loadCloudinarySettings() {
-    const cloudName = localStorage.getItem('mila_cloud_name') || '';
-    const uploadPreset = localStorage.getItem('mila_upload_preset') || '';
-    const useCloud = localStorage.getItem('mila_use_cloudinary') === 'true';
-    document.getElementById('cloudName').value = cloudName;
-    document.getElementById('uploadPreset').value = uploadPreset;
-    document.getElementById('useCloudinary').checked = useCloud;
-}
-
-function showCloudStatus(msg, isError) {
-    const el = document.getElementById('cloudinaryStatus');
-    el.textContent = msg;
-    el.style.color = isError ? 'var(--coral)' : 'var(--teal-600)';
-    setTimeout(() => { el.textContent = ''; }, 5000);
-}
-
-// Theme
+        // Theme
         function initAdminTheme() {
             const saved = localStorage.getItem('theme');
             if (saved === 'dark') document.body.classList.add('dark-theme');
@@ -796,7 +747,6 @@ function showCloudStatus(msg, isError) {
         // Dashboard
         async function initDashboard() {
             await openDB();
-            loadCloudinarySettings();
             await renderAboutPreview();
             await renderGalleryAdmin();
             await updateStats();
@@ -866,12 +816,14 @@ function showCloudStatus(msg, isError) {
             enqueueCrop(dataUrl, 'about');
             aboutInput.value = '';
         });
+
         aboutDeleteBtn.addEventListener('click', async () => {
             if (!confirm('Удалить фото художника?')) return;
             await deleteAboutPhoto();
             await renderAboutPreview();
             await updateStats();
         });
+
         async function renderAboutPreview() {
             const photo = await getAboutPhoto();
             if (photo && photo.data) {
@@ -880,6 +832,18 @@ function showCloudStatus(msg, isError) {
                 aboutPreview.innerHTML = '<div class="admin-preview-empty">Фото не загружено</div>';
             }
         }
+
+        // About by URL
+        document.getElementById('aboutUrlBtn').addEventListener('click', async () => {
+            const url = document.getElementById('aboutUrl').value.trim();
+            if (!url) return;
+            await setAboutPhoto({ data: url, type: 'url', alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+            localStorage.setItem('mila_last_about_update', new Date().toISOString());
+            document.getElementById('aboutUrl').value = '';
+            await renderAboutPreview();
+            await updateStats();
+            await renderActivity();
+        });
 
         // Gallery
         const galleryInput = document.getElementById('galleryInput');
@@ -897,6 +861,28 @@ function showCloudStatus(msg, isError) {
             galleryWide.checked = false;
         });
 
+        // Gallery by URL
+        document.getElementById('galleryUrlBtn').addEventListener('click', async () => {
+            const url = document.getElementById('galleryUrl').value.trim();
+            if (!url) return;
+            const items = await getGallery();
+            items.push({
+                id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+                data: url,
+                type: 'url',
+                wide: galleryWide.checked,
+                alt_ru: 'Работа',
+                alt_de: 'Werk'
+            });
+            await setGallery(items);
+            localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
+            document.getElementById('galleryUrl').value = '';
+            galleryWide.checked = false;
+            await renderGalleryAdmin();
+            await updateStats();
+            await renderActivity();
+        });
+
         async function renderGalleryAdmin() {
             const items = await getGallery();
             if (items.length === 0) {
@@ -904,7 +890,7 @@ function showCloudStatus(msg, isError) {
                 return;
             }
             galleryGridAdmin.innerHTML = items.map((item, idx) => {
-                return '<div class="admin-gallery-item"><img src="' + item.data + '" alt=""><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' · ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button type="button" onclick="deleteGalleryItem(&quot;' + item.id + '&quot;)">Удалить</button></div></div>';
+                return '<div class="admin-gallery-item"><img src="' + item.data + '" alt=""><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' &middot; ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button type="button" onclick="deleteGalleryItem(&quot;' + item.id + '&quot;)">Удалить</button></div></div>';
             }).join('');
         }
 
@@ -991,20 +977,8 @@ function showCloudStatus(msg, isError) {
             try {
                 const result = await openCropper(task.dataUrl, task.mode, task.wide);
                 if (result) {
-                    let photoData = result;
-                    let photoType = 'base64';
-
-                    // Если включен Cloudinary — загружаем в облако
-                    if (localStorage.getItem('mila_use_cloudinary') === 'true') {
-                        try {
-                            photoData = await uploadToCloudinary(result);
-                            photoType = 'url';
-                            showCloudStatus('✅ Фото загружено в облако', false);
-                        } catch (cloudErr) {
-                            console.warn('Cloudinary upload failed, saving locally:', cloudErr);
-                            showCloudStatus('⚠️ Облако недоступно, сохранено локально: ' + cloudErr.message, true);
-                        }
-                    }
+                    const photoData = result;
+                    const photoType = 'base64';
 
                     if (task.mode === 'about') {
                         await setAboutPhoto({ data: photoData, type: photoType, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
@@ -1270,37 +1244,6 @@ function showCloudStatus(msg, isError) {
         cropperClose.addEventListener('click', closeCropper);
         cropperModal.addEventListener('click', function(e) {
             if (e.target === cropperModal) closeCropper();
-        });
-
-        // Cloudinary handlers
-        document.getElementById('btnSaveCloudinary').addEventListener('click', function() {
-            const cn = document.getElementById('cloudName').value.trim();
-            const up = document.getElementById('uploadPreset').value.trim();
-            const use = document.getElementById('useCloudinary').checked;
-            localStorage.setItem('mila_cloud_name', cn);
-            localStorage.setItem('mila_upload_preset', up);
-            localStorage.setItem('mila_use_cloudinary', use ? 'true' : 'false');
-            showCloudStatus('✅ Настройки сохранены', false);
-        });
-
-        document.getElementById('btnTestCloudinary').addEventListener('click', async function() {
-            const cn = document.getElementById('cloudName').value.trim();
-            const up = document.getElementById('uploadPreset').value.trim();
-            if (!cn || !up) {
-                showCloudStatus('❌ Заполните Cloud Name и Upload Preset', true);
-                return;
-            }
-            showCloudStatus('⏳ Проверка связи...', false);
-            try {
-                // Создаём 1x1 пиксель для теста
-                const canvas = document.createElement('canvas');
-                canvas.width = 1; canvas.height = 1;
-                const testUrl = canvas.toDataURL('image/png');
-                await uploadToCloudinary(testUrl);
-                showCloudStatus('✅ Связь с Cloudinary работает!', false);
-            } catch (e) {
-                showCloudStatus('❌ Ошибка: ' + e.message, true);
-            }
         });
 
         window.addEventListener('error', function(e) {
