@@ -11,22 +11,19 @@
         :root {
             --teal-50: #f0fdfa; --teal-100: #ccfbf1; --teal-200: #99f6e4;
             --teal-300: #5eead4; --teal-400: #2dd4bf; --teal-500: #14b8a6;
-            --teal-600: #0d9488; --teal-700: #0f766e; --teal-800: #115e59; --teal-900: #134e4a;
-            --coral: #f97066; --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0;
+            --teal-600: #0d9488; --teal-700: #0f766e; --teal-800: #115e59;
+            --coral: #f97066; --rose: #fb7185;
+            --purple: #a78bfa; --indigo: #818cf8;
+            --gold: #f59e0b; --amber: #fbbf24;
+            --slate-50: #f8fafc; --slate-100: #f1f5f9; --slate-200: #e2e8f0;
             --slate-300: #cbd5e1; --slate-400: #94a3b8; --slate-500: #64748b;
             --slate-600: #475569; --slate-700: #334155; --slate-800: #1e293b; --slate-900: #0f172a;
             --white: #ffffff;
-            --r-sm: 10px; --r-md: 16px; --r-lg: 24px; --r-xl: 32px; --r-full: 9999px;
+            --r-sm: 8px; --r-md: 14px; --r-lg: 20px; --r-xl: 28px; --r-full: 9999px;
             --t: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             --shadow-sm: 0 2px 8px rgba(15,23,42,0.06);
             --shadow-md: 0 4px 20px rgba(15,23,42,0.08);
             --shadow-lg: 0 12px 40px rgba(15,23,42,0.12);
-            --blue-bg: #dbeafe;
-            --purple-bg: #ede9fe;
-            --coral-bg: #fef3f2;
-            --gold-bg: #fef3c7;
-            --blue: #60a5fa;
-            --gold: #f59e0b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -39,6 +36,7 @@
             min-height: 100vh;
         }
 
+        /* Login */
         .login-wrap {
             display: flex; align-items: center; justify-content: center;
             min-height: 100vh; padding: 20px;
@@ -49,7 +47,7 @@
             box-shadow: var(--shadow-lg); text-align: center;
             border: 1px solid var(--slate-100);
         }
-        .login-card h1 { font-size: 1.5rem; font-weight: 800; color: var(--slate-900); margin-bottom: 8px; letter-spacing: -0.02em; }
+        .login-card h1 { font-size: 1.5rem; font-weight: 800; color: var(--slate-900); margin-bottom: 8px; }
         .login-card p { font-size: 0.9rem; color: var(--slate-500); margin-bottom: 32px; }
         .login-input {
             width: 100%; padding: 14px 18px; font-family: 'Montserrat', sans-serif;
@@ -76,20 +74,23 @@
         .dashboard { display: none; }
         .dashboard.open { display: block; }
 
+        /* Header */
         .admin-header-bar {
             background: linear-gradient(135deg, var(--teal-700), var(--teal-800));
-            color: var(--white); padding: 20px 0;
+            color: var(--white); padding: 16px 0;
             box-shadow: 0 4px 20px rgba(13,148,136,0.25);
         }
         .admin-header-inner {
-            max-width: 1100px; margin: 0 auto; padding: 0 28px;
+            max-width: 1200px; margin: 0 auto; padding: 0 28px;
             display: flex; align-items: center; justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 12px;
         }
-        .admin-header-inner h2 { font-size: 1.3rem; font-weight: 700; letter-spacing: -0.02em; }
-        .admin-header-actions { display: flex; gap: 12px; align-items: center; }
+        .admin-header-inner h2 { font-size: 1.2rem; font-weight: 700; letter-spacing: -0.02em; }
+        .admin-header-actions { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .admin-header-actions a, .admin-header-actions button {
-            font-family: 'Montserrat', sans-serif; font-size: 0.8rem; font-weight: 600;
-            color: var(--white); text-decoration: none; padding: 8px 16px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.78rem; font-weight: 600;
+            color: var(--white); text-decoration: none; padding: 6px 14px;
             border-radius: var(--r-full); border: 1px solid rgba(255,255,255,0.25);
             background: rgba(255,255,255,0.1); cursor: pointer; transition: var(--t);
         }
@@ -97,31 +98,74 @@
             background: rgba(255,255,255,0.2); border-color: rgba(255,255,255,0.4);
         }
 
-        .admin-container { max-width: 1100px; margin: 0 auto; padding: 40px 28px; }
+        .admin-container { max-width: 1200px; margin: 0 auto; padding: 30px 28px; }
 
+        /* Stats */
+        .admin-stats {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px; margin-bottom: 28px;
+        }
+        .admin-stat {
+            background: var(--white); border-radius: var(--r-lg);
+            padding: 20px; border: 1px solid var(--slate-100);
+            box-shadow: var(--shadow-sm); text-align: center;
+            transition: var(--t);
+        }
+        .admin-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .admin-stat-number {
+            font-size: 1.8rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+            line-height: 1.2;
+        }
+        .admin-stat-label { font-size: 0.75rem; color: var(--slate-500); font-weight: 600; margin-top: 4px; }
+
+        /* Category Tabs */
+        .category-tabs {
+            display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap;
+            background: var(--white); padding: 8px; border-radius: var(--r-lg);
+            border: 1px solid var(--slate-100);
+        }
+        .category-tab {
+            padding: 10px 22px; border: none; border-radius: var(--r-full);
+            font-family: 'Montserrat', sans-serif; font-size: 0.85rem; font-weight: 700;
+            color: var(--slate-500); background: transparent; cursor: pointer;
+            transition: var(--t); display: flex; align-items: center; gap: 8px;
+        }
+        .category-tab:hover { background: var(--slate-50); color: var(--slate-700); }
+        .category-tab.active {
+            background: var(--teal-50); color: var(--teal-700);
+            box-shadow: 0 2px 8px rgba(13,148,136,0.15);
+        }
+        .category-tab .badge-count {
+            background: var(--slate-200); color: var(--slate-600);
+            font-size: 0.65rem; padding: 2px 10px; border-radius: var(--r-full);
+            font-weight: 700;
+        }
+        .category-tab.active .badge-count {
+            background: var(--teal-200); color: var(--teal-700);
+        }
+        .category-tab-icon { font-size: 1.1rem; }
+
+        /* Sections */
         .admin-section-card {
             background: var(--white); border-radius: var(--r-xl);
-            border: 1px solid var(--slate-100); padding: 32px;
-            margin-bottom: 28px; box-shadow: var(--shadow-sm);
+            border: 1px solid var(--slate-100); padding: 28px;
+            margin-bottom: 24px; box-shadow: var(--shadow-sm);
         }
         .admin-section-card h3 {
-            font-size: 1.1rem; font-weight: 700; color: var(--slate-900);
-            margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+            font-size: 1rem; font-weight: 700; color: var(--slate-900);
+            margin-bottom: 16px; display: flex; align-items: center; gap: 10px;
         }
-        .admin-section-card h3 svg { color: var(--teal-500); }
 
         .admin-upload-row {
-            display: flex; flex-wrap: wrap; gap: 14px; align-items: center;
+            display: flex; flex-wrap: wrap; gap: 12px; align-items: center;
             margin-bottom: 12px;
         }
-        .admin-upload-row input[type="file"] {
-            font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
-            color: var(--slate-600); flex: 1 1 200px;
-        }
         .admin-btn {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 10px 22px; font-family: 'Montserrat', sans-serif;
-            font-size: 0.85rem; font-weight: 700; border: none;
+            display: inline-flex; align-items: center; gap: 6px;
+            padding: 8px 18px; font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem; font-weight: 700; border: none;
             border-radius: var(--r-full); cursor: pointer; transition: var(--t);
         }
         .admin-btn-primary {
@@ -136,279 +180,142 @@
         .admin-btn-danger:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(249,112,102,0.35); }
         .admin-btn-secondary { background: var(--slate-100); color: var(--slate-700); }
         .admin-btn-secondary:hover { background: var(--slate-200); }
-        .admin-btn-outline { background: transparent; color: var(--teal-600); border: 2px solid var(--teal-200); }
-        .admin-btn-outline:hover { background: var(--teal-50); border-color: var(--teal-400); }
+        .admin-btn-sm { padding: 6px 12px; font-size: 0.7rem; }
 
-        .admin-check {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 0.85rem; font-weight: 600; color: var(--slate-600);
-            cursor: pointer; user-select: none;
-        }
-        .admin-check input { width: 18px; height: 18px; accent-color: var(--teal-600); cursor: pointer; }
-
-        .admin-preview {
-            max-width: 280px; border-radius: var(--r-lg); overflow: hidden;
-            border: 2px solid var(--slate-100); box-shadow: var(--shadow-sm);
-        }
-        .admin-preview img { width: 100%; height: auto; display: block; }
-        .admin-preview-empty {
-            padding: 40px; text-align: center; color: var(--slate-400);
-            font-size: 0.85rem; font-weight: 600;
-        }
-
-        .admin-gallery-grid {
-            display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
-            gap: 16px;
-        }
-        .admin-gallery-item {
-            position: relative; border-radius: var(--r-md); overflow: hidden;
-            background: var(--slate-100); aspect-ratio: 1; border: 2px solid var(--slate-100);
-            transition: var(--t);
-        }
-        .admin-gallery-item:hover { border-color: var(--teal-300); transform: translateY(-3px); box-shadow: var(--shadow-md); }
-        .admin-gallery-item img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .admin-gallery-overlay {
-            position: absolute; inset: 0; background: rgba(0,0,0,0.45);
-            display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 8px; opacity: 0; transition: var(--t); backdrop-filter: blur(2px);
-        }
-        .admin-gallery-item:hover .admin-gallery-overlay { opacity: 1; }
-        .admin-gallery-overlay span {
-            font-size: 0.7rem; font-weight: 700; color: #fff;
-            text-transform: uppercase; letter-spacing: 0.05em;
-            background: rgba(0,0,0,0.4); padding: 3px 10px; border-radius: var(--r-full);
-        }
-        .admin-gallery-overlay button {
-            padding: 6px 14px; font-size: 0.75rem; font-weight: 700;
-            border: none; border-radius: var(--r-sm); cursor: pointer;
-            background: var(--coral); color: #fff; transition: var(--t);
-        }
-        .admin-gallery-overlay button:hover { background: #e85d50; transform: scale(1.05); }
-        .admin-empty-msg {
-            grid-column: 1 / -1; text-align: center; padding: 40px;
-            color: var(--slate-400); font-size: 0.9rem; font-weight: 500;
-        }
-
-        .admin-stats {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 16px; margin-bottom: 28px;
-        }
-        .admin-stat {
-            background: var(--white); border-radius: var(--r-lg);
-            padding: 24px; border: 1px solid var(--slate-100);
-            box-shadow: var(--shadow-sm); text-align: center;
-            transition: var(--t);
-        }
-        .admin-stat:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
-        .admin-stat-number {
-            font-size: 2.2rem; font-weight: 800;
-            background: linear-gradient(135deg, var(--teal-500), var(--teal-700));
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-            line-height: 1.2;
-        }
-        .admin-stat-label { font-size: 0.8rem; color: var(--slate-500); font-weight: 600; margin-top: 6px; }
-        .admin-stat-sublabel { font-size: 0.7rem; color: var(--slate-400); margin-top: 4px; }
-
-        .quick-grid {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 16px; margin-bottom: 28px;
-        }
-        .quick-card {
-            background: var(--white); border-radius: var(--r-lg);
-            border: 1px solid var(--slate-100); padding: 24px;
-            box-shadow: var(--shadow-sm); transition: var(--t);
-            text-decoration: none; color: inherit; display: flex;
-            align-items: center; gap: 16px; cursor: pointer;
-        }
-        .quick-card:hover {
-            transform: translateY(-4px); box-shadow: var(--shadow-md);
-            border-color: var(--teal-200);
-        }
-        .quick-icon {
-            width: 48px; height: 48px; border-radius: var(--r-md);
-            display: flex; align-items: center; justify-content: center;
-            flex-shrink: 0; font-size: 1.4rem;
-        }
-        .quick-icon-blue { background: var(--blue-bg); }
-        .quick-icon-purple { background: var(--purple-bg); }
-        .quick-icon-coral { background: var(--coral-bg); }
-        .quick-icon-gold { background: var(--gold-bg); }
-        .quick-text h4 { font-size: 0.95rem; font-weight: 700; color: var(--slate-900); margin-bottom: 2px; }
-        .quick-text p { font-size: 0.78rem; color: var(--slate-500); }
-
-        .activity-list { display: flex; flex-direction: column; gap: 12px; }
-        .activity-item {
-            display: flex; align-items: center; gap: 14px;
-            padding: 14px 18px; background: var(--slate-50);
-            border-radius: var(--r-md); border: 1px solid var(--slate-100);
-            transition: var(--t);
-        }
-        .activity-item:hover { background: var(--teal-50); border-color: var(--teal-100); }
-        .activity-dot {
-            width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0;
-        }
-        .activity-dot.green { background: var(--teal-500); box-shadow: 0 0 8px rgba(20,184,166,0.4); }
-        .activity-dot.blue { background: var(--blue); box-shadow: 0 0 8px rgba(96,165,250,0.4); }
-        .activity-dot.gold { background: var(--gold); box-shadow: 0 0 8px rgba(245,158,11,0.4); }
-        .activity-dot.coral { background: var(--coral); box-shadow: 0 0 8px rgba(249,112,102,0.4); }
-        .activity-text { flex: 1; }
-        .activity-text strong { font-size: 0.85rem; color: var(--slate-800); }
-        .activity-text span { font-size: 0.78rem; color: var(--slate-500); display: block; margin-top: 2px; }
-        .activity-time { font-size: 0.75rem; color: var(--slate-400); font-weight: 600; white-space: nowrap; }
-
-        .upload-hint { font-size: 0.8rem; color: var(--slate-400); margin-top: -6px; margin-bottom: 16px; }
         .url-row {
-            display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center;
+            display: flex; gap: 10px; margin-top: 8px; flex-wrap: wrap; align-items: center;
         }
         .url-row input {
-            flex: 1; min-width: 200px; margin-bottom: 0 !important;
-            text-align: left !important; letter-spacing: 0 !important; font-weight: 500 !important;
+            flex: 1; min-width: 200px; padding: 10px 14px;
+            font-family: 'Montserrat', sans-serif; font-size: 0.85rem;
+            border: 2px solid var(--slate-200); border-radius: var(--r-md);
+            outline: none; transition: var(--t); background: var(--slate-50);
+            color: var(--slate-800); font-weight: 500;
         }
+        .url-row input:focus { border-color: var(--teal-400); background: var(--white); }
         .url-status {
-            font-size: 0.8rem; font-weight: 600; margin-top: 8px; min-height: 20px;
+            font-size: 0.78rem; font-weight: 600; margin-top: 6px; min-height: 20px;
         }
         .url-status.ok { color: var(--teal-600); }
         .url-status.err { color: var(--coral); }
         .url-tip {
-            font-size: 0.75rem; color: var(--slate-400); margin-top: 4px; line-height: 1.5;
+            font-size: 0.75rem; color: var(--slate-500); margin-top: 4px; line-height: 1.5;
+            background: var(--slate-50); padding: 10px 14px; border-radius: var(--r-sm);
+            border-left: 3px solid var(--teal-400);
         }
-        body.dark-theme .url-tip { color: rgba(255,255,255,0.4); }
+        .url-tip code {
+            background: var(--slate-200); padding: 1px 6px; border-radius: 4px;
+            font-size: 0.7rem; font-family: monospace;
+        }
 
-        /* CROPPER */
-        .cropper-modal {
-            position: fixed; inset: 0; z-index: 3000;
-            background: rgba(15,23,42,0.75);
-            backdrop-filter: blur(12px);
-            display: none; align-items: center; justify-content: center;
-            padding: 20px;
+        /* Gallery Grid */
+        .gallery-grid-admin {
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 14px; margin-top: 16px; min-height: 80px;
         }
-        .cropper-modal.open { display: flex; }
-        .cropper-panel {
-            background: var(--white); border-radius: var(--r-xl);
-            width: 100%; max-width: 720px;
-            max-height: 92vh; overflow: hidden;
-            display: flex; flex-direction: column;
-            box-shadow: var(--shadow-lg);
-            animation: cropperIn 0.3s cubic-bezier(0.4,0,0.2,1);
+        .gallery-grid-admin.drag-over {
+            background: var(--teal-50); border-radius: var(--r-md);
+            border: 2px dashed var(--teal-300);
         }
-        @keyframes cropperIn {
-            from { opacity: 0; transform: translateY(20px) scale(0.96); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+        .gallery-item-admin {
+            position: relative; border-radius: var(--r-md); overflow: hidden;
+            background: var(--slate-100); aspect-ratio: 1; border: 2px solid var(--slate-200);
+            transition: var(--t); cursor: grab; user-select: none;
         }
-        .cropper-header {
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 20px 28px; border-bottom: 1px solid var(--slate-100);
+        .gallery-item-admin:hover { border-color: var(--teal-300); transform: translateY(-3px); box-shadow: var(--shadow-md); }
+        .gallery-item-admin.dragging { opacity: 0.5; transform: scale(0.95); }
+        .gallery-item-admin.drag-over { border-color: var(--teal-500); box-shadow: 0 0 0 3px var(--teal-200); }
+        .gallery-item-admin img { width: 100%; height: 100%; object-fit: cover; display: block; }
+        .gallery-item-admin .drag-handle {
+            position: absolute; top: 6px; left: 6px;
+            background: rgba(0,0,0,0.5); color: #fff;
+            padding: 4px 8px; border-radius: var(--r-sm);
+            font-size: 0.6rem; font-weight: 700; cursor: grab;
+            backdrop-filter: blur(4px); opacity: 0;
+            transition: var(--t); letter-spacing: 0.05em;
         }
-        .cropper-header h3 { font-size: 1.1rem; font-weight: 700; color: var(--slate-900); }
-        .cropper-close {
-            width: 36px; height: 36px; border-radius: 50%; border: none;
-            background: var(--slate-100); color: var(--slate-600);
-            font-size: 1.4rem; cursor: pointer; transition: var(--t);
-            display: flex; align-items: center; justify-content: center;
+        .gallery-item-admin:hover .drag-handle { opacity: 1; }
+        .gallery-item-admin .item-overlay {
+            position: absolute; inset: 0; background: rgba(0,0,0,0.4);
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 6px; opacity: 0; transition: var(--t); backdrop-filter: blur(2px);
         }
-        .cropper-close:hover { background: var(--coral); color: #fff; }
+        .gallery-item-admin:hover .item-overlay { opacity: 1; }
+        .gallery-item-admin .item-overlay .item-num {
+            font-size: 0.65rem; font-weight: 700; color: #fff;
+            background: rgba(0,0,0,0.5); padding: 2px 10px; border-radius: var(--r-full);
+        }
+        .gallery-item-admin .item-overlay .btn-group {
+            display: flex; gap: 6px; flex-wrap: wrap; justify-content: center;
+        }
+        .gallery-item-admin .item-overlay button {
+            padding: 4px 10px; font-size: 0.65rem; font-weight: 700;
+            border: none; border-radius: var(--r-sm); cursor: pointer;
+            transition: var(--t);
+        }
+        .gallery-item-admin .item-overlay .btn-replace {
+            background: var(--gold); color: #fff;
+        }
+        .gallery-item-admin .item-overlay .btn-replace:hover { background: #d97706; transform: scale(1.05); }
+        .gallery-item-admin .item-overlay .btn-delete {
+            background: var(--coral); color: #fff;
+        }
+        .gallery-item-admin .item-overlay .btn-delete:hover { background: #e85d50; transform: scale(1.05); }
+        .gallery-item-admin .item-wide-badge {
+            position: absolute; bottom: 6px; right: 6px;
+            background: rgba(13,148,136,0.8); color: #fff;
+            font-size: 0.55rem; font-weight: 700; padding: 2px 8px;
+            border-radius: var(--r-full); backdrop-filter: blur(4px);
+        }
+        .admin-empty-msg {
+            grid-column: 1 / -1; text-align: center; padding: 40px;
+            color: var(--slate-400); font-size: 0.85rem; font-weight: 500;
+        }
 
-        .cropper-body {
-            padding: 24px 28px; overflow-y: auto;
-            display: flex; flex-direction: column; gap: 20px;
+        /* About photo */
+        .about-photo-preview {
+            max-width: 200px; border-radius: var(--r-lg); overflow: hidden;
+            border: 2px solid var(--slate-100); margin-top: 12px;
         }
-        .cropper-aspect { display: flex; gap: 10px; flex-wrap: wrap; }
-        .cropper-aspect-btn {
-            padding: 8px 16px; border-radius: var(--r-full); border: 2px solid var(--slate-200);
-            background: var(--white); font-family: 'Montserrat', sans-serif;
-            font-size: 0.8rem; font-weight: 700; color: var(--slate-600);
-            cursor: pointer; transition: var(--t);
+        .about-photo-preview img { width: 100%; height: auto; display: block; }
+        .about-photo-preview-empty {
+            padding: 30px; text-align: center; color: var(--slate-400);
+            font-size: 0.8rem; font-weight: 600;
         }
-        .cropper-aspect-btn:hover { border-color: var(--teal-300); color: var(--teal-600); }
-        .cropper-aspect-btn.active {
-            border-color: var(--teal-500); background: var(--teal-50); color: var(--teal-700);
-        }
-        .cropper-canvas-wrap {
-            position: relative;
-            width: 100%; max-width: 600px; margin: 0 auto;
-            border-radius: var(--r-md); overflow: hidden;
-            border: 2px solid var(--slate-200);
-            background: var(--slate-900);
-            cursor: crosshair;
-            touch-action: none;
-            user-select: none;
-        }
-        .cropper-canvas-wrap canvas { display: block; width: 100%; height: auto; }
-        .cropper-zoom { display: flex; align-items: center; gap: 14px; }
-        .cropper-zoom label { font-size: 0.85rem; font-weight: 700; color: var(--slate-600); white-space: nowrap; }
-        .cropper-zoom input[type="range"] { flex: 1; accent-color: var(--teal-500); }
-        .cropper-preview-block {
-            background: var(--slate-50); border-radius: var(--r-lg);
-            padding: 20px; border: 1px solid var(--slate-100);
-        }
-        .cropper-preview-block p {
-            font-size: 0.8rem; font-weight: 700; color: var(--slate-500);
-            text-transform: uppercase; letter-spacing: 0.06em;
-            margin-bottom: 14px;
-        }
-        .cropper-preview-wrap { display: flex; gap: 20px; flex-wrap: wrap; align-items: flex-start; }
-        .cropper-preview-item { text-align: center; }
-        .cropper-preview-item span { display: block; font-size: 0.7rem; font-weight: 600; color: var(--slate-400); margin-top: 8px; }
-        .cropper-preview-box {
-            border-radius: var(--r-md); overflow: hidden;
-            border: 2px solid var(--slate-200); background: var(--white);
-            box-shadow: var(--shadow-sm);
-        }
-        .cropper-preview-box img { width: 100%; height: 100%; object-fit: cover; display: block; }
-        .cropper-preview-normal { width: 120px; height: 120px; }
-        .cropper-preview-wide { width: 200px; height: 100px; }
-        .cropper-preview-about { width: 140px; height: 186px; }
-        .cropper-actions { display: flex; gap: 12px; justify-content: flex-end; padding-top: 8px; }
 
-        /* DARK THEME */
+        /* Dark theme */
         body.dark-theme { background: #3C3C3C; color: #f0f0f0; }
         body.dark-theme .login-card { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
-        body.dark-theme .login-card h1 { color: #ffffff; }
+        body.dark-theme .login-card h1 { color: #fff; }
         body.dark-theme .login-card p { color: rgba(255,255,255,0.5); }
         body.dark-theme .login-input { background: #3C3C3C; border-color: rgba(255,255,255,0.15); color: #f0f0f0; }
         body.dark-theme .login-input:focus { border-color: var(--teal-400); background: #4a4a4a; }
         body.dark-theme .login-error { color: #ff8a80; }
         body.dark-theme .admin-section-card { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
-        body.dark-theme .admin-section-card h3 { color: #ffffff; }
-        body.dark-theme .upload-hint { color: rgba(255,255,255,0.4); }
-        body.dark-theme .admin-preview { border-color: rgba(255,255,255,0.1); }
-        body.dark-theme .admin-preview-empty { color: rgba(255,255,255,0.3); }
-        body.dark-theme .admin-gallery-item { background: #3C3C3C; border-color: rgba(255,255,255,0.08); }
-        body.dark-theme .admin-gallery-item:hover { border-color: var(--teal-400); }
-        body.dark-theme .admin-empty-msg { color: rgba(255,255,255,0.4); }
+        body.dark-theme .admin-section-card h3 { color: #fff; }
         body.dark-theme .admin-stat { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
-        body.dark-theme .admin-stat-label, body.dark-theme .admin-stat-sublabel { color: rgba(255,255,255,0.5); }
-        body.dark-theme .admin-check { color: rgba(255,255,255,0.7); }
+        body.dark-theme .admin-stat-label { color: rgba(255,255,255,0.5); }
+        body.dark-theme .category-tabs { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
+        body.dark-theme .category-tab { color: rgba(255,255,255,0.6); }
+        body.dark-theme .category-tab:hover { background: rgba(255,255,255,0.05); color: #fff; }
+        body.dark-theme .category-tab.active { background: rgba(20,184,166,0.15); color: var(--teal-300); }
+        body.dark-theme .category-tab .badge-count { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.5); }
+        body.dark-theme .category-tab.active .badge-count { background: rgba(20,184,166,0.2); color: var(--teal-300); }
+        body.dark-theme .gallery-item-admin { background: #3C3C3C; border-color: rgba(255,255,255,0.1); }
+        body.dark-theme .gallery-item-admin:hover { border-color: var(--teal-400); }
         body.dark-theme .admin-btn-secondary { background: #525252; color: #f0f0f0; }
         body.dark-theme .admin-btn-secondary:hover { background: #5a5a5a; }
-        body.dark-theme .admin-btn-outline { color: var(--teal-300); border-color: rgba(255,255,255,0.2); }
-        body.dark-theme .admin-btn-outline:hover { background: rgba(20,184,166,0.15); border-color: var(--teal-400); }
-        body.dark-theme .quick-card { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
-        body.dark-theme .quick-card:hover { border-color: rgba(255,255,255,0.2); }
-        body.dark-theme .quick-text h4 { color: #ffffff; }
-        body.dark-theme .quick-text p { color: rgba(255,255,255,0.5); }
-        body.dark-theme .activity-item { background: #4a4a4a; border-color: rgba(255,255,255,0.08); }
-        body.dark-theme .activity-item:hover { background: rgba(20,184,166,0.1); border-color: rgba(20,184,166,0.2); }
-        body.dark-theme .activity-text strong { color: #f0f0f0; }
-        body.dark-theme .activity-text span { color: rgba(255,255,255,0.5); }
-        body.dark-theme .activity-time { color: rgba(255,255,255,0.4); }
-        body.dark-theme .cropper-panel { background: #4a4a4a; border: 1px solid rgba(255,255,255,0.08); }
-        body.dark-theme .cropper-header { border-bottom-color: rgba(255,255,255,0.08); }
-        body.dark-theme .cropper-header h3 { color: #ffffff; }
-        body.dark-theme .cropper-close { background: #525252; color: rgba(255,255,255,0.7); }
-        body.dark-theme .cropper-aspect-btn { background: #3C3C3C; border-color: rgba(255,255,255,0.15); color: rgba(255,255,255,0.7); }
-        body.dark-theme .cropper-aspect-btn:hover { border-color: var(--teal-400); color: #fff; }
-        body.dark-theme .cropper-aspect-btn.active { background: rgba(20,184,166,0.2); border-color: var(--teal-400); color: #fff; }
-        body.dark-theme .cropper-canvas-wrap { border-color: rgba(255,255,255,0.15); }
-        body.dark-theme .cropper-zoom label { color: rgba(255,255,255,0.7); }
-        body.dark-theme .cropper-preview-block { background: #3C3C3C; border-color: rgba(255,255,255,0.08); }
-        body.dark-theme .cropper-preview-block p { color: rgba(255,255,255,0.5); }
-        body.dark-theme .cropper-preview-box { background: #4a4a4a; border-color: rgba(255,255,255,0.1); }
-        body.dark-theme .cropper-preview-item span { color: rgba(255,255,255,0.4); }
+        body.dark-theme .url-row input { background: #3C3C3C; border-color: rgba(255,255,255,0.15); color: #f0f0f0; }
+        body.dark-theme .url-row input:focus { border-color: var(--teal-400); background: #4a4a4a; }
+        body.dark-theme .url-tip { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.6); border-left-color: var(--teal-400); }
+        body.dark-theme .url-tip code { background: rgba(255,255,255,0.1); color: #fff; }
+        body.dark-theme .admin-empty-msg { color: rgba(255,255,255,0.4); }
+        body.dark-theme .about-photo-preview { border-color: rgba(255,255,255,0.1); }
+        body.dark-theme .about-photo-preview-empty { color: rgba(255,255,255,0.3); }
 
         .admin-theme-toggle {
             display: flex; align-items: center; justify-content: center;
-            width: 36px; height: 36px; border-radius: 50%;
+            width: 34px; height: 34px; border-radius: 50%;
             background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2);
             color: #fff; cursor: pointer; transition: var(--t);
             position: relative; overflow: hidden;
@@ -421,19 +328,15 @@
         body.dark-theme .admin-theme-toggle .moon-icon { opacity: 1; transform: scale(1); }
 
         @media (max-width: 640px) {
-            .login-card { padding: 32px 24px; }
-            .admin-header-inner { flex-direction: column; gap: 12px; text-align: center; }
-            .admin-container { padding: 24px 16px; }
-            .admin-section-card { padding: 24px; }
-            .admin-upload-row { flex-direction: column; align-items: stretch; }
-            .admin-gallery-grid { grid-template-columns: repeat(2, 1fr); }
-            .admin-stats { grid-template-columns: repeat(2, 1fr); }
-            .quick-grid { grid-template-columns: 1fr; }
-            .cropper-panel { max-height: 95vh; }
-            .cropper-body { padding: 16px; }
-            .cropper-preview-wrap { justify-content: center; }
+            .login-card { padding: 28px 20px; }
+            .admin-header-inner { flex-direction: column; text-align: center; }
+            .admin-container { padding: 16px; }
+            .admin-section-card { padding: 18px; }
+            .gallery-grid-admin { grid-template-columns: repeat(2, 1fr); gap: 10px; }
             .url-row { flex-direction: column; align-items: stretch; }
-            .url-row input { width: 100%; }
+            .category-tabs { gap: 4px; }
+            .category-tab { padding: 8px 14px; font-size: 0.75rem; }
+            .admin-stats { grid-template-columns: repeat(2, 1fr); }
         }
     </style>
 </head>
@@ -455,9 +358,9 @@
                 <h2>⚙️ Админ-панель</h2>
                 <div class="admin-header-actions">
                     <a href="index.html">← На сайт</a>
-                    <button type="button" class="admin-theme-toggle" id="adminThemeToggle" aria-label="Переключить тему">
-                        <svg class="sun-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
-                        <svg class="moon-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                    <button type="button" class="admin-theme-toggle" id="adminThemeToggle">
+                        <svg class="sun-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                        <svg class="moon-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
                     </button>
                     <button type="button" id="logoutBtn">Выйти</button>
                 </div>
@@ -465,137 +368,73 @@
         </div>
 
         <div class="admin-container">
+            <!-- Stats -->
             <div class="admin-stats">
                 <div class="admin-stat">
-                    <div class="admin-stat-number" id="statGallery">0</div>
-                    <div class="admin-stat-label">Работ в галерее</div>
-                    <div class="admin-stat-sublabel" id="statGallerySub">—</div>
+                    <div class="admin-stat-number" id="statPersonal">0</div>
+                    <div class="admin-stat-label">Личная галерея</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-number" id="statStudents">0</div>
+                    <div class="admin-stat-label">Ученики</div>
+                </div>
+                <div class="admin-stat">
+                    <div class="admin-stat-number" id="statNeuro">0</div>
+                    <div class="admin-stat-label">Нейрографика</div>
                 </div>
                 <div class="admin-stat">
                     <div class="admin-stat-number" id="statAbout">—</div>
                     <div class="admin-stat-label">Фото художника</div>
-                    <div class="admin-stat-sublabel" id="statAboutSub">—</div>
-                </div>
-                <div class="admin-stat">
-                    <div class="admin-stat-number" id="statViews">0</div>
-                    <div class="admin-stat-label">Просмотров сайта</div>
-                    <div class="admin-stat-sublabel">Всего посещений</div>
-                </div>
-                <div class="admin-stat">
-                    <div class="admin-stat-number" id="statLastLogin">—</div>
-                    <div class="admin-stat-label">Последний вход</div>
-                    <div class="admin-stat-sublabel" id="statLastLoginSub">—</div>
                 </div>
             </div>
 
+            <!-- About Photo -->
             <div class="admin-section-card">
-                <h3>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
-                    Быстрые действия
-                </h3>
-                <div class="quick-grid">
-                    <a href="index.html" class="quick-card">
-                        <div class="quick-icon quick-icon-blue">🌐</div>
-                        <div class="quick-text"><h4>На сайт</h4><p>Перейти на главную страницу</p></div>
-                    </a>
-                    <a href="moreworks.html" class="quick-card">
-                        <div class="quick-icon quick-icon-purple">🖼️</div>
-                        <div class="quick-text"><h4>Все работы</h4><p>Посмотреть полную галерею</p></div>
-                    </a>
-                    <button class="quick-card" id="btnExport" style="border:none;width:100%;">
-                        <div class="quick-icon quick-icon-gold">💾</div>
-                        <div class="quick-text"><h4>Экспорт данных</h4><p>Скачать бэкап JSON</p></div>
-                    </button>
-                    <button class="quick-card" id="btnClearCache" style="border:none;width:100%;">
-                        <div class="quick-icon quick-icon-coral">🗑️</div>
-                        <div class="quick-text"><h4>Очистить кэш</h4><p>Сбросить все данные</p></div>
-                    </button>
-                </div>
-            </div>
-
-            <div class="admin-section-card">
-                <h3>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
-                    Активность
-                </h3>
-                <div class="activity-list" id="activityList">
-                    <div class="activity-item">
-                        <div class="activity-dot green"></div>
-                        <div class="activity-text"><strong>Сайт работает</strong><span>Все системы онлайн</span></div>
-                        <div class="activity-time">Сейчас</div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="admin-section-card">
-                <h3>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-                    Фото художника (раздел «Обо мне»)
-                </h3>
-                <div class="admin-upload-row">
-                    <input type="file" id="aboutInput" accept="image/*">
-                    <button type="button" class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить фото</button>
-                </div>
-                <p class="upload-hint">Выберите файл — откроется редактор обрезки (3:4)</p>
+                <h3>📸 Фото художника (раздел «Обо мне»)</h3>
                 <div class="url-row">
-                    <input type="text" class="login-input" id="aboutUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)" style="text-align:left !important;font-weight:500 !important;letter-spacing:0 !important;">
-                    <button type="button" class="admin-btn admin-btn-primary" id="aboutUrlBtn">Добавить по ссылке</button>
+                    <input type="text" id="aboutUrl" placeholder="Ссылка с ImgBB (Direct link) — https://i.ibb.co/...">
+                    <button type="button" class="admin-btn admin-btn-primary" id="aboutUrlBtn">Добавить</button>
+                    <button type="button" class="admin-btn admin-btn-danger" id="aboutDeleteBtn">Удалить</button>
                 </div>
-                <p class="url-tip">💡 <strong>Imgur блокирует вставку на сайты.</strong> Используйте imgbb.com, postimages.org или catbox.moe — скопируйте <strong>прямую ссылку (Direct link)</strong>.</p>
+                <p class="url-tip">📌 Загрузите на <strong>imgbb.com</strong>, скопируйте <strong>«Direct link»</strong> (вида <code>https://i.ibb.co/xxx/photo.jpg</code>) и вставьте выше.</p>
                 <div class="url-status" id="aboutUrlStatus"></div>
-                <div class="admin-preview" id="aboutPreview">
-                    <div class="admin-preview-empty">Фото не загружено</div>
+                <div class="about-photo-preview" id="aboutPreview">
+                    <div class="about-photo-preview-empty">Фото не загружено</div>
                 </div>
             </div>
 
+            <!-- Gallery Categories -->
             <div class="admin-section-card">
-                <h3>
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><path d="M21 15l-5-5L5 21"/></svg>
-                    Галерея работ
-                </h3>
-                <div class="admin-upload-row">
-                    <input type="file" id="galleryInput" accept="image/*" multiple>
-                    <label class="admin-check">
-                        <input type="checkbox" id="galleryWide">
-                        <span>Широкое (2 колонки)</span>
-                    </label>
+                <h3>🖼️ Галереи</h3>
+                
+                <div class="category-tabs" id="categoryTabs">
+                    <button class="category-tab active" data-category="personal">
+                        <span class="category-tab-icon">🎨</span> Личная
+                        <span class="badge-count" id="badgePersonal">0</span>
+                    </button>
+                    <button class="category-tab" data-category="students">
+                        <span class="category-tab-icon">👨‍🎓</span> Ученики
+                        <span class="badge-count" id="badgeStudents">0</span>
+                    </button>
+                    <button class="category-tab" data-category="neuro">
+                        <span class="category-tab-icon">✏️</span> Нейрографика
+                        <span class="badge-count" id="badgeNeuro">0</span>
+                    </button>
                 </div>
-                <p class="upload-hint">Выберите файл — откроется редактор обрезки. Можно несколько.</p>
-                <div class="url-row">
-                    <input type="text" class="login-input" id="galleryUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)" style="text-align:left !important;font-weight:500 !important;letter-spacing:0 !important;">
-                    <button type="button" class="admin-btn admin-btn-primary" id="galleryUrlBtn">Добавить по ссылке</button>
-                </div>
-                <p class="url-tip">💡 <strong>Imgur блокирует вставку на сайты.</strong> Используйте imgbb.com, postimages.org или catbox.moe — скопируйте <strong>прямую ссылку (Direct link)</strong>.</p>
-                <div class="url-status" id="galleryUrlStatus"></div>
-                <div class="admin-gallery-grid" id="galleryGridAdmin">
-                    <div class="admin-empty-msg">Нет загруженных работ</div>
-                </div>
-            </div>
-        </div>
-    </div>
 
-    <div class="cropper-modal" id="cropperModal">
-        <div class="cropper-panel">
-            <div class="cropper-header">
-                <h3>✂️ Обрезка фото</h3>
-                <button type="button" class="cropper-close" id="cropperClose">×</button>
-            </div>
-            <div class="cropper-body">
-                <div class="cropper-aspect" id="cropperAspect"></div>
-                <div class="cropper-canvas-wrap" id="cropperCanvasWrap">
-                    <canvas id="cropperCanvas"></canvas>
+                <!-- Add photo row -->
+                <div class="url-row">
+                    <input type="text" id="galleryUrl" placeholder="Ссылка с ImgBB (Direct link) — https://i.ibb.co/...">
+                    <label style="display:flex;align-items:center;gap:8px;font-size:0.8rem;font-weight:600;color:var(--slate-600);cursor:pointer;">
+                        <input type="checkbox" id="galleryWide"> Широкое (2 колонки)
+                    </label>
+                    <button type="button" class="admin-btn admin-btn-primary" id="galleryUrlBtn">➕ Добавить</button>
                 </div>
-                <div class="cropper-zoom">
-                    <label>🔍 Масштаб</label>
-                    <input type="range" id="cropperZoom" min="0.5" max="3" step="0.01" value="1">
-                </div>
-                <div class="cropper-preview-block">
-                    <p>👁 Предпросмотр на сайте</p>
-                    <div class="cropper-preview-wrap" id="cropperPreviewWrap"></div>
-                </div>
-                <div class="cropper-actions">
-                    <button type="button" class="admin-btn admin-btn-secondary" id="cropperCancel">Отмена</button>
-                    <button type="button" class="admin-btn admin-btn-primary" id="cropperApply">✅ Обрезать и загрузить</button>
+                <p class="url-tip">📌 Загрузите на <strong>imgbb.com</strong>, скопируйте <strong>«Direct link»</strong> (вида <code>https://i.ibb.co/xxx/photo.jpg</code>) и вставьте выше. Фото можно <strong>перетаскивать</strong> для изменения порядка.</p>
+                <div class="url-status" id="galleryUrlStatus"></div>
+
+                <div class="gallery-grid-admin" id="galleryGridAdmin">
+                    <div class="admin-empty-msg">Нет фото в этой категории</div>
                 </div>
             </div>
         </div>
@@ -604,9 +443,14 @@
     <script>
         const PASSWORD = '123123';
         const DB_NAME = 'MilaKrauseDB';
-        const DB_VERSION = 1;
+        const DB_VERSION = 2;
         let db = null;
+        let currentCategory = 'personal';
+        let dragData = null;
 
+        // ============================================
+        // IndexedDB
+        // ============================================
         function openDB() {
             return new Promise((resolve, reject) => {
                 const request = indexedDB.open(DB_NAME, DB_VERSION);
@@ -620,6 +464,7 @@
                 };
             });
         }
+
         function dbGet(key) {
             return new Promise((resolve, reject) => {
                 const tx = db.transaction('photos', 'readonly');
@@ -629,6 +474,7 @@
                 req.onerror = () => reject(req.error);
             });
         }
+
         function dbSet(key, value) {
             return new Promise((resolve, reject) => {
                 const tx = db.transaction('photos', 'readwrite');
@@ -638,6 +484,7 @@
                 req.onerror = () => reject(req.error);
             });
         }
+
         function dbDelete(key) {
             return new Promise((resolve, reject) => {
                 const tx = db.transaction('photos', 'readwrite');
@@ -647,22 +494,28 @@
                 req.onerror = () => reject(req.error);
             });
         }
-        async function getGallery() {
-            const data = await dbGet('gallery');
+
+        async function getGallery(category) {
+            const key = 'gallery_' + category;
+            const data = await dbGet(key);
             return Array.isArray(data) ? data : [];
         }
-        async function setGallery(items) { await dbSet('gallery', items); }
-        async function getAboutPhoto() { return await dbGet('about_photo') || null; }
-        async function setAboutPhoto(data) { await dbSet('about_photo', data); }
-        async function deleteAboutPhoto() { await dbDelete('about_photo'); }
 
-        function fileToBase64(file) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.onload = () => resolve(reader.result);
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
+        async function setGallery(category, items) {
+            const key = 'gallery_' + category;
+            await dbSet(key, items);
+        }
+
+        async function getAboutPhoto() {
+            return await dbGet('about_photo') || null;
+        }
+
+        async function setAboutPhoto(data) {
+            await dbSet('about_photo', data);
+        }
+
+        async function deleteAboutPhoto() {
+            await dbDelete('about_photo');
         }
 
         function checkImageUrl(url) {
@@ -671,11 +524,10 @@
                 img.crossOrigin = 'anonymous';
                 img.onload = () => resolve(true);
                 img.onerror = () => {
-                    // Проверяем, не imgur ли это
                     if (url.includes('imgur.com')) {
-                        reject(new Error('Imgur блокирует вставку на сайты. Используйте imgbb.com, postimages.org или catbox.moe.'));
+                        reject(new Error('Imgur блокирует вставку. Используйте imgbb.com'));
                     } else {
-                        reject(new Error('Картинка не загружается. Проверьте ссылку или используйте другой хостинг (imgbb.com, postimages.org, catbox.moe).'));
+                        reject(new Error('Фото не загружается. Проверьте ссылку (нужен Direct link с imgbb.com)'));
                     }
                 };
                 img.src = url;
@@ -690,7 +542,9 @@
             if (!msg) el.className = 'url-status';
         }
 
+        // ============================================
         // Theme
+        // ============================================
         function initAdminTheme() {
             const saved = localStorage.getItem('theme');
             if (saved === 'dark') document.body.classList.add('dark-theme');
@@ -703,7 +557,9 @@
         initAdminTheme();
         document.getElementById('adminThemeToggle').addEventListener('click', toggleAdminTheme);
 
+        // ============================================
         // Auth
+        // ============================================
         const loginWrap = document.getElementById('loginWrap');
         const dashboard = document.getElementById('dashboard');
         const loginPass = document.getElementById('loginPass');
@@ -726,12 +582,10 @@
                         await initDashboard();
                     } catch (e) {
                         showLoginError('Ошибка загрузки данных: ' + e.message);
-                        console.error('Auth check dashboard error:', e);
                     }
                 }
             } catch (e) {
                 showLoginError('Ошибка доступа к сессии: ' + e.message);
-                console.error('Auth check error:', e);
             }
         }
 
@@ -739,589 +593,304 @@
             try {
                 loginError.classList.remove('show');
                 const val = loginPass.value.trim();
-
-                if (!val) {
-                    showLoginError('Введите пароль');
-                    loginPass.focus();
-                    return;
-                }
-
-                if (val !== PASSWORD) {
-                    showLoginError('Неверный пароль');
-                    loginPass.value = '';
-                    loginPass.focus();
-                    return;
-                }
-
-                try {
-                    sessionStorage.setItem('admin_auth', 'ok');
-                } catch (storageErr) {
-                    showLoginError('Браузер блокирует сохранение сессии. Отключите приватный режим или разрешите куки.');
-                    console.error('Storage error:', storageErr);
-                    return;
-                }
-
+                if (!val) { showLoginError('Введите пароль'); loginPass.focus(); return; }
+                if (val !== PASSWORD) { showLoginError('Неверный пароль'); loginPass.value = ''; loginPass.focus(); return; }
+                sessionStorage.setItem('admin_auth', 'ok');
                 localStorage.setItem('mila_last_login', new Date().toISOString());
                 loginWrap.style.display = 'none';
                 dashboard.classList.add('open');
-
-                try {
-                    await initDashboard();
-                } catch (dashErr) {
-                    showLoginError('Ошибка загрузки панели: ' + dashErr.message);
-                    console.error('Dashboard init error:', dashErr);
-                }
+                await initDashboard();
             } catch (e) {
                 showLoginError('Системная ошибка: ' + e.message);
-                console.error('Login error:', e);
             }
         }
 
         loginBtn.addEventListener('click', doLogin);
-        loginPass.addEventListener('keydown', (e) => {
-            if (e.key === 'Enter') doLogin();
-        });
-        logoutBtn.addEventListener('click', () => {
-            try {
-                sessionStorage.removeItem('admin_auth');
-            } catch(e) {}
-            location.reload();
-        });
+        loginPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+        logoutBtn.addEventListener('click', () => { sessionStorage.removeItem('admin_auth'); location.reload(); });
 
+        // ============================================
         // Dashboard
+        // ============================================
         async function initDashboard() {
             await openDB();
             await renderAboutPreview();
-            await renderGalleryAdmin();
+            await renderGallery(currentCategory);
             await updateStats();
-            await renderActivity();
-        }
-
-        function formatDate(iso) {
-            if (!iso) return '—';
-            const d = new Date(iso);
-            const now = new Date();
-            const diff = Math.floor((now - d) / 1000);
-            if (diff < 60) return 'только что';
-            if (diff < 3600) return Math.floor(diff / 60) + ' мин. назад';
-            if (diff < 86400) return Math.floor(diff / 3600) + ' ч. назад';
-            return d.toLocaleDateString('ru-RU', { day:'numeric', month:'short', hour:'2-digit', minute:'2-digit' });
+            setupTabs();
+            setupDragAndDrop();
         }
 
         async function updateStats() {
-            const items = await getGallery();
-            document.getElementById('statGallery').textContent = items.length;
-            document.getElementById('statGallerySub').textContent = items.length === 0 ? 'Пусто' : (items.length + ' шт.');
-
+            const personal = await getGallery('personal');
+            const students = await getGallery('students');
+            const neuro = await getGallery('neuro');
             const about = await getAboutPhoto();
-            const hasAbout = about && about.data;
-            document.getElementById('statAbout').textContent = hasAbout ? '✓' : '—';
-            document.getElementById('statAboutSub').textContent = hasAbout ? 'Загружено' : 'Нет фото';
 
-            const views = parseInt(localStorage.getItem('mila_page_views') || '0');
-            document.getElementById('statViews').textContent = views.toLocaleString('ru-RU');
+            document.getElementById('statPersonal').textContent = personal.length;
+            document.getElementById('statStudents').textContent = students.length;
+            document.getElementById('statNeuro').textContent = neuro.length;
+            document.getElementById('statAbout').textContent = about && about.data ? '✓' : '—';
 
-            const lastLogin = localStorage.getItem('mila_last_login');
-            document.getElementById('statLastLogin').textContent = formatDate(lastLogin);
-            document.getElementById('statLastLoginSub').textContent = lastLogin ? new Date(lastLogin).toLocaleDateString('ru-RU') : '—';
+            document.getElementById('badgePersonal').textContent = personal.length;
+            document.getElementById('badgeStudents').textContent = students.length;
+            document.getElementById('badgeNeuro').textContent = neuro.length;
         }
 
-        async function renderActivity() {
-            const list = document.getElementById('activityList');
-            const items = [];
-            const lastLogin = localStorage.getItem('mila_last_login');
-            if (lastLogin) {
-                items.push({ dot: 'blue', title: 'Вход в админ-панель', desc: 'Авторизация администратора', time: formatDate(lastLogin) });
-            }
-            const lastGallery = localStorage.getItem('mila_last_gallery_update');
-            if (lastGallery) {
-                items.push({ dot: 'gold', title: 'Обновление галереи', desc: 'Добавлены или удалены работы', time: formatDate(lastGallery) });
-            }
-            const lastAbout = localStorage.getItem('mila_last_about_update');
-            if (lastAbout) {
-                items.push({ dot: 'green', title: 'Обновление фото', desc: 'Изменено фото в разделе «Обо мне»', time: formatDate(lastAbout) });
-            }
-            if (items.length === 0) {
-                list.innerHTML = '<div class="activity-item"><div class="activity-dot green"></div><div class="activity-text"><strong>Сайт работает</strong><span>Пока нет записей об активности</span></div><div class="activity-time">Сейчас</div></div>';
-                return;
-            }
-            list.innerHTML = items.map(it => '<div class="activity-item"><div class="activity-dot ' + it.dot + '"></div><div class="activity-text"><strong>' + it.title + '</strong><span>' + it.desc + '</span></div><div class="activity-time">' + it.time + '</div></div>').join('');
+        // ============================================
+        // Tabs
+        // ============================================
+        function setupTabs() {
+            document.querySelectorAll('.category-tab').forEach(tab => {
+                tab.addEventListener('click', async () => {
+                    document.querySelectorAll('.category-tab').forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentCategory = tab.dataset.category;
+                    await renderGallery(currentCategory);
+                });
+            });
         }
 
-        // About
-        const aboutInput = document.getElementById('aboutInput');
-        const aboutDeleteBtn = document.getElementById('aboutDeleteBtn');
-        const aboutPreview = document.getElementById('aboutPreview');
-
-        aboutInput.addEventListener('change', async () => {
-            const file = aboutInput.files[0];
-            if (!file) return;
-            const dataUrl = await fileToBase64(file);
-            enqueueCrop(dataUrl, 'about');
-            aboutInput.value = '';
-        });
-
-        aboutDeleteBtn.addEventListener('click', async () => {
-            if (!confirm('Удалить фото художника?')) return;
-            await deleteAboutPhoto();
-            await renderAboutPreview();
-            await updateStats();
-            // Обновляем главную страницу
-            if (typeof renderAboutPhoto === 'function') {
-                try { await renderAboutPhoto(); } catch(e) {}
-            }
-        });
-
+        // ============================================
+        // About Photo
+        // ============================================
         async function renderAboutPreview() {
+            const preview = document.getElementById('aboutPreview');
             const photo = await getAboutPhoto();
             if (photo && photo.data) {
-                aboutPreview.innerHTML = '<img src="' + photo.data + '" alt="Фото художника" onerror="this.parentElement.innerHTML=\'<div class=\\\'admin-preview-empty\\\'>Ошибка загрузки фото</div>\';">';
+                preview.innerHTML = '<img src="' + photo.data + '" alt="Фото художника" onerror="this.parentElement.innerHTML=\'<div class=\\'about-photo-preview-empty\\'>Ошибка загрузки</div>\';">';
             } else {
-                aboutPreview.innerHTML = '<div class="admin-preview-empty">Фото не загружено</div>';
+                preview.innerHTML = '<div class="about-photo-preview-empty">Фото не загружено</div>';
             }
         }
 
-        // About by URL
         document.getElementById('aboutUrlBtn').addEventListener('click', async () => {
             const url = document.getElementById('aboutUrl').value.trim();
-            if (!url) {
-                setUrlStatus('aboutUrlStatus', 'Введите ссылку', true);
-                return;
-            }
-            setUrlStatus('aboutUrlStatus', '⏳ Проверка ссылки...', false);
+            if (!url) { setUrlStatus('aboutUrlStatus', 'Введите ссылку', true); return; }
+            setUrlStatus('aboutUrlStatus', '⏳ Проверка...', false);
             try {
                 await checkImageUrl(url);
-                await setAboutPhoto({ data: url, type: 'url', alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+                await setAboutPhoto({ data: url, type: 'url' });
                 localStorage.setItem('mila_last_about_update', new Date().toISOString());
                 document.getElementById('aboutUrl').value = '';
                 setUrlStatus('aboutUrlStatus', '✅ Фото добавлено!', false);
                 await renderAboutPreview();
                 await updateStats();
-                await renderActivity();
                 setTimeout(() => setUrlStatus('aboutUrlStatus', '', false), 3000);
             } catch (err) {
                 setUrlStatus('aboutUrlStatus', '❌ ' + err.message, true);
             }
         });
 
-        // Gallery
-        const galleryInput = document.getElementById('galleryInput');
-        const galleryWide = document.getElementById('galleryWide');
-        const galleryGridAdmin = document.getElementById('galleryGridAdmin');
-
-        galleryInput.addEventListener('change', async () => {
-            const files = Array.from(galleryInput.files);
-            if (files.length === 0) return;
-            for (const file of files) {
-                const dataUrl = await fileToBase64(file);
-                enqueueCrop(dataUrl, 'gallery', galleryWide.checked);
-            }
-            galleryInput.value = '';
-            galleryWide.checked = false;
+        document.getElementById('aboutDeleteBtn').addEventListener('click', async () => {
+            if (!confirm('Удалить фото художника?')) return;
+            await deleteAboutPhoto();
+            await renderAboutPreview();
+            await updateStats();
         });
 
-        // Gallery by URL
+        // ============================================
+        // Gallery — Add by URL
+        // ============================================
         document.getElementById('galleryUrlBtn').addEventListener('click', async () => {
             const url = document.getElementById('galleryUrl').value.trim();
-            if (!url) {
-                setUrlStatus('galleryUrlStatus', 'Введите ссылку', true);
-                return;
-            }
-            setUrlStatus('galleryUrlStatus', '⏳ Проверка ссылки...', false);
+            if (!url) { setUrlStatus('galleryUrlStatus', 'Введите ссылку', true); return; }
+            const wide = document.getElementById('galleryWide').checked;
+
+            setUrlStatus('galleryUrlStatus', '⏳ Проверка...', false);
             try {
                 await checkImageUrl(url);
-                const items = await getGallery();
+                const items = await getGallery(currentCategory);
                 items.push({
                     id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
                     data: url,
                     type: 'url',
-                    wide: galleryWide.checked,
+                    wide: wide,
                     alt_ru: 'Работа',
                     alt_de: 'Werk'
                 });
-                await setGallery(items);
+                await setGallery(currentCategory, items);
                 localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
                 document.getElementById('galleryUrl').value = '';
-                galleryWide.checked = false;
-                setUrlStatus('galleryUrlStatus', '✅ Работа добавлена!', false);
-                await renderGalleryAdmin();
+                document.getElementById('galleryWide').checked = false;
+                setUrlStatus('galleryUrlStatus', '✅ Добавлено!', false);
+                await renderGallery(currentCategory);
                 await updateStats();
-                await renderActivity();
                 setTimeout(() => setUrlStatus('galleryUrlStatus', '', false), 3000);
             } catch (err) {
                 setUrlStatus('galleryUrlStatus', '❌ ' + err.message, true);
             }
         });
 
-        async function renderGalleryAdmin() {
-            const items = await getGallery();
+        // Enter key support
+        document.getElementById('galleryUrl').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('galleryUrlBtn').click();
+        });
+        document.getElementById('aboutUrl').addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') document.getElementById('aboutUrlBtn').click();
+        });
+
+        // ============================================
+        // Render Gallery
+        // ============================================
+        async function renderGallery(category) {
+            const grid = document.getElementById('galleryGridAdmin');
+            const items = await getGallery(category);
+            
             if (items.length === 0) {
-                galleryGridAdmin.innerHTML = '<div class="admin-empty-msg">Нет загруженных работ</div>';
+                grid.innerHTML = '<div class="admin-empty-msg">Нет фото в этой категории</div>';
                 return;
             }
-            galleryGridAdmin.innerHTML = items.map((item, idx) => {
-                return '<div class="admin-gallery-item"><img src="' + item.data + '" alt="" onerror="this.style.display=\'none\';this.parentElement.style.background=\'#e2e8f0\';"><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' &middot; ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button type="button" onclick="deleteGalleryItem(&quot;' + item.id + '&quot;)">Удалить</button></div></div>';
+
+            grid.innerHTML = items.map((item, idx) => {
+                const wideLabel = item.wide ? 'Широкое' : 'Обычное';
+                return `
+                    <div class="gallery-item-admin" draggable="true" data-id="${item.id}" data-index="${idx}">
+                        <img src="${item.data}" alt="" onerror="this.style.display='none';this.parentElement.style.background='#e2e8f0';">
+                        <div class="drag-handle">⠿ #${idx + 1}</div>
+                        <div class="item-wide-badge">${wideLabel}</div>
+                        <div class="item-overlay">
+                            <span class="item-num">#${idx + 1}</span>
+                            <div class="btn-group">
+                                <button class="btn-replace" onclick="replacePhoto('${category}', '${item.id}')">🔄 Заменить</button>
+                                <button class="btn-delete" onclick="deletePhoto('${category}', '${item.id}')">🗑️</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
             }).join('');
+
+            // Re-bind drag events
+            setupDragAndDrop();
         }
 
-        window.deleteGalleryItem = async function(id) {
-            if (!confirm('Удалить эту работу из галереи?')) return;
-            let items = await getGallery();
+        // ============================================
+        // Delete Photo
+        // ============================================
+        window.deletePhoto = async function(category, id) {
+            if (!confirm('Удалить это фото?')) return;
+            let items = await getGallery(category);
             items = items.filter(i => i.id !== id);
-            await setGallery(items);
+            await setGallery(category, items);
             localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
-            await renderGalleryAdmin();
+            await renderGallery(category);
             await updateStats();
-            await renderActivity();
         };
 
-        // Export / Clear
-        document.getElementById('btnExport').addEventListener('click', async () => {
-            const gallery = await getGallery();
-            const about = await getAboutPhoto();
-            const data = { gallery, about, exportedAt: new Date().toISOString() };
-            const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = 'mila-krause-backup-' + new Date().toISOString().slice(0,10) + '.json';
-            a.click();
-            URL.revokeObjectURL(url);
-        });
-        document.getElementById('btnClearCache').addEventListener('click', () => {
-            if (!confirm('ВНИМАНИЕ: Это удалит ВСЕ фото, настройки и статистику. Продолжить?')) return;
-            localStorage.clear();
-            indexedDB.deleteDatabase(DB_NAME);
-            location.reload();
-        });
-
         // ============================================
-        // CROPPER
+        // Replace Photo
         // ============================================
-        const cropperModal = document.getElementById('cropperModal');
-        const cropperCanvas = document.getElementById('cropperCanvas');
-        const cropperCtx = cropperCanvas.getContext('2d');
-        const cropperZoom = document.getElementById('cropperZoom');
-        const cropperAspect = document.getElementById('cropperAspect');
-        const cropperPreviewWrap = document.getElementById('cropperPreviewWrap');
-        const cropperApply = document.getElementById('cropperApply');
-        const cropperCancel = document.getElementById('cropperCancel');
-        const cropperClose = document.getElementById('cropperClose');
-
-        let cropQueue = [];
-        let isCropping = false;
-        let cropImage = null;
-        let cropScale = 1;
-        let cropX = 0, cropY = 0;
-        let cropW = 0, cropH = 0;
-        let cropMode = 'gallery';
-        let cropWide = false;
-        let cropAspect = 1;
-        let cropResolve = null;
-
-        const ASPECT_PRESETS = {
-            about: { label: '3:4 Портрет', ratio: 3/4 },
-            gallery: { label: '1:1 Обычное', ratio: 1 },
-            wide: { label: '2:1 Широкое', ratio: 2 },
-        };
-
-        function enqueueCrop(dataUrl, mode, wide) {
-            cropQueue.push({ dataUrl: dataUrl, mode: mode, wide: wide });
-            if (!isCropping) processCropQueue();
-        }
-
-        async function processCropQueue() {
-            if (cropQueue.length === 0) {
-                isCropping = false;
-                try {
-                    await renderGalleryAdmin();
-                    await updateStats();
-                    await renderActivity();
-                } catch (e) {
-                    console.error('Post-crop render error:', e);
-                }
-                return;
-            }
-            isCropping = true;
-            const task = cropQueue.shift();
+        window.replacePhoto = async function(category, id) {
+            const newUrl = prompt('Введите новую ссылку на фото (Direct link с imgbb.com):');
+            if (!newUrl) return;
+            
+            setUrlStatus('galleryUrlStatus', '⏳ Проверка...', false);
             try {
-                const result = await openCropper(task.dataUrl, task.mode, task.wide);
-                if (result) {
-                    const photoData = result;
-                    const photoType = 'base64';
-
-                    if (task.mode === 'about') {
-                        await setAboutPhoto({ data: photoData, type: photoType, alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
-                        localStorage.setItem('mila_last_about_update', new Date().toISOString());
-                        await renderAboutPreview();
-                    } else {
-                        const items = await getGallery();
-                        items.push({
-                            id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                            data: photoData,
-                            type: photoType,
-                            wide: task.wide,
-                            alt_ru: 'Работа',
-                            alt_de: 'Werk'
-                        });
-                        await setGallery(items);
-                        localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
-                    }
-                }
-            } catch (e) {
-                console.error('Crop task error:', e);
-                alert('Ошибка обработки изображения: ' + e.message);
+                await checkImageUrl(newUrl);
+                let items = await getGallery(category);
+                const index = items.findIndex(i => i.id === id);
+                if (index === -1) return;
+                items[index].data = newUrl;
+                await setGallery(category, items);
+                localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
+                setUrlStatus('galleryUrlStatus', '✅ Фото заменено!', false);
+                await renderGallery(category);
+                await updateStats();
+                setTimeout(() => setUrlStatus('galleryUrlStatus', '', false), 3000);
+            } catch (err) {
+                setUrlStatus('galleryUrlStatus', '❌ ' + err.message, true);
             }
-            setTimeout(function() { processCropQueue(); }, 100);
-        }
+        };
 
-        function openCropper(dataUrl, mode, wide) {
-            return new Promise(function(resolve) {
-                cropResolve = resolve;
-                cropMode = mode;
-                cropWide = wide;
-                cropScale = 1;
-                cropperZoom.value = '1';
-
-                if (mode === 'about') {
-                    cropAspect = ASPECT_PRESETS.about.ratio;
-                } else {
-                    cropAspect = wide ? ASPECT_PRESETS.wide.ratio : ASPECT_PRESETS.gallery.ratio;
-                }
-
-                cropperAspect.innerHTML = '';
-                var presets = mode === 'about'
-                    ? [ASPECT_PRESETS.about]
-                    : [ASPECT_PRESETS.gallery, ASPECT_PRESETS.wide];
-
-                presets.forEach(function(p, i) {
-                    var btn = document.createElement('button');
-                    var isActive = i === (mode === 'about' ? 0 : (wide ? 1 : 0));
-                    btn.className = 'cropper-aspect-btn' + (isActive ? ' active' : '');
-                    btn.textContent = p.label;
-                    btn.addEventListener('click', function() {
-                        document.querySelectorAll('.cropper-aspect-btn').forEach(function(b) { b.classList.remove('active'); });
-                        btn.classList.add('active');
-                        cropAspect = p.ratio;
-                        initCropSelection();
-                        drawCropper();
-                        updatePreview();
-                    });
-                    cropperAspect.appendChild(btn);
-                });
-
-                cropImage = new Image();
-                cropImage.onload = function() {
-                    initCropperCanvas();
-                    initCropSelection();
-                    drawCropper();
-                    updatePreview();
-                    cropperModal.classList.add('open');
-                };
-                cropImage.onerror = function() {
-                    alert('Ошибка загрузки изображения');
-                    resolve(null);
-                };
-                cropImage.src = dataUrl;
+        // ============================================
+        // Drag & Drop
+        // ============================================
+        function setupDragAndDrop() {
+            const items = document.querySelectorAll('.gallery-item-admin');
+            
+            items.forEach(el => {
+                el.removeEventListener('dragstart', handleDragStart);
+                el.removeEventListener('dragend', handleDragEnd);
+                el.removeEventListener('dragover', handleDragOver);
+                el.removeEventListener('dragenter', handleDragEnter);
+                el.removeEventListener('dragleave', handleDragLeave);
+                el.removeEventListener('drop', handleDrop);
+                
+                el.addEventListener('dragstart', handleDragStart);
+                el.addEventListener('dragend', handleDragEnd);
+                el.addEventListener('dragover', handleDragOver);
+                el.addEventListener('dragenter', handleDragEnter);
+                el.addEventListener('dragleave', handleDragLeave);
+                el.addEventListener('drop', handleDrop);
             });
         }
 
-        function initCropperCanvas() {
-            var maxW = 700, maxH = 550;
-            var w = cropImage.naturalWidth;
-            var h = cropImage.naturalHeight;
-            var scale = Math.min(maxW / w, maxH / h, 1);
-            cropperCanvas.width = Math.round(w * scale);
-            cropperCanvas.height = Math.round(h * scale);
-        }
-
-        function initCropSelection() {
-            var cw = cropperCanvas.width;
-            var ch = cropperCanvas.height;
-            var w, h;
-            if (cw / ch > cropAspect) {
-                h = Math.min(ch * 0.7, ch - 20);
-                w = h * cropAspect;
-            } else {
-                w = Math.min(cw * 0.7, cw - 20);
-                h = w / cropAspect;
-            }
-            cropW = w;
-            cropH = h;
-            cropX = (cw - w) / 2;
-            cropY = (ch - h) / 2;
-        }
-
-        function drawCropper() {
-            var cw = cropperCanvas.width;
-            var ch = cropperCanvas.height;
-            cropperCtx.clearRect(0, 0, cw, ch);
-
-            var imgW = cw * cropScale;
-            var imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
-            var offsetX = (cw - imgW) / 2;
-            var offsetY = (ch - imgH) / 2;
-
-            cropperCtx.drawImage(cropImage, offsetX, offsetY, imgW, imgH);
-
-            cropperCtx.fillStyle = 'rgba(0,0,0,0.55)';
-            cropperCtx.fillRect(0, 0, cw, ch);
-            cropperCtx.clearRect(cropX, cropY, cropW, cropH);
-
-            cropperCtx.strokeStyle = '#14b8a6';
-            cropperCtx.lineWidth = 2;
-            cropperCtx.strokeRect(cropX, cropY, cropW, cropH);
-
-            var corner = 12;
-            cropperCtx.strokeStyle = '#fff';
-            cropperCtx.lineWidth = 3;
-            cropperCtx.beginPath(); cropperCtx.moveTo(cropX, cropY + corner); cropperCtx.lineTo(cropX, cropY); cropperCtx.lineTo(cropX + corner, cropY); cropperCtx.stroke();
-            cropperCtx.beginPath(); cropperCtx.moveTo(cropX + cropW - corner, cropY); cropperCtx.lineTo(cropX + cropW, cropY); cropperCtx.lineTo(cropX + cropW, cropY + corner); cropperCtx.stroke();
-            cropperCtx.beginPath(); cropperCtx.moveTo(cropX, cropY + cropH - corner); cropperCtx.lineTo(cropX, cropY + cropH); cropperCtx.lineTo(cropX + corner, cropY + cropH); cropperCtx.stroke();
-            cropperCtx.beginPath(); cropperCtx.moveTo(cropX + cropW - corner, cropY + cropH); cropperCtx.lineTo(cropX + cropW, cropY + cropH); cropperCtx.lineTo(cropX + cropW, cropY + cropH - corner); cropperCtx.stroke();
-        }
-
-        function getCroppedData() {
-            var cw = cropperCanvas.width;
-            var ch = cropperCanvas.height;
-            var imgW = cw * cropScale;
-            var imgH = (cropImage.naturalHeight / cropImage.naturalWidth) * imgW;
-            var offsetX = (cw - imgW) / 2;
-            var offsetY = (ch - imgH) / 2;
-
-            var scaleX = cropImage.naturalWidth / imgW;
-            var scaleY = cropImage.naturalHeight / imgH;
-
-            var sx = Math.max(0, (cropX - offsetX) * scaleX);
-            var sy = Math.max(0, (cropY - offsetY) * scaleY);
-            var sw = Math.min(cropW * scaleX, cropImage.naturalWidth - sx);
-            var sh = Math.min(cropH * scaleY, cropImage.naturalHeight - sy);
-
-            var out = document.createElement('canvas');
-            out.width = Math.round(sw);
-            out.height = Math.round(sh);
-            var ctx = out.getContext('2d');
-            ctx.drawImage(cropImage, sx, sy, sw, sh, 0, 0, out.width, out.height);
-            return out.toDataURL('image/jpeg', 0.92);
-        }
-
-        function updatePreview() {
-            try {
-                var data = getCroppedData();
-                cropperPreviewWrap.innerHTML = '';
-                if (cropMode === 'about') {
-                    cropperPreviewWrap.innerHTML = '<div class="cropper-preview-item"><div class="cropper-preview-box cropper-preview-about"><img src="' + data + '" alt="preview"></div><span>Раздел «Обо мне»</span></div>';
-                } else {
-                    cropperPreviewWrap.innerHTML = '<div class="cropper-preview-item"><div class="cropper-preview-box cropper-preview-normal"><img src="' + data + '" alt="preview"></div><span>Обычная ячейка</span></div><div class="cropper-preview-item"><div class="cropper-preview-box cropper-preview-wide"><img src="' + data + '" alt="preview"></div><span>Широкая ячейка</span></div>';
-                }
-            } catch(e) { console.warn('Preview error', e); }
-        }
-
-        cropperZoom.addEventListener('input', function() {
-            cropScale = parseFloat(cropperZoom.value);
-            drawCropper();
-        });
-        cropperZoom.addEventListener('change', updatePreview);
-
-        var isDragging = false;
-        var dragStartX = 0, dragStartY = 0;
-        var dragStartCropX = 0, dragStartCropY = 0;
-
-        function getPointerPos(e) {
-            var rect = cropperCanvas.getBoundingClientRect();
-            var clientX = e.touches ? e.touches[0].clientX : e.clientX;
-            var clientY = e.touches ? e.touches[0].clientY : e.clientY;
-            return {
-                x: (clientX - rect.left) * (cropperCanvas.width / rect.width),
-                y: (clientY - rect.top) * (cropperCanvas.height / rect.height)
+        function handleDragStart(e) {
+            const el = e.currentTarget;
+            dragData = {
+                id: el.dataset.id,
+                index: parseInt(el.dataset.index),
+                category: currentCategory
             };
+            el.classList.add('dragging');
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', el.dataset.id);
         }
 
-        cropperCanvas.addEventListener('mousedown', function(e) {
-            var pos = getPointerPos(e);
-            if (pos.x >= cropX && pos.x <= cropX + cropW && pos.y >= cropY && pos.y <= cropY + cropH) {
-                isDragging = true;
-                dragStartX = pos.x;
-                dragStartY = pos.y;
-                dragStartCropX = cropX;
-                dragStartCropY = cropY;
-                cropperCanvas.style.cursor = 'grabbing';
-            }
-        });
+        function handleDragEnd(e) {
+            e.currentTarget.classList.remove('dragging');
+            document.querySelectorAll('.gallery-item-admin.drag-over').forEach(el => el.classList.remove('drag-over'));
+            document.getElementById('galleryGridAdmin').classList.remove('drag-over');
+        }
 
-        function onMove(e) {
-            if (!isDragging) return;
+        function handleDragOver(e) {
             e.preventDefault();
-            var pos = getPointerPos(e);
-            var nx = dragStartCropX + (pos.x - dragStartX);
-            var ny = dragStartCropY + (pos.y - dragStartY);
-            nx = Math.max(0, Math.min(nx, cropperCanvas.width - cropW));
-            ny = Math.max(0, Math.min(ny, cropperCanvas.height - cropH));
-            cropX = nx;
-            cropY = ny;
-            drawCropper();
+            e.dataTransfer.dropEffect = 'move';
+            const grid = document.getElementById('galleryGridAdmin');
+            grid.classList.add('drag-over');
         }
 
-        function onUp() {
-            if (!isDragging) return;
-            isDragging = false;
-            cropperCanvas.style.cursor = 'crosshair';
-            updatePreview();
-        }
-
-        window.addEventListener('mousemove', onMove);
-        window.addEventListener('mouseup', onUp);
-
-        cropperCanvas.addEventListener('touchstart', function(e) {
-            var pos = getPointerPos(e);
-            if (pos.x >= cropX && pos.x <= cropX + cropW && pos.y >= cropY && pos.y <= cropY + cropH) {
-                isDragging = true;
-                dragStartX = pos.x;
-                dragStartY = pos.y;
-                dragStartCropX = cropX;
-                dragStartCropY = cropY;
-            }
-        }, { passive: false });
-
-        window.addEventListener('touchmove', function(e) {
-            if (!isDragging) return;
+        function handleDragEnter(e) {
             e.preventDefault();
-            var pos = getPointerPos(e);
-            var nx = dragStartCropX + (pos.x - dragStartX);
-            var ny = dragStartCropY + (pos.y - dragStartY);
-            nx = Math.max(0, Math.min(nx, cropperCanvas.width - cropW));
-            ny = Math.max(0, Math.min(ny, cropperCanvas.height - cropH));
-            cropX = nx;
-            cropY = ny;
-            drawCropper();
-        }, { passive: false });
-        window.addEventListener('touchend', onUp);
-
-        cropperApply.addEventListener('click', function() {
-            var croppedData = getCroppedData();
-            cropperModal.classList.remove('open');
-            if (cropResolve) cropResolve(croppedData);
-            cropResolve = null;
-        });
-
-        function closeCropper() {
-            cropperModal.classList.remove('open');
-            if (cropResolve) cropResolve(null);
-            cropResolve = null;
+            const el = e.currentTarget;
+            if (el.dataset.id !== dragData?.id) {
+                el.classList.add('drag-over');
+            }
         }
 
-        cropperCancel.addEventListener('click', closeCropper);
-        cropperClose.addEventListener('click', closeCropper);
-        cropperModal.addEventListener('click', function(e) {
-            if (e.target === cropperModal) closeCropper();
-        });
+        function handleDragLeave(e) {
+            e.currentTarget.classList.remove('drag-over');
+        }
 
-        window.addEventListener('error', function(e) {
-            console.error('Global error:', e.error);
-        });
-        window.addEventListener('unhandledrejection', function(e) {
-            console.error('Unhandled promise rejection:', e.reason);
-        });
+        async function handleDrop(e) {
+            e.preventDefault();
+            const target = e.currentTarget;
+            target.classList.remove('drag-over');
+            document.getElementById('galleryGridAdmin').classList.remove('drag-over');
+
+            if (!dragData || dragData.category !== currentCategory) return;
+            if (dragData.id === target.dataset.id) return;
+
+            const fromIndex = dragData.index;
+            const toIndex = parseInt(target.dataset.index);
+            
+            if (isNaN(fromIndex) || isNaN(toIndex)) return;
+
+            let items = await getGallery(currentCategory);
+            const [movedItem] = items.splice(fromIndex, 1);
+            items.splice(toIndex, 0, movedItem);
+            
+            await setGallery(currentCategory, items);
+            localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
+            await renderGallery(currentCategory);
+            await updateStats();
+            
+            dragData = null;
+        }
+
+        // ============================================
+        // Check Auth on load
+        // ============================================
         checkAuth();
     </script>
 </body>

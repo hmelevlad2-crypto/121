@@ -1,7 +1,7 @@
 // ============================================
 // Людмила Краусе — Художник, преподаватель
 // Montserrat | Бирюзовый + цвета | RU/DE | Тёмная тема
-// Фото хранятся в IndexedDB, админ-панель встроена
+// Фото хранятся в IndexedDB, 3 категории галереи
 // ============================================
 
 const translations = {
@@ -53,8 +53,12 @@ const translations = {
         stat_3: 'направления искусства',
         stat_4: 'языки консультаций',
         gallery_label: 'Портфолио',
-        gallery_title: 'Галерея работ',
+        gallery_title: 'Галерея',
         gallery_subtitle: 'Фрагменты работ и ученических проектов в разных техниках',
+        // Категории галереи
+        gallery_tab_personal: '🎨 Личная',
+        gallery_tab_students: '👨‍🎓 Ученики',
+        gallery_tab_neuro: '✏️ Нейрографика',
         work_1: 'Работа 1',
         work_2: 'Работа 2',
         work_3: 'Работа 3',
@@ -70,20 +74,11 @@ const translations = {
         form_text: 'Напишите мне в Telegram или WhatsApp, и мы договоримся о времени и формате.',
         form_note: 'Занятия проходят в Ойскирхене или онлайн. Первое знакомство — возможно в формате консультации, чтобы выбрать подходящий формат.',
         footer_text: '© 2026 Людмила Краусе. Все права защищены.',
-        admin_title: 'Админ-панель',
-        admin_about_title: 'Фото художника (Обо мне)',
-        admin_gallery_title: 'Галерея работ',
-        admin_add: 'Добавить',
-        admin_delete: 'Удалить',
-        admin_wide: 'Широкое (2 колонки)',
-        admin_empty: 'Нет загруженных фото',
-        admin_close: 'Закрыть',
         gallery_more: 'Больше работ',
         moreworks_title: 'Все работы — Людмила Краусе',
         moreworks_heading: 'Все работы',
         moreworks_subtitle: 'Полная коллекция работ и ученических проектов',
-        moreworks_empty: 'Пока нет загруженных работ',
-        moreworks_admin: 'Загрузить работы'
+        moreworks_empty: 'Пока нет загруженных работ'
     },
     de: {
         logo: 'Mila Krause',
@@ -135,6 +130,9 @@ const translations = {
         gallery_label: 'Portfolio',
         gallery_title: 'Galerie',
         gallery_subtitle: 'Ausschnitte aus Werken und Schülerprojekten in verschiedenen Techniken',
+        gallery_tab_personal: '🎨 Persönlich',
+        gallery_tab_students: '👨‍🎓 Schüler',
+        gallery_tab_neuro: '✏️ Neurographik',
         work_1: 'Werk 1',
         work_2: 'Werk 2',
         work_3: 'Werk 3',
@@ -150,29 +148,21 @@ const translations = {
         form_text: 'Schreiben Sie mir auf Telegram oder WhatsApp, und wir vereinbaren Zeit und Format.',
         form_note: 'Der Unterricht findet in Euskirchen oder online statt. Das erste Kennenlernen kann als Beratung erfolgen, um das passende Format zu wählen.',
         footer_text: '© 2026 Ljudmila Krause. Alle Rechte vorbehalten.',
-        admin_title: 'Admin-Panel',
-        admin_about_title: 'Foto der Künstlerin (Über mich)',
-        admin_gallery_title: 'Galerie',
-        admin_add: 'Hinzufügen',
-        admin_delete: 'Löschen',
-        admin_wide: 'Breit (2 Spalten)',
-        admin_empty: 'Keine Fotos hochgeladen',
-        admin_close: 'Schließen',
         gallery_more: 'Mehr Werke',
         moreworks_title: 'Alle Werke — Ljudmila Krause',
         moreworks_heading: 'Alle Werke',
         moreworks_subtitle: 'Die komplette Sammlung von Werken und Schülerprojekten',
-        moreworks_empty: 'Noch keine Werke hochgeladen',
-        moreworks_admin: 'Werke hochladen'
+        moreworks_empty: 'Noch keine Werke hochgeladen'
     }
 };
 
 let currentLang = 'ru';
 let db = null;
+let currentGalleryCategory = 'personal';
 
 const GALLERY_MORE_URL = 'moreworks.html';
 const DB_NAME = 'MilaKrauseDB';
-const DB_VERSION = 1;
+const DB_VERSION = 2;
 const IS_MOREWORKS = location.pathname.includes('moreworks');
 
 // ============================================
@@ -222,13 +212,15 @@ function dbDelete(key) {
     });
 }
 
-async function getGallery() {
-    const data = await dbGet('gallery');
+async function getGallery(category) {
+    const key = 'gallery_' + category;
+    const data = await dbGet(key);
     return Array.isArray(data) ? data : [];
 }
 
-async function setGallery(items) {
-    await dbSet('gallery', items);
+async function setGallery(category, items) {
+    const key = 'gallery_' + category;
+    await dbSet(key, items);
 }
 
 async function getAboutPhoto() {
@@ -260,6 +252,38 @@ function fileToBase64(file) {
 // ============================================
 async function renderGallery() {
     const grid = document.getElementById('galleryGrid');
+    const tabsWrap = document.getElementById('galleryTabsWrap');
+    const moreWrap = document.getElementById('galleryMoreWrap');
+    if (!grid) return;
+    grid.innerHTML = '';
+    if (moreWrap) moreWrap.innerHTML = '';
+
+    // Рендерим табы
+    if (tabsWrap) {
+        const t = translations[currentLang];
+        tabsWrap.innerHTML = `
+            <div class="gallery-tabs">
+                <button class="gallery-tab active" data-category="personal">${t.gallery_tab_personal || '🎨 Личная'}</button>
+                <button class="gallery-tab" data-category="students">${t.gallery_tab_students || '👨‍🎓 Ученики'}</button>
+                <button class="gallery-tab" data-category="neuro">${t.gallery_tab_neuro || '✏️ Нейрографика'}</button>
+            </div>
+        `;
+        // События для табов
+        tabsWrap.querySelectorAll('.gallery-tab').forEach(tab => {
+            tab.addEventListener('click', async function() {
+                tabsWrap.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentGalleryCategory = this.dataset.category;
+                await renderGalleryItems();
+            });
+        });
+    }
+
+    await renderGalleryItems();
+}
+
+async function renderGalleryItems() {
+    const grid = document.getElementById('galleryGrid');
     const moreWrap = document.getElementById('galleryMoreWrap');
     if (!grid) return;
     grid.innerHTML = '';
@@ -267,10 +291,11 @@ async function renderGallery() {
 
     let items = [];
     if (db) {
-        try { items = await getGallery(); } catch(e) { console.warn('Gallery load error:', e); }
+        try { items = await getGallery(currentGalleryCategory); } catch(e) { console.warn('Gallery load error:', e); }
     }
     const t = translations[currentLang];
 
+    // Если нет фото — показываем плейсхолдеры
     if (items.length === 0) {
         const defaults = [
             { id: 'p1', wide: true },
@@ -295,13 +320,15 @@ async function renderGallery() {
         return;
     }
 
-    const visibleItems = items.slice(0, 6);
+    // Показываем все фото (на главной показываем все, на moreworks тоже все)
+    const visibleItems = IS_MOREWORKS ? items : items;
+    
     visibleItems.forEach((item) => {
         const div = document.createElement('div');
         div.className = 'gallery-item' + (item.wide ? ' gallery-item-wide' : '');
         const alt = currentLang === 'ru' ? (item.alt_ru || '') : (item.alt_de || '');
         if (item.data) {
-            div.innerHTML = `<img src="${item.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'gallery-placeholder\'><svg width=\'36\' height=\'36\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'M21 15l-5-5L5 21\'/></svg><span>${alt}</span></div>';">`;
+            div.innerHTML = `<img src="${item.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'gallery-placeholder\\'><svg width=\\'36\\' height=\\'36\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\'/><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'/><path d=\\'M21 15l-5-5L5 21\\'/></svg><span>${alt}</span></div>';">`;
         } else {
             div.innerHTML = `
                 <div class="gallery-placeholder">
@@ -313,7 +340,8 @@ async function renderGallery() {
         grid.appendChild(div);
     });
 
-    if (items.length > 6 && moreWrap) {
+    // Кнопка "Больше работ" — только на главной, если есть фото
+    if (!IS_MOREWORKS && items.length > 0 && moreWrap) {
         const btn = document.createElement('a');
         btn.className = 'btn btn-primary gallery-more-btn';
         btn.href = GALLERY_MORE_URL;
@@ -322,19 +350,26 @@ async function renderGallery() {
     }
 }
 
+// ============================================
+// Render About Photo
+// ============================================
 async function renderAboutPhoto() {
     const frame = document.getElementById('aboutFrame');
     if (!frame) return;
 
     let photo = null;
     if (db) {
-        try { photo = await getAboutPhoto(); } catch(e) { console.warn('About photo load error:', e); }
+        try { 
+            photo = await getAboutPhoto(); 
+        } catch(e) { 
+            console.warn('About photo load error:', e); 
+        }
     }
     const t = translations[currentLang];
     const alt = currentLang === 'ru' ? 'Фото художника' : 'Foto der Künstlerin';
 
-    if (photo && photo.data) {
-        frame.innerHTML = `<img src="${photo.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'about-placeholder\'><svg width=\'56\' height=\'56\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1\'><path d=\'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\'/><circle cx=\'12\' cy=\'7\' r=\'4\'/></svg><span data-i18n=\'photo_placeholder\'>${t.photo_placeholder}</span></div>';">`;
+    if (photo && photo.data && photo.data.length > 100) {
+        frame.innerHTML = `<img src="${photo.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'about-placeholder\\'><svg width=\\'56\\' height=\\'56\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1\\'><path d=\\'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\\'/><circle cx=\\'12\\' cy=\\'7\\' r=\\'4\\'/></svg><span data-i18n=\\'photo_placeholder\\'>${t.photo_placeholder}</span></div>';">`;
     } else {
         frame.innerHTML = `
             <div class="about-placeholder">
@@ -351,12 +386,42 @@ async function renderAboutPhoto() {
 async function renderMoreWorks() {
     const grid = document.getElementById('moreworksGrid');
     const empty = document.getElementById('moreworksEmpty');
+    const tabsWrap = document.getElementById('moreworksTabsWrap');
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    // Рендерим табы на странице moreworks
+    if (tabsWrap) {
+        const t = translations[currentLang];
+        tabsWrap.innerHTML = `
+            <div class="gallery-tabs moreworks-tabs">
+                <button class="gallery-tab active" data-category="personal">${t.gallery_tab_personal || '🎨 Личная'}</button>
+                <button class="gallery-tab" data-category="students">${t.gallery_tab_students || '👨‍🎓 Ученики'}</button>
+                <button class="gallery-tab" data-category="neuro">${t.gallery_tab_neuro || '✏️ Нейрографика'}</button>
+            </div>
+        `;
+        tabsWrap.querySelectorAll('.gallery-tab').forEach(tab => {
+            tab.addEventListener('click', async function() {
+                tabsWrap.querySelectorAll('.gallery-tab').forEach(t => t.classList.remove('active'));
+                this.classList.add('active');
+                currentGalleryCategory = this.dataset.category;
+                await renderMoreWorksItems();
+            });
+        });
+    }
+
+    await renderMoreWorksItems();
+}
+
+async function renderMoreWorksItems() {
+    const grid = document.getElementById('moreworksGrid');
+    const empty = document.getElementById('moreworksEmpty');
     if (!grid) return;
     grid.innerHTML = '';
 
     let items = [];
     if (db) {
-        try { items = await getGallery(); } catch(e) { console.warn('MoreWorks load error:', e); }
+        try { items = await getGallery(currentGalleryCategory); } catch(e) { console.warn('MoreWorks load error:', e); }
     }
 
     if (items.length === 0) {
@@ -371,7 +436,7 @@ async function renderMoreWorks() {
         const alt = currentLang === 'ru' ? (item.alt_ru || ('Работа ' + (idx + 1))) : (item.alt_de || ('Werk ' + (idx + 1)));
         if (item.data) {
             div.innerHTML = `
-                <img src="${item.data}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'moreworks-placeholder\' style=\'padding:40px;text-align:center;color:var(--slate-400);\'><svg width=\'40\' height=\'40\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1\' style=\'opacity:0.5;\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'M21 15l-5-5L5 21\'/></svg></div><div class=\'moreworks-caption\'><span class=\'moreworks-num\'>#${idx + 1}</span><span class=\'moreworks-name\'>${alt}</span></div>';">
+                <img src="${item.data}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\\'moreworks-placeholder\\' style=\\'padding:40px;text-align:center;color:var(--slate-400);\\'><svg width=\\'40\\' height=\\'40\\' viewBox=\\'0 0 24 24\\' fill=\\'none\\' stroke=\\'currentColor\\' stroke-width=\\'1\\' style=\\'opacity:0.5;\\'><rect x=\\'3\\' y=\\'3\\' width=\\'18\\' height=\\'18\\' rx=\\'2\\'/><circle cx=\\'8.5\\' cy=\\'8.5\\' r=\\'1.5\\'/><path d=\\'M21 15l-5-5L5 21\\'/></svg></div><div class=\\'moreworks-caption\\'><span class=\\'moreworks-num\\'>#${idx + 1}</span><span class=\\'moreworks-name\\'>${alt}</span></div>';">
                 <div class="moreworks-caption">
                     <span class="moreworks-num">#${idx + 1}</span>
                     <span class="moreworks-name">${alt}</span>
