@@ -21,6 +21,12 @@
             --shadow-sm: 0 2px 8px rgba(15,23,42,0.06);
             --shadow-md: 0 4px 20px rgba(15,23,42,0.08);
             --shadow-lg: 0 12px 40px rgba(15,23,42,0.12);
+            --blue-bg: #dbeafe;
+            --purple-bg: #ede9fe;
+            --coral-bg: #fef3f2;
+            --gold-bg: #fef3c7;
+            --blue: #60a5fa;
+            --gold: #f59e0b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         html { scroll-behavior: smooth; }
@@ -532,10 +538,10 @@
                 </div>
                 <p class="upload-hint">Выберите файл — откроется редактор обрезки (3:4)</p>
                 <div class="url-row">
-                    <input type="text" class="login-input" id="aboutUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)">
+                    <input type="text" class="login-input" id="aboutUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)" style="text-align:left !important;font-weight:500 !important;letter-spacing:0 !important;">
                     <button type="button" class="admin-btn admin-btn-primary" id="aboutUrlBtn">Добавить по ссылке</button>
                 </div>
-                <p class="url-tip">💡 Imgur блокирует вставку на сторонние сайты. Используйте imgbb.com, postimages.org или catbox.moe — скопируйте прямую ссылку (Direct link).</p>
+                <p class="url-tip">💡 <strong>Imgur блокирует вставку на сайты.</strong> Используйте imgbb.com, postimages.org или catbox.moe — скопируйте <strong>прямую ссылку (Direct link)</strong>.</p>
                 <div class="url-status" id="aboutUrlStatus"></div>
                 <div class="admin-preview" id="aboutPreview">
                     <div class="admin-preview-empty">Фото не загружено</div>
@@ -556,10 +562,10 @@
                 </div>
                 <p class="upload-hint">Выберите файл — откроется редактор обрезки. Можно несколько.</p>
                 <div class="url-row">
-                    <input type="text" class="login-input" id="galleryUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)">
+                    <input type="text" class="login-input" id="galleryUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)" style="text-align:left !important;font-weight:500 !important;letter-spacing:0 !important;">
                     <button type="button" class="admin-btn admin-btn-primary" id="galleryUrlBtn">Добавить по ссылке</button>
                 </div>
-                <p class="url-tip">💡 Imgur блокирует вставку на сторонние сайты. Используйте imgbb.com, postimages.org или catbox.moe — скопируйте прямую ссылку (Direct link).</p>
+                <p class="url-tip">💡 <strong>Imgur блокирует вставку на сайты.</strong> Используйте imgbb.com, postimages.org или catbox.moe — скопируйте <strong>прямую ссылку (Direct link)</strong>.</p>
                 <div class="url-status" id="galleryUrlStatus"></div>
                 <div class="admin-gallery-grid" id="galleryGridAdmin">
                     <div class="admin-empty-msg">Нет загруженных работ</div>
@@ -662,8 +668,16 @@
         function checkImageUrl(url) {
             return new Promise((resolve, reject) => {
                 const img = new Image();
+                img.crossOrigin = 'anonymous';
                 img.onload = () => resolve(true);
-                img.onerror = () => reject(new Error('Картинка не загружается. Возможно, хостинг блокирует hotlinking. Попробуйте imgbb.com, postimages.org или catbox.moe'));
+                img.onerror = () => {
+                    // Проверяем, не imgur ли это
+                    if (url.includes('imgur.com')) {
+                        reject(new Error('Imgur блокирует вставку на сайты. Используйте imgbb.com, postimages.org или catbox.moe.'));
+                    } else {
+                        reject(new Error('Картинка не загружается. Проверьте ссылку или используйте другой хостинг (imgbb.com, postimages.org, catbox.moe).'));
+                    }
+                };
                 img.src = url;
             });
         }
@@ -852,12 +866,16 @@
             await deleteAboutPhoto();
             await renderAboutPreview();
             await updateStats();
+            // Обновляем главную страницу
+            if (typeof renderAboutPhoto === 'function') {
+                try { await renderAboutPhoto(); } catch(e) {}
+            }
         });
 
         async function renderAboutPreview() {
             const photo = await getAboutPhoto();
             if (photo && photo.data) {
-                aboutPreview.innerHTML = '<img src="' + photo.data + '" alt="Фото художника">';
+                aboutPreview.innerHTML = '<img src="' + photo.data + '" alt="Фото художника" onerror="this.parentElement.innerHTML=\'<div class=\\\'admin-preview-empty\\\'>Ошибка загрузки фото</div>\';">';
             } else {
                 aboutPreview.innerHTML = '<div class="admin-preview-empty">Фото не загружено</div>';
             }
@@ -866,7 +884,10 @@
         // About by URL
         document.getElementById('aboutUrlBtn').addEventListener('click', async () => {
             const url = document.getElementById('aboutUrl').value.trim();
-            if (!url) return;
+            if (!url) {
+                setUrlStatus('aboutUrlStatus', 'Введите ссылку', true);
+                return;
+            }
             setUrlStatus('aboutUrlStatus', '⏳ Проверка ссылки...', false);
             try {
                 await checkImageUrl(url);
@@ -902,7 +923,10 @@
         // Gallery by URL
         document.getElementById('galleryUrlBtn').addEventListener('click', async () => {
             const url = document.getElementById('galleryUrl').value.trim();
-            if (!url) return;
+            if (!url) {
+                setUrlStatus('galleryUrlStatus', 'Введите ссылку', true);
+                return;
+            }
             setUrlStatus('galleryUrlStatus', '⏳ Проверка ссылки...', false);
             try {
                 await checkImageUrl(url);
