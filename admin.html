@@ -258,6 +258,15 @@
             flex: 1; min-width: 200px; margin-bottom: 0 !important;
             text-align: left !important; letter-spacing: 0 !important; font-weight: 500 !important;
         }
+        .url-status {
+            font-size: 0.8rem; font-weight: 600; margin-top: 8px; min-height: 20px;
+        }
+        .url-status.ok { color: var(--teal-600); }
+        .url-status.err { color: var(--coral); }
+        .url-tip {
+            font-size: 0.75rem; color: var(--slate-400); margin-top: 4px; line-height: 1.5;
+        }
+        body.dark-theme .url-tip { color: rgba(255,255,255,0.4); }
 
         /* CROPPER */
         .cropper-modal {
@@ -523,9 +532,11 @@
                 </div>
                 <p class="upload-hint">Выберите файл — откроется редактор обрезки (3:4)</p>
                 <div class="url-row">
-                    <input type="text" class="login-input" id="aboutUrl" placeholder="Или вставьте ссылку на фото (imgur и т.д.)">
+                    <input type="text" class="login-input" id="aboutUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)">
                     <button type="button" class="admin-btn admin-btn-primary" id="aboutUrlBtn">Добавить по ссылке</button>
                 </div>
+                <p class="url-tip">💡 Imgur блокирует вставку на сторонние сайты. Используйте imgbb.com, postimages.org или catbox.moe — скопируйте прямую ссылку (Direct link).</p>
+                <div class="url-status" id="aboutUrlStatus"></div>
                 <div class="admin-preview" id="aboutPreview">
                     <div class="admin-preview-empty">Фото не загружено</div>
                 </div>
@@ -545,9 +556,11 @@
                 </div>
                 <p class="upload-hint">Выберите файл — откроется редактор обрезки. Можно несколько.</p>
                 <div class="url-row">
-                    <input type="text" class="login-input" id="galleryUrl" placeholder="Или вставьте ссылку на фото (imgur и т.д.)">
+                    <input type="text" class="login-input" id="galleryUrl" placeholder="Ссылка на фото (imgbb, postimages, catbox...)">
                     <button type="button" class="admin-btn admin-btn-primary" id="galleryUrlBtn">Добавить по ссылке</button>
                 </div>
+                <p class="url-tip">💡 Imgur блокирует вставку на сторонние сайты. Используйте imgbb.com, postimages.org или catbox.moe — скопируйте прямую ссылку (Direct link).</p>
+                <div class="url-status" id="galleryUrlStatus"></div>
                 <div class="admin-gallery-grid" id="galleryGridAdmin">
                     <div class="admin-empty-msg">Нет загруженных работ</div>
                 </div>
@@ -644,6 +657,23 @@
                 reader.onerror = reject;
                 reader.readAsDataURL(file);
             });
+        }
+
+        function checkImageUrl(url) {
+            return new Promise((resolve, reject) => {
+                const img = new Image();
+                img.onload = () => resolve(true);
+                img.onerror = () => reject(new Error('Картинка не загружается. Возможно, хостинг блокирует hotlinking. Попробуйте imgbb.com, postimages.org или catbox.moe'));
+                img.src = url;
+            });
+        }
+
+        function setUrlStatus(elId, msg, isError) {
+            const el = document.getElementById(elId);
+            if (!el) return;
+            el.textContent = msg;
+            el.className = 'url-status ' + (isError ? 'err' : 'ok');
+            if (!msg) el.className = 'url-status';
         }
 
         // Theme
@@ -837,12 +867,20 @@
         document.getElementById('aboutUrlBtn').addEventListener('click', async () => {
             const url = document.getElementById('aboutUrl').value.trim();
             if (!url) return;
-            await setAboutPhoto({ data: url, type: 'url', alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
-            localStorage.setItem('mila_last_about_update', new Date().toISOString());
-            document.getElementById('aboutUrl').value = '';
-            await renderAboutPreview();
-            await updateStats();
-            await renderActivity();
+            setUrlStatus('aboutUrlStatus', '⏳ Проверка ссылки...', false);
+            try {
+                await checkImageUrl(url);
+                await setAboutPhoto({ data: url, type: 'url', alt_ru: 'Фото художника', alt_de: 'Foto der Künstlerin' });
+                localStorage.setItem('mila_last_about_update', new Date().toISOString());
+                document.getElementById('aboutUrl').value = '';
+                setUrlStatus('aboutUrlStatus', '✅ Фото добавлено!', false);
+                await renderAboutPreview();
+                await updateStats();
+                await renderActivity();
+                setTimeout(() => setUrlStatus('aboutUrlStatus', '', false), 3000);
+            } catch (err) {
+                setUrlStatus('aboutUrlStatus', '❌ ' + err.message, true);
+            }
         });
 
         // Gallery
@@ -865,22 +903,30 @@
         document.getElementById('galleryUrlBtn').addEventListener('click', async () => {
             const url = document.getElementById('galleryUrl').value.trim();
             if (!url) return;
-            const items = await getGallery();
-            items.push({
-                id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
-                data: url,
-                type: 'url',
-                wide: galleryWide.checked,
-                alt_ru: 'Работа',
-                alt_de: 'Werk'
-            });
-            await setGallery(items);
-            localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
-            document.getElementById('galleryUrl').value = '';
-            galleryWide.checked = false;
-            await renderGalleryAdmin();
-            await updateStats();
-            await renderActivity();
+            setUrlStatus('galleryUrlStatus', '⏳ Проверка ссылки...', false);
+            try {
+                await checkImageUrl(url);
+                const items = await getGallery();
+                items.push({
+                    id: Date.now().toString() + Math.random().toString(36).slice(2, 6),
+                    data: url,
+                    type: 'url',
+                    wide: galleryWide.checked,
+                    alt_ru: 'Работа',
+                    alt_de: 'Werk'
+                });
+                await setGallery(items);
+                localStorage.setItem('mila_last_gallery_update', new Date().toISOString());
+                document.getElementById('galleryUrl').value = '';
+                galleryWide.checked = false;
+                setUrlStatus('galleryUrlStatus', '✅ Работа добавлена!', false);
+                await renderGalleryAdmin();
+                await updateStats();
+                await renderActivity();
+                setTimeout(() => setUrlStatus('galleryUrlStatus', '', false), 3000);
+            } catch (err) {
+                setUrlStatus('galleryUrlStatus', '❌ ' + err.message, true);
+            }
         });
 
         async function renderGalleryAdmin() {
@@ -890,7 +936,7 @@
                 return;
             }
             galleryGridAdmin.innerHTML = items.map((item, idx) => {
-                return '<div class="admin-gallery-item"><img src="' + item.data + '" alt=""><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' &middot; ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button type="button" onclick="deleteGalleryItem(&quot;' + item.id + '&quot;)">Удалить</button></div></div>';
+                return '<div class="admin-gallery-item"><img src="' + item.data + '" alt="" onerror="this.style.display=\'none\';this.parentElement.style.background=\'#e2e8f0\';"><div class="admin-gallery-overlay"><span>#' + (idx + 1) + ' &middot; ' + (item.wide ? 'Широкое' : 'Обычное') + '</span><button type="button" onclick="deleteGalleryItem(&quot;' + item.id + '&quot;)">Удалить</button></div></div>';
             }).join('');
         }
 

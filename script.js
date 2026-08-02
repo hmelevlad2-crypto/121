@@ -301,7 +301,7 @@ async function renderGallery() {
         div.className = 'gallery-item' + (item.wide ? ' gallery-item-wide' : '');
         const alt = currentLang === 'ru' ? (item.alt_ru || '') : (item.alt_de || '');
         if (item.data) {
-            div.innerHTML = `<img src="${item.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;">`;
+            div.innerHTML = `<img src="${item.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'gallery-placeholder\'><svg width=\'36\' height=\'36\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'M21 15l-5-5L5 21\'/></svg><span>${alt}</span></div>';">`;
         } else {
             div.innerHTML = `
                 <div class="gallery-placeholder">
@@ -334,7 +334,7 @@ async function renderAboutPhoto() {
     const alt = currentLang === 'ru' ? 'Фото художника' : 'Foto der Künstlerin';
 
     if (photo && photo.data) {
-        frame.innerHTML = `<img src="${photo.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;">`;
+        frame.innerHTML = `<img src="${photo.data}" alt="${alt}" style="width:100%;height:100%;object-fit:cover;display:block;border-radius:inherit;" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'about-placeholder\'><svg width=\'56\' height=\'56\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1\'><path d=\'M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2\'/><circle cx=\'12\' cy=\'7\' r=\'4\'/></svg><span data-i18n=\'photo_placeholder\'>${t.photo_placeholder}</span></div>';">`;
     } else {
         frame.innerHTML = `
             <div class="about-placeholder">
@@ -371,7 +371,7 @@ async function renderMoreWorks() {
         const alt = currentLang === 'ru' ? (item.alt_ru || ('Работа ' + (idx + 1))) : (item.alt_de || ('Werk ' + (idx + 1)));
         if (item.data) {
             div.innerHTML = `
-                <img src="${item.data}" alt="${alt}" loading="lazy">
+                <img src="${item.data}" alt="${alt}" loading="lazy" onerror="this.onerror=null;this.parentElement.innerHTML='<div class=\'moreworks-placeholder\' style=\'padding:40px;text-align:center;color:var(--slate-400);\'><svg width=\'40\' height=\'40\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'1\' style=\'opacity:0.5;\'><rect x=\'3\' y=\'3\' width=\'18\' height=\'18\' rx=\'2\'/><circle cx=\'8.5\' cy=\'8.5\' r=\'1.5\'/><path d=\'M21 15l-5-5L5 21\'/></svg></div><div class=\'moreworks-caption\'><span class=\'moreworks-num\'>#${idx + 1}</span><span class=\'moreworks-name\'>${alt}</span></div>';">
                 <div class="moreworks-caption">
                     <span class="moreworks-num">#${idx + 1}</span>
                     <span class="moreworks-name">${alt}</span>
