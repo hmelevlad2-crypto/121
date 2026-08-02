@@ -343,13 +343,13 @@
 <body>
 
     <div class="login-wrap" id="loginWrap">
-        <div class="login-card">
+        <form class="login-card" id="loginForm">
             <h1>Админ-панель</h1>
             <p>Людмила Краусе — управление контентом</p>
-            <input type="password" class="login-input" id="loginPass" placeholder="Введите пароль">
-            <button type="button" class="login-btn" id="loginBtn">Войти</button>
+            <input type="password" class="login-input" id="loginPass" placeholder="Введите пароль" autocomplete="current-password">
+            <button type="submit" class="login-btn" id="loginBtn">Войти</button>
             <div class="login-error" id="loginError">Неверный пароль</div>
-        </div>
+        </form>
     </div>
 
     <div class="dashboard" id="dashboard">
@@ -565,6 +565,7 @@
         const loginPass = document.getElementById('loginPass');
         const loginBtn = document.getElementById('loginBtn');
         const loginError = document.getElementById('loginError');
+        const loginForm = document.getElementById('loginForm');
         const logoutBtn = document.getElementById('logoutBtn');
 
         function showLoginError(msg) {
@@ -576,12 +577,13 @@
         async function checkAuth() {
             try {
                 if (sessionStorage.getItem('admin_auth') === 'ok') {
-                    loginWrap.style.display = 'none';
-                    dashboard.classList.add('open');
                     try {
                         await initDashboard();
+                        loginWrap.style.display = 'none';
+                        dashboard.classList.add('open');
                     } catch (e) {
                         showLoginError('Ошибка загрузки данных: ' + e.message);
+                        sessionStorage.removeItem('admin_auth');
                     }
                 }
             } catch (e) {
@@ -597,16 +599,25 @@
                 if (val !== PASSWORD) { showLoginError('Неверный пароль'); loginPass.value = ''; loginPass.focus(); return; }
                 sessionStorage.setItem('admin_auth', 'ok');
                 localStorage.setItem('mila_last_login', new Date().toISOString());
-                loginWrap.style.display = 'none';
-                dashboard.classList.add('open');
-                await initDashboard();
+
+                try {
+                    await initDashboard();
+                    loginWrap.style.display = 'none';
+                    dashboard.classList.add('open');
+                } catch (e) {
+                    showLoginError('Ошибка загрузки данных: ' + e.message);
+                    sessionStorage.removeItem('admin_auth');
+                }
             } catch (e) {
                 showLoginError('Системная ошибка: ' + e.message);
             }
         }
 
-        loginBtn.addEventListener('click', doLogin);
-        loginPass.addEventListener('keydown', (e) => { if (e.key === 'Enter') doLogin(); });
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            doLogin();
+        });
+
         logoutBtn.addEventListener('click', () => { sessionStorage.removeItem('admin_auth'); location.reload(); });
 
         // ============================================
